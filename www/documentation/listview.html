@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ListView · Fluffy</title>
+<meta name="description" content="A ListView is a scrollable vertical list where the user can select one row. Each row is plain text or rich Inline content with icons and colors.">
+<link rel="canonical" href="https://samyeyo.github.io/fluffy/documentation/listview.html">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Samir Tine">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Fluffy">
+<meta property="og:title" content="ListView · Fluffy">
+<meta property="og:description" content="A ListView is a scrollable vertical list where the user can select one row. Each row is plain text or rich Inline content with icons and colors.">
+<meta property="og:url" content="https://samyeyo.github.io/fluffy/documentation/listview.html">
+<meta property="og:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<meta property="og:image:width" content="819">
+<meta property="og:image:height" content="390">
+<meta property="og:image:alt" content="Fluffy — a modern C++ desktop UI toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ListView · Fluffy">
+<meta name="twitter:description" content="A ListView is a scrollable vertical list where the user can select one row. Each row is plain text or rich Inline content with icons and colors.">
+<meta name="twitter:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"ListView · Fluffy","description":"A ListView is a scrollable vertical list where the user can select one row. Each row is plain text or rich Inline content with icons and colors.","url":"https://samyeyo.github.io/fluffy/documentation/listview.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://samyeyo.github.io/fluffy/documentation/listview.html"},"inLanguage":"en","author":{"@type":"Person","name":"Samir Tine"},"publisher":{"@type":"Organization","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"isPartOf":{"@type":"WebSite","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"image":"https://samyeyo.github.io/fluffy/fluffy-light.png"}</script>
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('fluffy-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) { /* ignore */ }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="../assets/site.css?v=21">
+<script src="../assets/highlight.min.js" defer></script>
+<script src="../assets/site.js?v=11" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="logoGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+        </linearGradient></defs>
+        <path fill="url(#logoGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+      </svg>
+      Fluffy
+    </a>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../documentation/index.html" class="active">Docs</a>
+      <a href="../tutorials/index.html">Tutorials</a>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar">
+  <div class="group"><span>Getting started</span>
+  <a href="../documentation/index.html">Welcome to Fluffy</a>
+  <a href="../documentation/install.html">Installing Fluffy</a>
+  <a href="../documentation/geom.html">Geometry &amp; colors</a>
+  <a href="../documentation/widget.html">Widget basics</a>
+  <a href="../documentation/custom.html">Custom widgets</a>
+  <a href="../documentation/window.html">Window</a>
+  <a href="../documentation/application.html">Application</a>
+  </div>
+  <div class="group"><span>Core widgets</span>
+  <a href="../documentation/label.html">Label</a>
+  <a href="../documentation/button.html">Button</a>
+  <a href="../documentation/textinput.html">TextInput</a>
+  <a href="../documentation/image.html">Image</a>
+  </div>
+  <div class="group"><span>Layout</span>
+  <a href="../documentation/container.html">Container</a>
+  <a href="../documentation/layouts.html">Layouts</a>
+  </div>
+  <div class="group"><span>Toggles &amp; pickers</span>
+  <a href="../documentation/checkbox.html">Checkbox</a>
+  <a href="../documentation/radiobutton.html">RadioButton</a>
+  <a href="../documentation/switch.html">Switch</a>
+  <a href="../documentation/slider.html">Slider</a>
+  <a href="../documentation/color_picker.html">ColorPicker</a>
+  </div>
+  <div class="group"><span>Data widgets</span>
+  <a href="../documentation/combobox.html">ComboBox</a>
+  <a href="../documentation/listview.html" class="active">ListView</a>
+  <a href="../documentation/tabview.html">TabView</a>
+  <a href="../documentation/table.html">Table</a>
+  <a href="../documentation/progress_ring.html">ProgressRing</a>
+  </div>
+  <div class="group"><span>Navigation &amp; overlays</span>
+  <a href="../documentation/menu.html">Menu</a>
+  <a href="../documentation/nav.html">Nav</a>
+  <a href="../documentation/tooltip.html">Tooltip</a>
+  <a href="../documentation/dialog.html">Dialogs</a>
+  <a href="../documentation/webview.html">WebView</a>
+  </div>
+  <div class="group"><span>Styling</span>
+  <a href="../documentation/theme.html">Theme</a>
+  <a href="../documentation/inline.html">Inline</a>
+  <a href="../documentation/icons.html">Icons</a>
+  </div>
+  <div class="group"><span>Declarative UI</span>
+  <a href="../documentation/yaml.html">YAML UI</a>
+  </div>
+  </aside>
+
+  <main class="docs-main">
+    <nav class="breadcrumb">
+      <a href="../index.html">Fluffy</a>
+      <span class="sep">/</span>
+      <a href="../documentation/index.html">Documentation</a>
+      <span class="sep">/</span>
+      <span>ListView</span>
+    </nav>
+    <article class="prose">
+      <h1>ListView</h1>
+<p>A <code>ListView</code> is a scrollable vertical list where the user can select one row.
+Each row is plain text or rich <code>Inline</code> content with icons and colors.</p>
+<p><img width="800" height="600" loading="lazy" decoding="async" alt="ListView widget" src="../assets/widgets/listview.png"></p>
+<p><em>A scrolling list with the third row selected.</em></p>
+<hr>
+<h2 id="what-its-for">What it's for</h2>
+<p>Use a <code>ListView</code> when you have a longer set of options or data rows and want the
+user to pick one. Unlike a <a href="combobox.html">ComboBox</a>, the list stays open on the
+screen instead of hiding behind a dropdown, so it suits side panels and pickers
+where seeing the choices matters.</p>
+<p>Rows have a fixed height and are clipped to the widget's <code>Rect</code>. When the
+content overflows, a scrollbar appears and the mouse wheel scrolls the list.
+Hovered rows are highlighted, and the selected row is painted with a solid
+accent color and white text.</p>
+<hr>
+<h2 id="a-first-example">A first example</h2>
+<p>A window is the operating-system window your app draws into. <code>Window::open</code>
+creates it, and <code>if (!win)</code> stops the program if the window could not be opened.
+<code>win.add&lt;T&gt;(...)</code> creates a widget inside that window and returns a
+reference to it. <code>Rect{x, y, width, height}</code> places the widget. A callback is a
+small function you give to a widget so it can call you back when something
+happens.</p>
+<pre data-try="listview-0" data-w="640" data-h="400"><code class="language-cpp">#include &lt;cstdio&gt;
+
+#include &lt;fluffy/fluffy.hpp&gt;
+
+int main() {
+    fluffy::Window win = fluffy::Window::open(&quot;ListView demo&quot;, 640, 400);
+    if (!win) return 1;
+
+    auto&amp; lv = win.add&lt;fluffy::ListView&gt;(fluffy::Rect{40, 40, 300, 160});
+    lv.setItems({&quot;Item 1&quot;, &quot;Item 2&quot;, &quot;Item 3&quot;});
+    lv.setSelected(1);
+    lv.setOnSelect([](int idx, const std::string&amp; v) {
+        std::printf(&quot;selected %d:%s\n&quot;, idx, v.c_str());
+    });
+
+    win.run();
+}
+</code></pre>
+<p><code>setItems</code> fills the list, and <code>setSelected</code> chooses the starting row. An index
+of <code>-1</code> means no selection. The <code>onSelect</code> callback receives the row index and
+its value.</p>
+<p>The snippets below assume <code>win</code> and <code>lv</code> from this example.</p>
+<hr>
+<h2 id="common-tasks">Common tasks</h2>
+<h3 id="using-rich-rows">Using rich rows</h3>
+<p>An <code>Inline</code> is rich text made from plain text, an icon from <code>Icons::*</code>, and a
+<code>Color</code>. <code>setItemsInline</code> lets each row carry that content. It mirrors <code>items</code>:
+setting one form updates the other.</p>
+<pre><code class="language-cpp">lv.setItemsInline({
+    fluffy::Inline{} &lt;&lt; fluffy::Icons::star &lt;&lt; &quot; Star&quot;,
+    fluffy::Inline{} &lt;&lt; fluffy::Color{200, 40, 40, 255} &lt;&lt; &quot;Warning&quot;
+});
+</code></pre>
+<h3 id="reading-the-selection">Reading the selection</h3>
+<pre><code class="language-cpp">int sel = lv.selected();
+std::string v = lv.items()[sel];
+fluffy::Inline inl = lv.selectedInline();
+const auto&amp; inlItems = lv.itemsInline();
+</code></pre>
+<p><code>selected</code> returns the row index, or <code>-1</code> when nothing is selected.
+<code>selectedInline</code> returns the rich form of the selected row. Check <code>sel</code> before
+indexing <code>items()</code>.</p>
+<h3 id="disabling-the-list">Disabling the list</h3>
+<pre><code class="language-cpp">lv.setEnabled(false);
+</code></pre>
+<p>A disabled list is greyed out and ignores clicks and keys.</p>
+<h3 id="loading-from-yaml">Loading from YAML</h3>
+<p>Fluffy can also describe widgets in YAML, a plain text format:</p>
+<pre><code class="language-yaml">ListView:
+  items: [&quot;Item 1&quot;, &quot;Item 2&quot;, &quot;Item 3&quot;]
+  selected: 0
+  x: 40
+  y: 40
+  width: 300
+  height: 160
+</code></pre>
+<p>Unlike <code>ComboBox</code>, <code>selected</code> accepts an integer index only; there is no string
+form.</p>
+<hr>
+<h2 id="good-to-know">Good to know</h2>
+<ul>
+<li>Replacing the items with <code>setItems</code> or <code>setItemsInline</code> resets the selection to
+  <code>-1</code> when it falls out of range and resets the scroll position.</li>
+<li>An out-of-range <code>setSelected</code> becomes <code>-1</code>.</li>
+<li><code>onSelect</code> fires on a row click, on <code>Up</code>/<code>Down</code>/<code>Home</code>/<code>End</code> when focused, or
+  from <code>setSelected()</code> — whenever the index actually changes. Re-selecting the
+  same row or clearing to <code>-1</code> never fires.</li>
+<li>The list is focusable and shows a focus halo. There is no <code>focused()</code> getter;
+  use <code>setFocused()</code> only.</li>
+</ul>
+<hr>
+<h2 id="quick-reference">Quick reference</h2>
+<h3 id="properties">Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>items</code></td>
+<td><code>vector&lt;string&gt;</code></td>
+<td>Plain-text rows.</td>
+</tr>
+<tr>
+<td><code>itemsInline</code></td>
+<td><code>vector&lt;Inline&gt;</code></td>
+<td>Rich rows (<code>Icons::*</code>, <code>Color</code>). Mirrors <code>items</code>.</td>
+</tr>
+<tr>
+<td><code>selected</code></td>
+<td><code>int</code></td>
+<td><code>-1</code> none, otherwise selected row index (read via <code>selected()</code>).</td>
+</tr>
+<tr>
+<td><code>focused</code></td>
+<td>—</td>
+<td>Focusable; shows a focus halo (no <code>focused()</code> getter — use <code>setFocused()</code> only).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="methods">Methods</h3>
+<pre><code class="language-cpp">auto&amp; lv = win.add&lt;fluffy::ListView&gt;(fluffy::Rect{40, 40, 300, 160});
+lv.setItems({&quot;Item 1&quot;, &quot;Item 2&quot;, &quot;Item 3&quot;});
+lv.setItemsInline({
+    fluffy::Inline{} &lt;&lt; fluffy::Icons::star &lt;&lt; &quot; Star&quot;,
+    fluffy::Inline{} &lt;&lt; fluffy::Color{200, 40, 40, 255} &lt;&lt; &quot;Warning&quot;
+});
+
+lv.setSelected(1);
+int sel = lv.selected();
+std::string v = lv.items()[sel];
+fluffy::Inline inl = lv.selectedInline();
+const auto&amp; inlItems = lv.itemsInline();
+
+lv.setEnabled(false);
+</code></pre>
+<h3 id="events">Events</h3>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Signature</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>onSelect</code></td>
+<td><code>void(int index, const string&amp; value)</code></td>
+<td>Click on a row, <code>Up/Down/Home/End</code> when focused, or programmatic <code>setSelected()</code> — whenever the index actually changes. Re-selecting the same row or clearing to <code>-1</code> never fires.</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-cpp">lv.setOnSelect([](int idx, const std::string&amp; v) {
+    std::printf(&quot;selected %d:%s\n&quot;, idx, v.c_str());
+});
+</code></pre>
+<hr>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="combobox.html">ComboBox</a> — dropdown list.</li>
+<li><a href="table.html">Table</a> — grid.</li>
+</ul>
+    </article>
+    <nav class="pager">
+    <a class="prev" href="../documentation/combobox.html"><span class="dir">← Previous</span><span class="ttl">ComboBox</span></a>
+    <a class="next" href="../documentation/tabview.html"><span class="dir">Next →</span><span class="ttl">TabView</span></a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc">
+    <span>On this page</span>
+    <a class="lvl-2" href="#what-its-for">What it&#x27;s for</a>
+    <a class="lvl-2" href="#a-first-example">A first example</a>
+    <a class="lvl-2" href="#common-tasks">Common tasks</a>
+    <a class="lvl-3" href="#using-rich-rows">Using rich rows</a>
+    <a class="lvl-3" href="#reading-the-selection">Reading the selection</a>
+    <a class="lvl-3" href="#disabling-the-list">Disabling the list</a>
+    <a class="lvl-3" href="#loading-from-yaml">Loading from YAML</a>
+    <a class="lvl-2" href="#good-to-know">Good to know</a>
+    <a class="lvl-2" href="#quick-reference">Quick reference</a>
+    <a class="lvl-3" href="#properties">Properties</a>
+    <a class="lvl-3" href="#methods">Methods</a>
+    <a class="lvl-3" href="#events">Events</a>
+    <a class="lvl-2" href="#see-also">See also</a>
+  </aside>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div class="about">
+        <a class="brand" href="../index.html" style="font-size:20px">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:30px;height:30px">
+            <defs><linearGradient id="footGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+            </linearGradient></defs>
+            <path fill="url(#footGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          </svg>
+          Fluffy
+        </a>
+        <div class="about-copy">
+          <p>The soft answer to stiff, native UI frameworks. MIT licensed — because software should be free, fluffy and fun.</p>
+          <span class="copyright">© 2026 Tine Samir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

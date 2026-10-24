@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ComboBox · Fluffy</title>
+<meta name="description" content="A ComboBox is a dropdown field: it shows one choice at a time, and clicking it opens a short list of options to pick from.">
+<link rel="canonical" href="https://samyeyo.github.io/fluffy/documentation/combobox.html">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Samir Tine">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Fluffy">
+<meta property="og:title" content="ComboBox · Fluffy">
+<meta property="og:description" content="A ComboBox is a dropdown field: it shows one choice at a time, and clicking it opens a short list of options to pick from.">
+<meta property="og:url" content="https://samyeyo.github.io/fluffy/documentation/combobox.html">
+<meta property="og:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<meta property="og:image:width" content="819">
+<meta property="og:image:height" content="390">
+<meta property="og:image:alt" content="Fluffy — a modern C++ desktop UI toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ComboBox · Fluffy">
+<meta name="twitter:description" content="A ComboBox is a dropdown field: it shows one choice at a time, and clicking it opens a short list of options to pick from.">
+<meta name="twitter:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"ComboBox · Fluffy","description":"A ComboBox is a dropdown field: it shows one choice at a time, and clicking it opens a short list of options to pick from.","url":"https://samyeyo.github.io/fluffy/documentation/combobox.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://samyeyo.github.io/fluffy/documentation/combobox.html"},"inLanguage":"en","author":{"@type":"Person","name":"Samir Tine"},"publisher":{"@type":"Organization","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"isPartOf":{"@type":"WebSite","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"image":"https://samyeyo.github.io/fluffy/fluffy-light.png"}</script>
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('fluffy-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) { /* ignore */ }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="../assets/site.css?v=21">
+<script src="../assets/highlight.min.js" defer></script>
+<script src="../assets/site.js?v=11" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="logoGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+        </linearGradient></defs>
+        <path fill="url(#logoGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+      </svg>
+      Fluffy
+    </a>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../documentation/index.html" class="active">Docs</a>
+      <a href="../tutorials/index.html">Tutorials</a>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar">
+  <div class="group"><span>Getting started</span>
+  <a href="../documentation/index.html">Welcome to Fluffy</a>
+  <a href="../documentation/install.html">Installing Fluffy</a>
+  <a href="../documentation/geom.html">Geometry &amp; colors</a>
+  <a href="../documentation/widget.html">Widget basics</a>
+  <a href="../documentation/custom.html">Custom widgets</a>
+  <a href="../documentation/window.html">Window</a>
+  <a href="../documentation/application.html">Application</a>
+  </div>
+  <div class="group"><span>Core widgets</span>
+  <a href="../documentation/label.html">Label</a>
+  <a href="../documentation/button.html">Button</a>
+  <a href="../documentation/textinput.html">TextInput</a>
+  <a href="../documentation/image.html">Image</a>
+  </div>
+  <div class="group"><span>Layout</span>
+  <a href="../documentation/container.html">Container</a>
+  <a href="../documentation/layouts.html">Layouts</a>
+  </div>
+  <div class="group"><span>Toggles &amp; pickers</span>
+  <a href="../documentation/checkbox.html">Checkbox</a>
+  <a href="../documentation/radiobutton.html">RadioButton</a>
+  <a href="../documentation/switch.html">Switch</a>
+  <a href="../documentation/slider.html">Slider</a>
+  <a href="../documentation/color_picker.html">ColorPicker</a>
+  </div>
+  <div class="group"><span>Data widgets</span>
+  <a href="../documentation/combobox.html" class="active">ComboBox</a>
+  <a href="../documentation/listview.html">ListView</a>
+  <a href="../documentation/tabview.html">TabView</a>
+  <a href="../documentation/table.html">Table</a>
+  <a href="../documentation/progress_ring.html">ProgressRing</a>
+  </div>
+  <div class="group"><span>Navigation &amp; overlays</span>
+  <a href="../documentation/menu.html">Menu</a>
+  <a href="../documentation/nav.html">Nav</a>
+  <a href="../documentation/tooltip.html">Tooltip</a>
+  <a href="../documentation/dialog.html">Dialogs</a>
+  <a href="../documentation/webview.html">WebView</a>
+  </div>
+  <div class="group"><span>Styling</span>
+  <a href="../documentation/theme.html">Theme</a>
+  <a href="../documentation/inline.html">Inline</a>
+  <a href="../documentation/icons.html">Icons</a>
+  </div>
+  <div class="group"><span>Declarative UI</span>
+  <a href="../documentation/yaml.html">YAML UI</a>
+  </div>
+  </aside>
+
+  <main class="docs-main">
+    <nav class="breadcrumb">
+      <a href="../index.html">Fluffy</a>
+      <span class="sep">/</span>
+      <a href="../documentation/index.html">Documentation</a>
+      <span class="sep">/</span>
+      <span>ComboBox</span>
+    </nav>
+    <article class="prose">
+      <h1>ComboBox</h1>
+<p>A <code>ComboBox</code> is a dropdown field: it shows one choice at a time, and clicking it opens a short list of options to pick from.</p>
+<p><img width="800" height="640" loading="lazy" decoding="async" alt="ComboBox widget" src="../assets/widgets/combobox.png"></p>
+<p><em>A closed selection and an open dropdown.</em></p>
+<hr>
+<h2 id="what-its-for">What it's for</h2>
+<p>Use a <code>ComboBox</code> when the user must choose exactly one option from a small,
+fixed set and you want to save space. The field shows the current choice, or a
+placeholder such as <code>"Pick one…"</code> when nothing is selected, with a small
+chevron on the right. Clicking the field (or the chevron) opens a popup list;
+picking an option closes it.</p>
+<p>If the options should stay visible all the time, or there are many of them, use
+a <a href="listview.html">ListView</a> instead. If the data has several columns, use a
+<a href="table.html">Table</a>.</p>
+<hr>
+<h2 id="a-first-example">A first example</h2>
+<p>Here is a complete program. A window is the operating-system window your app
+draws into; <code>Window::open</code> creates one, and <code>if (!win)</code> stops the program if the
+window could not be opened. A widget is any visible element inside a window,
+and <code>win.add&lt;T&gt;(...)</code> creates one and returns a reference to it. <code>Rect{x, y,
+width, height}</code> says where the widget sits and how big it is. A callback is a
+small function you hand to a widget so it can call you back when something
+happens.</p>
+<pre data-try="combobox-0" data-w="640" data-h="400"><code class="language-cpp">#include &lt;cstdio&gt;
+
+#include &lt;fluffy/fluffy.hpp&gt;
+
+int main() {
+    fluffy::Window win = fluffy::Window::open(&quot;ComboBox demo&quot;, 640, 400);
+    if (!win) return 1;
+
+    auto&amp; cb = win.add&lt;fluffy::ComboBox&gt;(fluffy::Rect{40, 40, 240, 32});
+    cb.setItems({&quot;Apple&quot;, &quot;Banana&quot;, &quot;Cherry&quot;});
+    cb.setPlaceholder(&quot;Pick one…&quot;);
+    cb.setSelectedIndex(1);
+    cb.setOnChange([](int idx, const std::string&amp; v) {
+        std::printf(&quot;picked %d:%s\n&quot;, idx, v.c_str());
+    });
+
+    win.run();
+}
+</code></pre>
+<p><code>setItems</code> gives the field its options. <code>setPlaceholder</code> sets the text shown
+while nothing is selected. <code>setSelectedIndex(1)</code> starts on "Banana": <code>0</code> is the
+first option, <code>1</code> the second, and <code>-1</code> means no choice. <code>setOnChange</code> registers
+a callback that receives the new index and the option text.</p>
+<p>The snippets below assume <code>win</code> and <code>cb</code> from this example.</p>
+<hr>
+<h2 id="common-tasks">Common tasks</h2>
+<h3 id="using-rich-items">Using rich items</h3>
+<p>An <code>Inline</code> is rich text built from pieces: plain text, an icon from <code>Icons::*</code>,
+and a <code>Color</code>. Use it when plain text is not enough. <code>setItemsInline</code> sets the
+options this way, and setting either <code>items</code> or <code>itemsInline</code> updates the other.</p>
+<pre><code class="language-cpp">cb.setItemsInline({
+    fluffy::Inline{} &lt;&lt; fluffy::Icons::apple &lt;&lt; &quot; Apple&quot;,
+    fluffy::Inline{} &lt;&lt; fluffy::Color{200, 40, 40, 255} &lt;&lt; fluffy::Icons::heart &lt;&lt; &quot; Cherry&quot;
+});
+</code></pre>
+<p>The placeholder has a rich form too. <code>setPlaceholderInline</code> pairs with
+<code>setPlaceholder</code>, and setting one updates the other.</p>
+<pre><code class="language-cpp">cb.setPlaceholderInline(fluffy::Inline{} &lt;&lt; fluffy::Icons::search &lt;&lt; &quot; Search&quot;);
+</code></pre>
+<h3 id="reading-the-current-selection">Reading the current selection</h3>
+<pre><code class="language-cpp">int idx = cb.selectedIndex();
+std::string v = cb.selectedValue();
+fluffy::Inline inl = cb.selectedInline();
+const auto&amp; items = cb.items();
+const auto&amp; inlItems = cb.itemsInline();
+const std::string&amp; ph = cb.placeholder();
+fluffy::Inline phInl = cb.placeholderInline();
+</code></pre>
+<p><code>selectedIndex</code> and <code>selectedValue</code> give the plain form of the choice, while
+<code>selectedInline</code> gives the rich form. The other getters return the option list
+and the placeholder.</p>
+<h3 id="opening-the-popup-yourself">Opening the popup yourself</h3>
+<pre><code class="language-cpp">cb.openPopup(win);
+</code></pre>
+<p>This shows the dropdown without waiting for a click. You can also disable the
+field with <code>setEnabled(false)</code>; a disabled field ignores input.</p>
+<h3 id="loading-from-yaml">Loading from YAML</h3>
+<p>Fluffy can also describe widgets in YAML, a plain text format. This entry
+creates a <code>ComboBox</code> with the same options as above:</p>
+<pre><code class="language-yaml">ComboBox:
+  items: [&quot;Apple&quot;, &quot;Banana&quot;, &quot;Cherry&quot;]
+  selected: 1
+  placeholder: &quot;Pick one…&quot;
+  x: 40
+  y: 40
+  width: 240
+</code></pre>
+<p><code>selected</code> accepts an index or a string value. <code>value</code> is an alias of
+<code>selected</code>, and <code>options</code> is an alias of <code>items</code>. A string that matches no item
+is silently ignored.</p>
+<hr>
+<h2 id="good-to-know">Good to know</h2>
+<ul>
+<li>When focused, <code>Space</code> or <code>Enter</code> opens the popup, and <code>Up</code>/<code>Down</code> moves through
+  the items. <code>Up</code> at the first item and <code>Down</code> at the last do nothing; the list
+  does not wrap around.</li>
+<li><code>onChange</code> fires on a list pick, on <code>Up</code>/<code>Down</code>, or from <code>setSelectedIndex()</code>.
+  Re-selecting the same index never fires. Out-of-range input becomes <code>-1</code>, and
+  that fires only if it changes the selection.</li>
+<li>The field is focusable and shows an accent border when focused. There is no
+  <code>focused()</code> getter; use <code>setFocused()</code> only.</li>
+</ul>
+<hr>
+<h2 id="quick-reference">Quick reference</h2>
+<h3 id="properties">Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>items</code></td>
+<td><code>vector&lt;string&gt;</code></td>
+<td>Plain-text options.</td>
+</tr>
+<tr>
+<td><code>itemsInline</code></td>
+<td><code>vector&lt;Inline&gt;</code></td>
+<td>Rich options (text + <code>Color</code> + <code>Icons::*</code>). Setting one updates the other.</td>
+</tr>
+<tr>
+<td><code>selectedIndex</code></td>
+<td><code>int</code></td>
+<td><code>-1</code> means none, otherwise <code>0..n-1</code>.</td>
+</tr>
+<tr>
+<td><code>selectedValue</code> / <code>selectedInline</code></td>
+<td><code>string</code> / <code>Inline</code></td>
+<td>Plain and rich form of the current choice.</td>
+</tr>
+<tr>
+<td><code>placeholder</code> / <code>placeholderInline</code></td>
+<td><code>string</code> / <code>Inline</code></td>
+<td>Shown when <code>selectedIndex == -1</code>. Setting one updates the other.</td>
+</tr>
+<tr>
+<td><code>focused</code></td>
+<td>—</td>
+<td>Focusable; shows an accent border when focused (no <code>focused()</code> getter — use <code>setFocused()</code> only).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="methods">Methods</h3>
+<pre><code class="language-cpp">auto&amp; cb = win.add&lt;fluffy::ComboBox&gt;(fluffy::Rect{40, 40, 240, 32});
+cb.setItems({&quot;Apple&quot;, &quot;Banana&quot;, &quot;Cherry&quot;});
+cb.setItemsInline({
+    fluffy::Inline{} &lt;&lt; fluffy::Icons::apple &lt;&lt; &quot; Apple&quot;,
+    fluffy::Inline{} &lt;&lt; fluffy::Color{200, 40, 40, 255} &lt;&lt; fluffy::Icons::heart &lt;&lt; &quot; Cherry&quot;
+});
+cb.setPlaceholder(&quot;Pick one…&quot;);
+cb.setPlaceholderInline(fluffy::Inline{} &lt;&lt; fluffy::Icons::search &lt;&lt; &quot; Search&quot;);
+
+cb.setSelectedIndex(1);
+int idx = cb.selectedIndex();
+std::string v = cb.selectedValue();
+fluffy::Inline inl = cb.selectedInline();
+const auto&amp; items = cb.items();
+const auto&amp; inlItems = cb.itemsInline();
+const std::string&amp; ph = cb.placeholder();
+fluffy::Inline phInl = cb.placeholderInline();
+
+cb.openPopup(win);
+cb.setEnabled(false);
+</code></pre>
+<h3 id="events">Events</h3>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Signature</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>onChange</code></td>
+<td><code>void(int index, const string&amp; value)</code></td>
+<td>Fires when the selection changes — list pick, <code>Up</code>/<code>Down</code> keys, or <code>setSelectedIndex()</code>. Re-selecting the same index never fires; out-of-range input becomes <code>-1</code> (fires only if that changes the selection).</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-cpp">cb.setOnChange([](int idx, const std::string&amp; v) {
+    std::printf(&quot;picked %d:%s\n&quot;, idx, v.c_str());
+});
+</code></pre>
+<hr>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="listview.html">ListView</a> — scrollable list variant.</li>
+<li><a href="menu.html">Menu</a> — popup implementation.</li>
+<li><a href="inline.html">Inline</a> · <a href="icons.html">Icons</a></li>
+</ul>
+    </article>
+    <nav class="pager">
+    <a class="prev" href="../documentation/color_picker.html"><span class="dir">← Previous</span><span class="ttl">ColorPicker</span></a>
+    <a class="next" href="../documentation/listview.html"><span class="dir">Next →</span><span class="ttl">ListView</span></a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc">
+    <span>On this page</span>
+    <a class="lvl-2" href="#what-its-for">What it&#x27;s for</a>
+    <a class="lvl-2" href="#a-first-example">A first example</a>
+    <a class="lvl-2" href="#common-tasks">Common tasks</a>
+    <a class="lvl-3" href="#using-rich-items">Using rich items</a>
+    <a class="lvl-3" href="#reading-the-current-selection">Reading the current selection</a>
+    <a class="lvl-3" href="#opening-the-popup-yourself">Opening the popup yourself</a>
+    <a class="lvl-3" href="#loading-from-yaml">Loading from YAML</a>
+    <a class="lvl-2" href="#good-to-know">Good to know</a>
+    <a class="lvl-2" href="#quick-reference">Quick reference</a>
+    <a class="lvl-3" href="#properties">Properties</a>
+    <a class="lvl-3" href="#methods">Methods</a>
+    <a class="lvl-3" href="#events">Events</a>
+    <a class="lvl-2" href="#see-also">See also</a>
+  </aside>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div class="about">
+        <a class="brand" href="../index.html" style="font-size:20px">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:30px;height:30px">
+            <defs><linearGradient id="footGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+            </linearGradient></defs>
+            <path fill="url(#footGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          </svg>
+          Fluffy
+        </a>
+        <div class="about-copy">
+          <p>The soft answer to stiff, native UI frameworks. MIT licensed — because software should be free, fluffy and fun.</p>
+          <span class="copyright">© 2026 Tine Samir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

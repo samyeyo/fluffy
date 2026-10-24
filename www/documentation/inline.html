@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inline · Fluffy</title>
+<meta name="description" content="An Inline is a small stream of content that can mix text, icons, and colors in one value.">
+<link rel="canonical" href="https://samyeyo.github.io/fluffy/documentation/inline.html">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Samir Tine">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Fluffy">
+<meta property="og:title" content="Inline · Fluffy">
+<meta property="og:description" content="An Inline is a small stream of content that can mix text, icons, and colors in one value.">
+<meta property="og:url" content="https://samyeyo.github.io/fluffy/documentation/inline.html">
+<meta property="og:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<meta property="og:image:width" content="819">
+<meta property="og:image:height" content="390">
+<meta property="og:image:alt" content="Fluffy — a modern C++ desktop UI toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Inline · Fluffy">
+<meta name="twitter:description" content="An Inline is a small stream of content that can mix text, icons, and colors in one value.">
+<meta name="twitter:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Inline · Fluffy","description":"An Inline is a small stream of content that can mix text, icons, and colors in one value.","url":"https://samyeyo.github.io/fluffy/documentation/inline.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://samyeyo.github.io/fluffy/documentation/inline.html"},"inLanguage":"en","author":{"@type":"Person","name":"Samir Tine"},"publisher":{"@type":"Organization","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"isPartOf":{"@type":"WebSite","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"image":"https://samyeyo.github.io/fluffy/fluffy-light.png"}</script>
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('fluffy-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) { /* ignore */ }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="../assets/site.css?v=21">
+<script src="../assets/highlight.min.js" defer></script>
+<script src="../assets/site.js?v=11" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="logoGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+        </linearGradient></defs>
+        <path fill="url(#logoGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+      </svg>
+      Fluffy
+    </a>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../documentation/index.html" class="active">Docs</a>
+      <a href="../tutorials/index.html">Tutorials</a>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar">
+  <div class="group"><span>Getting started</span>
+  <a href="../documentation/index.html">Welcome to Fluffy</a>
+  <a href="../documentation/install.html">Installing Fluffy</a>
+  <a href="../documentation/geom.html">Geometry &amp; colors</a>
+  <a href="../documentation/widget.html">Widget basics</a>
+  <a href="../documentation/custom.html">Custom widgets</a>
+  <a href="../documentation/window.html">Window</a>
+  <a href="../documentation/application.html">Application</a>
+  </div>
+  <div class="group"><span>Core widgets</span>
+  <a href="../documentation/label.html">Label</a>
+  <a href="../documentation/button.html">Button</a>
+  <a href="../documentation/textinput.html">TextInput</a>
+  <a href="../documentation/image.html">Image</a>
+  </div>
+  <div class="group"><span>Layout</span>
+  <a href="../documentation/container.html">Container</a>
+  <a href="../documentation/layouts.html">Layouts</a>
+  </div>
+  <div class="group"><span>Toggles &amp; pickers</span>
+  <a href="../documentation/checkbox.html">Checkbox</a>
+  <a href="../documentation/radiobutton.html">RadioButton</a>
+  <a href="../documentation/switch.html">Switch</a>
+  <a href="../documentation/slider.html">Slider</a>
+  <a href="../documentation/color_picker.html">ColorPicker</a>
+  </div>
+  <div class="group"><span>Data widgets</span>
+  <a href="../documentation/combobox.html">ComboBox</a>
+  <a href="../documentation/listview.html">ListView</a>
+  <a href="../documentation/tabview.html">TabView</a>
+  <a href="../documentation/table.html">Table</a>
+  <a href="../documentation/progress_ring.html">ProgressRing</a>
+  </div>
+  <div class="group"><span>Navigation &amp; overlays</span>
+  <a href="../documentation/menu.html">Menu</a>
+  <a href="../documentation/nav.html">Nav</a>
+  <a href="../documentation/tooltip.html">Tooltip</a>
+  <a href="../documentation/dialog.html">Dialogs</a>
+  <a href="../documentation/webview.html">WebView</a>
+  </div>
+  <div class="group"><span>Styling</span>
+  <a href="../documentation/theme.html">Theme</a>
+  <a href="../documentation/inline.html" class="active">Inline</a>
+  <a href="../documentation/icons.html">Icons</a>
+  </div>
+  <div class="group"><span>Declarative UI</span>
+  <a href="../documentation/yaml.html">YAML UI</a>
+  </div>
+  </aside>
+
+  <main class="docs-main">
+    <nav class="breadcrumb">
+      <a href="../index.html">Fluffy</a>
+      <span class="sep">/</span>
+      <a href="../documentation/index.html">Documentation</a>
+      <span class="sep">/</span>
+      <span>Inline</span>
+    </nav>
+    <article class="prose">
+      <h1>Inline</h1>
+<p>An <strong>Inline</strong> is a small stream of content that can mix text, icons, and colors in one value. Labels and buttons accept either a plain string or an Inline; use an Inline when the content is more than plain text.</p>
+<h2 id="what-its-for">What it's for</h2>
+<p>Use an Inline when you want to compose rich content from several pieces instead of passing a single string. You build the stream by appending runs, then give it to a widget that accepts rich content. The widget stores the runs and draws them from left to right.</p>
+<p>This is what mixed text and icon content means in Fluffy: one label or button can hold a small picture and words together, and the words can change color partway through.</p>
+<h2 id="the-words-you-need">The words you need</h2>
+<ul>
+<li><strong>Window</strong> — the operating-system window your app draws into. <code>Window::open</code> creates one.</li>
+<li><strong>Widget</strong> — any visible element inside a window, such as a label or a button. <code>win.add&lt;T&gt;(...)</code> adds one and returns a reference to it.</li>
+<li><strong>Inline</strong> — one value that holds a sequence of content runs. A label or button can display it.</li>
+<li><strong>Run</strong> — one piece of an Inline: a piece of text or an icon, plus any style that applies to it.</li>
+<li><strong>Icon</strong> — a small built-in drawing. Fluffy includes the Lucide icon set, and you name an icon with a value such as <code>fluffy::Icons::rocket</code>. The <a href="icons.html">Icons</a> page covers the set.</li>
+<li><strong><code>$()</code></strong> — a shorthand macro that builds an Inline stream. <code>fluffy::$(fluffy::Icons::rocket &lt;&lt; " Launch")</code> means <code>fluffy::Inline{} &lt;&lt; fluffy::Icons::rocket &lt;&lt; " Launch"</code>.</li>
+<li><strong>Color</strong> — an RGBA color value. A color run changes the foreground color of the runs that follow it.</li>
+<li><strong>Style</strong> — an optional combination of color, size, bold, and italic that applies to the runs that follow it.</li>
+</ul>
+<h2 id="a-first-example">A first example</h2>
+<p>This program opens a window and adds a button whose content is a rocket icon followed by the word "Launch".</p>
+<pre data-try="inline-0" data-w="640" data-h="400"><code class="language-cpp">#include &lt;fluffy/fluffy.hpp&gt;
+
+int main() {
+    fluffy::Window win = fluffy::Window::open(&quot;Inline demo&quot;, 640, 400);
+    if (!win) return 1;
+
+    auto&amp; btn = win.add&lt;fluffy::Button&gt;(
+        fluffy::$(fluffy::Icons::rocket &lt;&lt; &quot; Launch&quot;));
+    btn.setBounds(fluffy::Rect{40, 40, 160, 40});
+
+    win.run();
+}
+</code></pre>
+<p><code>Window::open</code> creates the window, and <code>if (!win)</code> checks that it opened successfully. <code>win.add&lt;fluffy::Button&gt;(...)</code> creates a button inside the window and returns a reference to it; <code>auto&amp;</code> keeps that reference, so <code>btn</code> is the real widget. <code>setBounds</code> places a widget with a rectangle, written <code>Rect{x, y, width, height}</code>; <code>x</code> and <code>y</code> are the top-left corner, and <code>width</code> and <code>height</code> are the size in pixels.</p>
+<p>The button's content is built with <code>fluffy::$(...)</code>. Each <code>&lt;&lt;</code> adds another run to the stream: first the rocket icon, then the text <code>" Launch"</code>. The leading space keeps the icon and the word from touching. You can keep chaining <code>&lt;&lt;</code> to add more runs.</p>
+<p>The <code>$</code> macro itself lives at global scope. This guide writes <code>fluffy::$(...)</code> so it is clear which type you get. If you add <code>using namespace fluffy;</code>, you can write <code>$(...)</code> instead. Including <code>&lt;fluffy/inline.hpp&gt;</code> makes the macro and the <code>Inline</code> type available; <code>&lt;fluffy/fluffy.hpp&gt;</code> includes it for you.</p>
+<p>The snippets on the rest of this page assume <code>win</code> is the window opened above.</p>
+<h2 id="common-tasks">Common tasks</h2>
+<h3 id="add-an-icon-to-a-button">Add an icon to a button</h3>
+<p>You can create a button first and set its rich content later:</p>
+<pre><code class="language-cpp">auto&amp; btn = win.add&lt;fluffy::Button&gt;(&quot;Done&quot;);
+btn.setBounds(fluffy::Rect{40, 100, 140, 40});
+btn.setInline(fluffy::$(fluffy::Icons::check &lt;&lt; &quot; Done&quot;));
+</code></pre>
+<p><code>setInline</code> replaces the button's plain label with the Inline stream. The <code>auto&amp;</code> keeps <code>btn</code> as a reference to the widget that the window owns.</p>
+<p>Call <code>setBounds</code> only when you position the button by hand; layouts assign geometry for you.</p>
+<h3 id="color-text">Color text</h3>
+<pre><code class="language-cpp">fluffy::$(fluffy::Color::fromHex(0xFF4F8DFF)
+         &lt;&lt; &quot;Blue &quot;
+         &lt;&lt; fluffy::Color::fromHex(0xFFEFEFEF)
+         &lt;&lt; &quot;text&quot;);
+</code></pre>
+<p>A <code>Color</code> run sets the foreground color for the runs that follow it, like switching the pen color. The first color applies to <code>"Blue "</code>, and the second color applies to <code>"text"</code>. <code>Color::fromHex</code> takes a packed <code>0xAARRGGBB</code> value, where <code>FF</code> means fully opaque.</p>
+<h3 id="combine-several-runs">Combine several runs</h3>
+<pre><code class="language-cpp">fluffy::$(fluffy::Icons::star
+         &lt;&lt; &quot; &quot;
+         &lt;&lt; &quot;4.9 / 5&quot;);
+</code></pre>
+<p>Here the stream contains an icon run, a space, and a rating string. Runs are drawn in the order you add them.</p>
+<h3 id="use-a-plain-string-where-an-inline-is-expected">Use a plain string where an Inline is expected</h3>
+<p>Widgets that show rich content also have a plain-string path. <code>Label</code> accepts a string in its constructor or through <code>setText</code>, and rich content through <code>setInline</code> or <code>setContent</code>. <code>Button</code> does the same with <code>setLabel</code> and <code>setInline</code> (or <code>setText</code>, which takes an <code>Inline</code>). <code>ComboBox::setText</code> also takes an <code>Inline</code>.</p>
+<p>When you already have a plain string but need an <code>Inline</code>, build one explicitly with <code>fluffy::Inline::text("...")</code> or <code>fluffy::$("...")</code>.</p>
+<h3 id="use-an-inline-in-a-label">Use an Inline in a label</h3>
+<pre><code class="language-cpp">auto&amp; label = win.add&lt;fluffy::Label&gt;(
+    fluffy::$(fluffy::Icons::rocket &lt;&lt; &quot; &quot;
+             &lt;&lt; fluffy::Color::fromHex(0xFFEFEFEF)
+             &lt;&lt; &quot;Ready for launch&quot;));
+label.setBounds(fluffy::Rect{40, 40, 400, 32});
+label.setHorizontal(fluffy::Label::Align::Left);
+</code></pre>
+<p>This label combines an icon, a space, a color change, and text. It is positioned explicitly and aligned to the left. The <code>auto&amp;</code> makes <code>label</code> a reference to the widget created inside the window.</p>
+<h3 id="inspect-the-runs">Inspect the runs</h3>
+<pre><code class="language-cpp">fluffy::Inline inl = fluffy::$(fluffy::Icons::star &lt;&lt; &quot; 4.9 / 5&quot;);
+const auto&amp; runs = inl.runs();
+bool empty = inl.empty();
+</code></pre>
+<p><code>runs()</code> returns a <code>vector&lt;Inline::Run&gt;</code>. Each <code>Run</code> carries <code>type</code> (<code>Text</code> / <code>SvgIcon</code>), <code>utf8</code>, <code>svg_icon</code>, plus optional <code>color</code>, <code>size</code>, <code>bold</code> and <code>italic</code>. <code>empty()</code> tells you whether the stream contains anything.</p>
+<p>Widgets handle the drawing for you. You normally read the runs only when you are building a custom widget or checking what content an Inline holds.</p>
+<h3 id="where-it-works">Where it works</h3>
+<ul>
+<li><code>Label</code> constructor or <code>setInline</code></li>
+<li><code>Button</code> constructor or <code>setInline</code></li>
+<li><code>TextInput::setPrefix</code></li>
+<li>Dialog message and button arguments</li>
+</ul>
+<h2 id="good-to-know">Good to know</h2>
+<ul>
+<li>The <code>$</code> macro is defined at global scope: write <code>fluffy::$(...)</code> for <code>fluffy::Inline</code>, or add <code>using namespace fluffy;</code> and write <code>$(...)</code>.</li>
+<li>Each <code>&lt;&lt;</code> adds one run. A <code>Color</code> or <code>Style</code> changes the runs that come after it, not the ones already added.</li>
+<li>Plain strings still work directly in widget constructors and in the plain-text setters. You only need an <code>Inline</code> when you want to mix content.</li>
+</ul>
+<h2 id="quick-reference">Quick reference</h2>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"text"</code></td>
+<td>Text run</td>
+</tr>
+<tr>
+<td><code>fluffy::Icons::name</code></td>
+<td>Icon run</td>
+</tr>
+<tr>
+<td><code>fluffy::Color</code></td>
+<td>Sets foreground color for following runs</td>
+</tr>
+<tr>
+<td><code>fluffy::Style{fg, size, bold, italic}</code></td>
+<td>Sets color, size, bold and italic for following runs (<code>fg</code> is <code>std::optional&lt;Color&gt;</code> — empty clears the color)</td>
+</tr>
+<tr>
+<td><code>fluffy::ResetStyle{}</code></td>
+<td>Reverts to inherited defaults</td>
+</tr>
+</tbody>
+</table>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="icons.html">Icons</a> — the icon catalog.</li>
+<li><a href="label.html">Label</a> · <a href="button.html">Button</a> · <a href="textinput.html">TextInput</a>.</li>
+<li><a href="theme.html">Theme</a> — <code>icon_size_gain</code>, <code>icon_padding</code>.</li>
+</ul>
+    </article>
+    <nav class="pager">
+    <a class="prev" href="../documentation/theme.html"><span class="dir">← Previous</span><span class="ttl">Theme</span></a>
+    <a class="next" href="../documentation/icons.html"><span class="dir">Next →</span><span class="ttl">Icons</span></a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc">
+    <span>On this page</span>
+    <a class="lvl-2" href="#what-its-for">What it&#x27;s for</a>
+    <a class="lvl-2" href="#the-words-you-need">The words you need</a>
+    <a class="lvl-2" href="#a-first-example">A first example</a>
+    <a class="lvl-2" href="#common-tasks">Common tasks</a>
+    <a class="lvl-3" href="#add-an-icon-to-a-button">Add an icon to a button</a>
+    <a class="lvl-3" href="#color-text">Color text</a>
+    <a class="lvl-3" href="#combine-several-runs">Combine several runs</a>
+    <a class="lvl-3" href="#use-a-plain-string-where-an-inline-is-expected">Use a plain string where an Inline is expected</a>
+    <a class="lvl-3" href="#use-an-inline-in-a-label">Use an Inline in a label</a>
+    <a class="lvl-3" href="#inspect-the-runs">Inspect the runs</a>
+    <a class="lvl-3" href="#where-it-works">Where it works</a>
+    <a class="lvl-2" href="#good-to-know">Good to know</a>
+    <a class="lvl-2" href="#quick-reference">Quick reference</a>
+    <a class="lvl-2" href="#see-also">See also</a>
+  </aside>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div class="about">
+        <a class="brand" href="../index.html" style="font-size:20px">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:30px;height:30px">
+            <defs><linearGradient id="footGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+            </linearGradient></defs>
+            <path fill="url(#footGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          </svg>
+          Fluffy
+        </a>
+        <div class="about-copy">
+          <p>The soft answer to stiff, native UI frameworks. MIT licensed — because software should be free, fluffy and fun.</p>
+          <span class="copyright">© 2026 Tine Samir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

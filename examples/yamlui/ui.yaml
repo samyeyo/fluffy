@@ -1,0 +1,63 @@
+# examples/yamlui/ui.yaml
+# ---------------------------------------------------------------------------
+# Demonstrates the unified YAML UI subsystem + the new
+# `align_items` / `vertical_align` cross-axis alignment enum on Layout.
+#
+# Centering math for the window:
+#   * Window height = 600 (matches Window::Config in examples/yamlui/main.cpp).
+#   * Container height bumped to 72 (a bit more than the Label/Button text
+#     height of ~40px apiece + the spacing gap of 16) so that the
+#     cross-axis align-items enum has some free space inside the row's
+#     vertical slot.
+#   * Container y set to 264 = (600 / 2) - (72 / 2) -- the row's vertical
+#     center sits exactly on the window's vertical center (300 px down).
+#     Within that Container, `align_items: middle` bias the children
+#     toward the slot's vertical center (per Layout::crossAlignOffset),
+#     so the row is doubly-anchored: top-down via Container y, and
+#     cross-axis via align_items.
+#
+# The first map-valued child of Container is its LAYOUT (here:
+# Horizontal with spacing 16, padding 12, align_items middle).
+# Container's own scalar properties (x / y / width / height) are
+# applied BEFORE installing the layout, so the layout's apply(bounds_)
+# sees correctly-sized bounds.
+#
+# Each child can carry scalar properties (text / color) plus
+# event bindings (onClick) plus an std::any userdata slot for
+# Lua/Python/Rust binding shims to attach opaque payloads.
+# ---------------------------------------------------------------------------
+Container:
+  x: 0
+  y: 264            # (600 / 2) - (72 / 2) -- row vertically centered in the 600-tall window
+  width: 800
+  height: 72
+  Horizontal:
+    spacing: 16
+    padding: 12
+    # align_items is a no-op in stretch-to-fill mode (each_h == slot_h
+    # when margin == 0).  It's left in the demo for one reason:
+    #   1. Documents that HorizontalLayout supports the cross-axis
+    #      alignment enum (cross-reference to include/fluffy/layout.hpp's
+    #      CrossAlign doc + the ⚠ NO-OP-IN-STRETCH-MODE caveat).
+    # A future cross_size / per-widget natural-height mode would make
+    # `align_items: middle` visible without moving the Container; until
+    # that lands, the enum produces zero offset under the default
+    # stretch-to-slot semantics.
+    # The row's actual visible centering comes from Container y: 264
+    # above (Window_h/2 - row_h/2 arithmetic, not from this enum).
+    align_items: middle
+  Label:
+    text: "Hello from YAML!"
+    color: "#cfd2dc"
+  TextInput:
+    placeholder: "Type something..."
+    textSize: 14
+    width: 180
+    onSubmit: "handleSubmit"
+  Button:
+    text: "Submit"
+    onClick: "submitForm"
+    userdata: "lua_form_submit_v1"
+  Button:
+    text: "Show Dialog"
+    onClick: "showModal"

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tutorial 2 — Counter · Fluffy</title>
+<meta name="description" content="Build a small counter with two buttons — one to increase the count and one to reset it — and see how widgets share state and update each other.">
+<link rel="canonical" href="https://samyeyo.github.io/fluffy/tutorials/02-counter.html">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Samir Tine">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Fluffy">
+<meta property="og:title" content="Tutorial 2 — Counter · Fluffy">
+<meta property="og:description" content="Build a small counter with two buttons — one to increase the count and one to reset it — and see how widgets share state and update each other.">
+<meta property="og:url" content="https://samyeyo.github.io/fluffy/tutorials/02-counter.html">
+<meta property="og:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<meta property="og:image:width" content="819">
+<meta property="og:image:height" content="390">
+<meta property="og:image:alt" content="Fluffy — a modern C++ desktop UI toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tutorial 2 — Counter · Fluffy">
+<meta name="twitter:description" content="Build a small counter with two buttons — one to increase the count and one to reset it — and see how widgets share state and update each other.">
+<meta name="twitter:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Tutorial 2 — Counter · Fluffy","description":"Build a small counter with two buttons — one to increase the count and one to reset it — and see how widgets share state and update each other.","url":"https://samyeyo.github.io/fluffy/tutorials/02-counter.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://samyeyo.github.io/fluffy/tutorials/02-counter.html"},"inLanguage":"en","author":{"@type":"Person","name":"Samir Tine"},"publisher":{"@type":"Organization","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"isPartOf":{"@type":"WebSite","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"image":"https://samyeyo.github.io/fluffy/fluffy-light.png"}</script>
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('fluffy-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) { /* ignore */ }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="../assets/site.css?v=21">
+<script src="../assets/highlight.min.js" defer></script>
+<script src="../assets/site.js?v=11" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="logoGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+        </linearGradient></defs>
+        <path fill="url(#logoGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+      </svg>
+      Fluffy
+    </a>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../documentation/index.html">Docs</a>
+      <a href="../tutorials/index.html" class="active">Tutorials</a>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar">
+  <div class="group"><span>Tutorials</span>
+  <a href="../tutorials/index.html">Tutorial overview</a>
+  <a href="../tutorials/01-hello-fluffy.html">1 · Hello Fluffy</a>
+  <a href="../tutorials/02-counter.html" class="active">2 · Counter</a>
+  <a href="../tutorials/03-input-form.html">3 · Input Form</a>
+  <a href="../tutorials/04-layouts.html">4 · Layouts</a>
+  <a href="../tutorials/05-icons-and-themes.html">5 · Icons &amp; Themes</a>
+  <a href="../tutorials/06-yaml-ui.html">6 · YAML UI</a>
+  <a href="../tutorials/07-dialogs.html">7 · Dialogs</a>
+  <a href="../tutorials/08-data-widgets.html">8 · Data Widgets</a>
+  <a href="../tutorials/09-webview.html">9 · WebView</a>
+  <a href="../tutorials/10-multiwindow.html">10 · Multiwindow</a>
+  <a href="../tutorials/11-custom-widget.html">11 · Custom Widget</a>
+  </div>
+  <div class="group"><span>Reference</span>
+  <a href="../documentation/window.html">Window</a>
+  <a href="../documentation/widget.html">Widgets</a>
+  <a href="../documentation/theme.html">Theme</a>
+  <a href="../documentation/yaml.html">YAML UI</a>
+  </div>
+  </aside>
+
+  <main class="docs-main">
+    <nav class="breadcrumb">
+      <a href="../index.html">Fluffy</a>
+      <span class="sep">/</span>
+      <a href="../tutorials/index.html">Tutorials</a>
+      <span class="sep">/</span>
+      <span>Tutorial 2 — Counter</span>
+    </nav>
+    <article class="prose">
+      <h1>Tutorial 2 — Counter</h1>
+<p>Build a small counter with two buttons — one to increase the count and one to reset it — and see how widgets share state and update each other.</p>
+<h2 id="what-you-will-build">What you will build</h2>
+<p>A window that shows a count, a <code>+1</code> button, and a <code>Reset</code> button. Every click updates the number on screen.</p>
+<h2 id="what-you-will-learn">What you will learn</h2>
+<ul>
+<li>How to keep a simple program value outside your widgets.</li>
+<li>How to let a callback use that value.</li>
+<li>How to update a label from a callback.</li>
+<li>Why the label changes without a manual redraw.</li>
+</ul>
+<h2 id="the-words-you-need">The words you need</h2>
+<ul>
+<li><strong>State</strong> — a value your program remembers while it runs. The count is this tutorial's state, and we keep it in a variable in <code>main</code>.</li>
+<li><strong>Callback</strong> — as in <a href="01-hello-fluffy.html">Tutorial 1</a>, the small function a widget calls when something happens, such as a click.</li>
+<li><strong>Capture</strong> — when a lambda uses a variable from the code around it. <code>[&amp;]</code> captures by reference, so the lambda can read and change the real variable. The <code>[]</code> in Tutorial 1 captured nothing.</li>
+<li><strong>Label text</strong> — a <code>Label</code> stores the text it shows. Calling <code>setText</code> replaces that text, and the next frame draws the new value.</li>
+</ul>
+<h2 id="the-full-program">The full program</h2>
+<pre data-try="02-counter-0" data-w="640" data-h="400"><code class="language-cpp">#include &lt;string&gt;
+
+#include &lt;fluffy/fluffy.hpp&gt;
+
+int main() {
+    fluffy::Window win = fluffy::Window::open(&quot;Counter&quot;, 640, 400);
+    if (!win) return 1;
+
+    int count = 0;
+
+    auto&amp; label = win.add&lt;fluffy::Label&gt;(&quot;Count: 0&quot;);
+    label.setBounds(fluffy::Rect{40, 40, 200, 40});
+
+    auto&amp; inc = win.add&lt;fluffy::Button&gt;(&quot;+1&quot;);
+    inc.setBounds(fluffy::Rect{40, 120, 120, 40});
+
+    auto&amp; reset = win.add&lt;fluffy::Button&gt;(&quot;Reset&quot;);
+    reset.setBounds(fluffy::Rect{180, 120, 120, 40});
+
+    inc.onClick([&amp;] {
+        ++count;
+        label.setText(&quot;Count: &quot; + std::to_string(count));
+    });
+
+    reset.onClick([&amp;] {
+        count = 0;
+        label.setText(&quot;Count: 0&quot;);
+    });
+
+    win.run();
+}
+</code></pre>
+<p><code>win.run()</code> opens the event loop for this single-window app and returns when the window closes. <a href="10-multiwindow.html">Tutorial 10</a> shows how to run more than one window at once.</p>
+<h2 id="build-and-run">Build and run</h2>
+<p>Compile this program the same way you compiled the first tutorial, then run the resulting executable. If you need the build commands, revisit <a href="01-hello-fluffy.html#build-and-run">Tutorial 1</a>.</p>
+<h2 id="step-by-step">Step by step</h2>
+<h3 id="1-keep-state-outside-the-widgets">1. Keep state outside the widgets</h3>
+<pre><code class="language-cpp">int count = 0;
+</code></pre>
+<p><code>count</code> lives in <code>main</code>, not inside a label or a button. The buttons change it, and then they update the label to match. Keeping the value in one place makes it easy to see where the number comes from and keeps the widgets focused on showing it.</p>
+<h3 id="2-create-the-widgets">2. Create the widgets</h3>
+<pre><code class="language-cpp">auto&amp; label = win.add&lt;fluffy::Label&gt;(&quot;Count: 0&quot;);
+label.setBounds(fluffy::Rect{40, 40, 200, 40});
+
+auto&amp; inc = win.add&lt;fluffy::Button&gt;(&quot;+1&quot;);
+inc.setBounds(fluffy::Rect{40, 120, 120, 40});
+
+auto&amp; reset = win.add&lt;fluffy::Button&gt;(&quot;Reset&quot;);
+reset.setBounds(fluffy::Rect{180, 120, 120, 40});
+</code></pre>
+<p>Each widget gets an initial text and explicit bounds. The window owns all three widgets, and the <code>auto&amp;</code> references let the callbacks reach them later. The label sits above the two buttons because its <code>y</code> is smaller.</p>
+<h3 id="3-use-the-count-in-a-click-callback">3. Use the count in a click callback</h3>
+<pre><code class="language-cpp">inc.onClick([&amp;] {
+    ++count;
+    label.setText(&quot;Count: &quot; + std::to_string(count));
+});
+</code></pre>
+<p><code>onClick</code> registers a callback, just like in Tutorial 1. The <code>[&amp;]</code> captures <code>count</code> and <code>label</code> by reference, so the callback changes the same <code>count</code> variable and the same label you created above.</p>
+<p>The callback first increases <code>count</code>, then turns the new number into text with <code>std::to_string</code>, then writes that text to the label. This "change the state, then update what shows it" pattern is the heart of the app.</p>
+<h3 id="4-update-the-label">4. Update the label</h3>
+<pre><code class="language-cpp">label.setText(&quot;Count: &quot; + std::to_string(count));
+</code></pre>
+<p><code>Label::setText</code> replaces the displayed text. Fluffy draws the window again on the next frame, so you do not need to request a repaint yourself.</p>
+<h3 id="5-reset-the-count">5. Reset the count</h3>
+<pre><code class="language-cpp">reset.onClick([&amp;] {
+    count = 0;
+    label.setText(&quot;Count: 0&quot;);
+});
+</code></pre>
+<p>The reset callback puts the state back to zero and writes the initial text to the label. Both buttons follow the same pattern: change <code>count</code>, then update the label that displays it.</p>
+<h2 id="exercises">Exercises</h2>
+<ol>
+<li>Add a <code>-1</code> button below the other two.</li>
+<li>Start with the reset button disabled, and enable it whenever <code>count</code> is not zero.</li>
+<li>Center the count text inside the label with <code>label.setHorizontal(fluffy::Label::Align::Center)</code>.</li>
+</ol>
+<h2 id="next-tutorial">Next tutorial</h2>
+<p><a href="03-input-form.html">Input form →</a></p>
+    </article>
+    <nav class="pager">
+    <a class="prev" href="../tutorials/01-hello-fluffy.html"><span class="dir">← Previous</span><span class="ttl">1 · Hello Fluffy</span></a>
+    <a class="next" href="../tutorials/03-input-form.html"><span class="dir">Next →</span><span class="ttl">3 · Input Form</span></a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc">
+    <span>On this page</span>
+    <a class="lvl-2" href="#what-you-will-build">What you will build</a>
+    <a class="lvl-2" href="#what-you-will-learn">What you will learn</a>
+    <a class="lvl-2" href="#the-words-you-need">The words you need</a>
+    <a class="lvl-2" href="#the-full-program">The full program</a>
+    <a class="lvl-2" href="#build-and-run">Build and run</a>
+    <a class="lvl-2" href="#step-by-step">Step by step</a>
+    <a class="lvl-3" href="#1-keep-state-outside-the-widgets">1. Keep state outside the widgets</a>
+    <a class="lvl-3" href="#2-create-the-widgets">2. Create the widgets</a>
+    <a class="lvl-3" href="#3-use-the-count-in-a-click-callback">3. Use the count in a click callback</a>
+    <a class="lvl-3" href="#4-update-the-label">4. Update the label</a>
+    <a class="lvl-3" href="#5-reset-the-count">5. Reset the count</a>
+    <a class="lvl-2" href="#exercises">Exercises</a>
+    <a class="lvl-2" href="#next-tutorial">Next tutorial</a>
+  </aside>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div class="about">
+        <a class="brand" href="../index.html" style="font-size:20px">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:30px;height:30px">
+            <defs><linearGradient id="footGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+            </linearGradient></defs>
+            <path fill="url(#footGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          </svg>
+          Fluffy
+        </a>
+        <div class="about-copy">
+          <p>The soft answer to stiff, native UI frameworks. MIT licensed — because software should be free, fluffy and fun.</p>
+          <span class="copyright">© 2026 Tine Samir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

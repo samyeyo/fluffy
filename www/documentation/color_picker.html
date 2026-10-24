@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ColorPicker · Fluffy</title>
+<meta name="description" content="A ColorPicker lets you choose a Color through hue/saturation/value bars and editable RGBA/hex fields.">
+<link rel="canonical" href="https://samyeyo.github.io/fluffy/documentation/color_picker.html">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Samir Tine">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Fluffy">
+<meta property="og:title" content="ColorPicker · Fluffy">
+<meta property="og:description" content="A ColorPicker lets you choose a Color through hue/saturation/value bars and editable RGBA/hex fields.">
+<meta property="og:url" content="https://samyeyo.github.io/fluffy/documentation/color_picker.html">
+<meta property="og:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<meta property="og:image:width" content="819">
+<meta property="og:image:height" content="390">
+<meta property="og:image:alt" content="Fluffy — a modern C++ desktop UI toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ColorPicker · Fluffy">
+<meta name="twitter:description" content="A ColorPicker lets you choose a Color through hue/saturation/value bars and editable RGBA/hex fields.">
+<meta name="twitter:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"ColorPicker · Fluffy","description":"A ColorPicker lets you choose a Color through hue/saturation/value bars and editable RGBA/hex fields.","url":"https://samyeyo.github.io/fluffy/documentation/color_picker.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://samyeyo.github.io/fluffy/documentation/color_picker.html"},"inLanguage":"en","author":{"@type":"Person","name":"Samir Tine"},"publisher":{"@type":"Organization","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"isPartOf":{"@type":"WebSite","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"image":"https://samyeyo.github.io/fluffy/fluffy-light.png"}</script>
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('fluffy-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) { /* ignore */ }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="../assets/site.css?v=21">
+<script src="../assets/highlight.min.js" defer></script>
+<script src="../assets/site.js?v=11" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="logoGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+        </linearGradient></defs>
+        <path fill="url(#logoGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+      </svg>
+      Fluffy
+    </a>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../documentation/index.html" class="active">Docs</a>
+      <a href="../tutorials/index.html">Tutorials</a>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar">
+  <div class="group"><span>Getting started</span>
+  <a href="../documentation/index.html">Welcome to Fluffy</a>
+  <a href="../documentation/install.html">Installing Fluffy</a>
+  <a href="../documentation/geom.html">Geometry &amp; colors</a>
+  <a href="../documentation/widget.html">Widget basics</a>
+  <a href="../documentation/custom.html">Custom widgets</a>
+  <a href="../documentation/window.html">Window</a>
+  <a href="../documentation/application.html">Application</a>
+  </div>
+  <div class="group"><span>Core widgets</span>
+  <a href="../documentation/label.html">Label</a>
+  <a href="../documentation/button.html">Button</a>
+  <a href="../documentation/textinput.html">TextInput</a>
+  <a href="../documentation/image.html">Image</a>
+  </div>
+  <div class="group"><span>Layout</span>
+  <a href="../documentation/container.html">Container</a>
+  <a href="../documentation/layouts.html">Layouts</a>
+  </div>
+  <div class="group"><span>Toggles &amp; pickers</span>
+  <a href="../documentation/checkbox.html">Checkbox</a>
+  <a href="../documentation/radiobutton.html">RadioButton</a>
+  <a href="../documentation/switch.html">Switch</a>
+  <a href="../documentation/slider.html">Slider</a>
+  <a href="../documentation/color_picker.html" class="active">ColorPicker</a>
+  </div>
+  <div class="group"><span>Data widgets</span>
+  <a href="../documentation/combobox.html">ComboBox</a>
+  <a href="../documentation/listview.html">ListView</a>
+  <a href="../documentation/tabview.html">TabView</a>
+  <a href="../documentation/table.html">Table</a>
+  <a href="../documentation/progress_ring.html">ProgressRing</a>
+  </div>
+  <div class="group"><span>Navigation &amp; overlays</span>
+  <a href="../documentation/menu.html">Menu</a>
+  <a href="../documentation/nav.html">Nav</a>
+  <a href="../documentation/tooltip.html">Tooltip</a>
+  <a href="../documentation/dialog.html">Dialogs</a>
+  <a href="../documentation/webview.html">WebView</a>
+  </div>
+  <div class="group"><span>Styling</span>
+  <a href="../documentation/theme.html">Theme</a>
+  <a href="../documentation/inline.html">Inline</a>
+  <a href="../documentation/icons.html">Icons</a>
+  </div>
+  <div class="group"><span>Declarative UI</span>
+  <a href="../documentation/yaml.html">YAML UI</a>
+  </div>
+  </aside>
+
+  <main class="docs-main">
+    <nav class="breadcrumb">
+      <a href="../index.html">Fluffy</a>
+      <span class="sep">/</span>
+      <a href="../documentation/index.html">Documentation</a>
+      <span class="sep">/</span>
+      <span>ColorPicker</span>
+    </nav>
+    <article class="prose">
+      <h1>ColorPicker</h1>
+<p>A <code>ColorPicker</code> lets you choose a <code>Color</code> through hue/saturation/value bars and editable RGBA/hex fields.</p>
+<p><img width="1120" height="600" loading="lazy" decoding="async" alt="ColorPicker widget" src="../assets/widgets/color_picker.png"></p>
+<p><em>HSV bars, RGBA fields and a preview swatch.</em></p>
+<h2 id="what-its-for">What it's for</h2>
+<p>A <code>Color</code> has four parts: red, green, blue, and alpha. Red, green, and blue mix to make the color; <strong>alpha</strong> is its opacity, where 0 is fully transparent and 255 is fully opaque. Fluffy stores each part as a byte from 0 to 255.</p>
+<p>A color picker lets the user choose all four parts interactively. It shows four bars — hue, saturation, value, and alpha — along with editable <code>R/G/B/A</code> decimal fields and a <code>Hex</code> field. The bars and the fields stay in sync: change one and the others update.</p>
+<p>The three color bars mean:</p>
+<ul>
+<li><strong>Hue</strong> — the color family, such as red, yellow, green, or blue.</li>
+<li><strong>Saturation</strong> — how strong the color is, from gray to vivid.</li>
+<li><strong>Value</strong> — how bright the color is, from black to full brightness.</li>
+</ul>
+<p>Use a color picker when the user should choose a color visually rather than type exact numbers.</p>
+<h2 id="a-first-example">A first example</h2>
+<pre data-try="color_picker-0" data-w="640" data-h="400"><code class="language-cpp">#include &lt;cstdio&gt;
+
+#include &lt;fluffy/fluffy.hpp&gt;
+
+int main() {
+    fluffy::Window win = fluffy::Window::open(&quot;ColorPicker&quot;, 640, 400);
+    if (!win) return 1;
+
+    auto&amp; cp = win.add&lt;fluffy::ColorPicker&gt;(
+        fluffy::Rect{40, 40, 280, 240},
+        fluffy::Color::fromHex(0xFF8080FF));
+    cp.setColor(fluffy::Color::fromHex(0xFF00FF00));
+
+    fluffy::Color c = cp.color();
+
+    win.run();
+}
+</code></pre>
+<p><code>Window::open</code> creates the window, and <code>if (!win)</code> stops early if it could not be opened. <code>win.add&lt;fluffy::ColorPicker&gt;()</code> creates the picker inside the window and returns a reference to it. The <code>auto&amp;</code> matters: <code>cp</code> is that reference, so you work with the real picker rather than a copy.</p>
+<p>The first constructor argument is a <code>Rect</code> that sets the position and size. The second is the initial <code>Color</code>.</p>
+<p><code>Color::fromHex()</code> takes a number written as <code>0xAARRGGBB</code>: alpha first, then red, green, and blue. For example, <code>0xFF8080FF</code> is an opaque pink, and <code>0xFF00FF00</code> is an opaque green. <code>setColor()</code> replaces the current color, and <code>color()</code> reads it back.</p>
+<h2 id="common-tasks">Common tasks</h2>
+<h3 id="edit-the-color">Edit the color</h3>
+<p>Click a field to edit it. <code>Enter</code> commits the value and <code>Esc</code> cancels. You can also drag the bars with the mouse. The widget keeps the bars, the fields, and the displayed color synchronized as you work.</p>
+<h3 id="disable-or-focus-the-picker">Disable or focus the picker</h3>
+<pre><code class="language-cpp">cp.setEnabled(false);
+bool f = cp.isFocused();
+</code></pre>
+<p><code>setEnabled(false)</code> greys out the picker and makes it ignore input. The picker is focusable, and <code>isFocused()</code> reports the focus state. When it is focused it shows a focus ring.</p>
+<h3 id="react-to-changes">React to changes</h3>
+<p>A <strong>callback</strong> is a function you give to a widget so it can call you back when something happens. <code>onChange</code> is the picker's callback for its color changing:</p>
+<pre><code class="language-cpp">cp.setOnChange([](fluffy::Color c) {
+    std::printf(&quot;#%02X%02X%02X%02X\n&quot;, c.r, c.g, c.b, c.a);
+});
+</code></pre>
+<p>The callback runs when a bar is dragged or when the user successfully presses <code>Enter</code> in a text field. It receives the new <code>Color</code>. Its <code>r</code>, <code>g</code>, <code>b</code>, and <code>a</code> members are bytes, so you can print them or build your own output from them.</p>
+<h3 id="declare-it-in-yaml">Declare it in YAML</h3>
+<pre><code class="language-yaml">ColorPicker:
+  color: &quot;#FF00FF80&quot;
+  x: 40
+  y: 40
+  width: 280
+  height: 240
+</code></pre>
+<p><code>color</code> is the initial color as a string. With eight digits the order is <code>#AARRGGBB</code>; with six digits, <code>#RRGGBB</code>, the color is opaque. <code>x</code>, <code>y</code>, <code>width</code>, and <code>height</code> set the geometry.</p>
+<h2 id="quick-reference">Quick reference</h2>
+<h3 id="properties">Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>color</code></td>
+<td><code>Color</code></td>
+<td>Current <code>RGBA</code> value.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="events">Events</h3>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Signature</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>onChange</code></td>
+<td><code>void(Color c)</code></td>
+<td>Bar drag or successful <code>Enter</code> in a text field.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><code>Color</code> in <a href="geom.html">Geom</a></li>
+</ul>
+    </article>
+    <nav class="pager">
+    <a class="prev" href="../documentation/slider.html"><span class="dir">← Previous</span><span class="ttl">Slider</span></a>
+    <a class="next" href="../documentation/combobox.html"><span class="dir">Next →</span><span class="ttl">ComboBox</span></a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc">
+    <span>On this page</span>
+    <a class="lvl-2" href="#what-its-for">What it&#x27;s for</a>
+    <a class="lvl-2" href="#a-first-example">A first example</a>
+    <a class="lvl-2" href="#common-tasks">Common tasks</a>
+    <a class="lvl-3" href="#edit-the-color">Edit the color</a>
+    <a class="lvl-3" href="#disable-or-focus-the-picker">Disable or focus the picker</a>
+    <a class="lvl-3" href="#react-to-changes">React to changes</a>
+    <a class="lvl-3" href="#declare-it-in-yaml">Declare it in YAML</a>
+    <a class="lvl-2" href="#quick-reference">Quick reference</a>
+    <a class="lvl-3" href="#properties">Properties</a>
+    <a class="lvl-3" href="#events">Events</a>
+    <a class="lvl-2" href="#see-also">See also</a>
+  </aside>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div class="about">
+        <a class="brand" href="../index.html" style="font-size:20px">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:30px;height:30px">
+            <defs><linearGradient id="footGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+            </linearGradient></defs>
+            <path fill="url(#footGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          </svg>
+          Fluffy
+        </a>
+        <div class="about-copy">
+          <p>The soft answer to stiff, native UI frameworks. MIT licensed — because software should be free, fluffy and fun.</p>
+          <span class="copyright">© 2026 Tine Samir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

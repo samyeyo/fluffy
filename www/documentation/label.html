@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Label · Fluffy</title>
+<meta name="description" content="A Label displays static text, either as a plain string or as rich Inline content (text + icons + colors), and can optionally wrap at word boundaries.">
+<link rel="canonical" href="https://samyeyo.github.io/fluffy/documentation/label.html">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Samir Tine">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Fluffy">
+<meta property="og:title" content="Label · Fluffy">
+<meta property="og:description" content="A Label displays static text, either as a plain string or as rich Inline content (text + icons + colors), and can optionally wrap at word boundaries.">
+<meta property="og:url" content="https://samyeyo.github.io/fluffy/documentation/label.html">
+<meta property="og:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<meta property="og:image:width" content="819">
+<meta property="og:image:height" content="390">
+<meta property="og:image:alt" content="Fluffy — a modern C++ desktop UI toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Label · Fluffy">
+<meta name="twitter:description" content="A Label displays static text, either as a plain string or as rich Inline content (text + icons + colors), and can optionally wrap at word boundaries.">
+<meta name="twitter:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Label · Fluffy","description":"A Label displays static text, either as a plain string or as rich Inline content (text + icons + colors), and can optionally wrap at word boundaries.","url":"https://samyeyo.github.io/fluffy/documentation/label.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://samyeyo.github.io/fluffy/documentation/label.html"},"inLanguage":"en","author":{"@type":"Person","name":"Samir Tine"},"publisher":{"@type":"Organization","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"isPartOf":{"@type":"WebSite","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"image":"https://samyeyo.github.io/fluffy/fluffy-light.png"}</script>
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('fluffy-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) { /* ignore */ }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="../assets/site.css?v=21">
+<script src="../assets/highlight.min.js" defer></script>
+<script src="../assets/site.js?v=11" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="logoGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+        </linearGradient></defs>
+        <path fill="url(#logoGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+      </svg>
+      Fluffy
+    </a>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../documentation/index.html" class="active">Docs</a>
+      <a href="../tutorials/index.html">Tutorials</a>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar">
+  <div class="group"><span>Getting started</span>
+  <a href="../documentation/index.html">Welcome to Fluffy</a>
+  <a href="../documentation/install.html">Installing Fluffy</a>
+  <a href="../documentation/geom.html">Geometry &amp; colors</a>
+  <a href="../documentation/widget.html">Widget basics</a>
+  <a href="../documentation/custom.html">Custom widgets</a>
+  <a href="../documentation/window.html">Window</a>
+  <a href="../documentation/application.html">Application</a>
+  </div>
+  <div class="group"><span>Core widgets</span>
+  <a href="../documentation/label.html" class="active">Label</a>
+  <a href="../documentation/button.html">Button</a>
+  <a href="../documentation/textinput.html">TextInput</a>
+  <a href="../documentation/image.html">Image</a>
+  </div>
+  <div class="group"><span>Layout</span>
+  <a href="../documentation/container.html">Container</a>
+  <a href="../documentation/layouts.html">Layouts</a>
+  </div>
+  <div class="group"><span>Toggles &amp; pickers</span>
+  <a href="../documentation/checkbox.html">Checkbox</a>
+  <a href="../documentation/radiobutton.html">RadioButton</a>
+  <a href="../documentation/switch.html">Switch</a>
+  <a href="../documentation/slider.html">Slider</a>
+  <a href="../documentation/color_picker.html">ColorPicker</a>
+  </div>
+  <div class="group"><span>Data widgets</span>
+  <a href="../documentation/combobox.html">ComboBox</a>
+  <a href="../documentation/listview.html">ListView</a>
+  <a href="../documentation/tabview.html">TabView</a>
+  <a href="../documentation/table.html">Table</a>
+  <a href="../documentation/progress_ring.html">ProgressRing</a>
+  </div>
+  <div class="group"><span>Navigation &amp; overlays</span>
+  <a href="../documentation/menu.html">Menu</a>
+  <a href="../documentation/nav.html">Nav</a>
+  <a href="../documentation/tooltip.html">Tooltip</a>
+  <a href="../documentation/dialog.html">Dialogs</a>
+  <a href="../documentation/webview.html">WebView</a>
+  </div>
+  <div class="group"><span>Styling</span>
+  <a href="../documentation/theme.html">Theme</a>
+  <a href="../documentation/inline.html">Inline</a>
+  <a href="../documentation/icons.html">Icons</a>
+  </div>
+  <div class="group"><span>Declarative UI</span>
+  <a href="../documentation/yaml.html">YAML UI</a>
+  </div>
+  </aside>
+
+  <main class="docs-main">
+    <nav class="breadcrumb">
+      <a href="../index.html">Fluffy</a>
+      <span class="sep">/</span>
+      <a href="../documentation/index.html">Documentation</a>
+      <span class="sep">/</span>
+      <span>Label</span>
+    </nav>
+    <article class="prose">
+      <h1>Label</h1>
+<p>A <code>Label</code> displays static text, either as a plain string or as rich <code>Inline</code> content (text + icons + colors), and can optionally wrap at word boundaries.</p>
+<p><img width="1120" height="520" loading="lazy" decoding="async" alt="Label widget" src="../assets/widgets/label.png"></p>
+<p><em>Regular, icon and wrapped text, plus a right-aligned line.</em></p>
+<h2 id="what-its-for">What it's for</h2>
+<p>Use a <code>Label</code> whenever you need read-only text inside a window. It renders its text inside its <code>Rect</code>, supports horizontal and vertical alignment, word wrap, and auto-sizing from content. Since a label never reacts to clicks, reach for a <a href="button.html">Button</a> when you need something clickable.</p>
+<h2 id="the-words-you-need">The words you need</h2>
+<ul>
+<li><strong><code>Inline</code></strong> — content made of one or more runs of text and icons. A label can show either a plain string or <code>Inline</code> content.</li>
+<li><strong><code>$()</code></strong> — a shorthand that builds an <code>Inline</code> from the pieces you stream into it with <code>&lt;&lt;</code>. For example <code>fluffy::$(fluffy::Icons::rocket &lt;&lt; " Launch")</code> puts an icon and the text " Launch" together. See <a href="inline.html">Inline</a> and <a href="icons.html">Icons</a>.</li>
+<li><strong>bounds</strong> — where the label sits and how big it is, given as a <code>Rect</code>. See <a href="geom.html">Geometry &amp; colors</a>.</li>
+</ul>
+<p>In the examples below, <code>win</code> is an open window (see <a href="window.html">Window</a>).</p>
+<h2 id="a-first-example">A first example</h2>
+<pre><code class="language-cpp">auto&amp; lbl = win.add&lt;fluffy::Label&gt;(&quot;Hello&quot;);
+lbl.setBounds(fluffy::Rect{40, 40, 200, 32});
+lbl.setText(&quot;New text&quot;);
+std::string t = lbl.text();
+</code></pre>
+<p><code>win.add&lt;fluffy::Label&gt;(...)</code> creates the label inside the window and returns a reference to it. <code>setBounds</code> places it, <code>setText</code> replaces the text, and <code>text()</code> returns the current plain text.</p>
+<h2 id="common-tasks">Common tasks</h2>
+<h3 id="show-rich-content-with-icons-and-colors">Show rich content with icons and colors</h3>
+<p>Use <code>setInline</code> to display <code>Inline</code> content made of <code>Color</code>, <code>Icons::*</code>, and <code>Style</code> values:</p>
+<pre><code class="language-cpp">lbl.setInline(fluffy::$(fluffy::Icons::rocket &lt;&lt; &quot; Launch&quot;)); // Inline content is write-only
+</code></pre>
+<p>Inline content is write-only, so read back the plain text with <code>text()</code> when you need a value.</p>
+<h3 id="align-the-text">Align the text</h3>
+<p>Set the horizontal and vertical alignment independently. Both setters return <code>Label&amp;</code>, so you can chain them:</p>
+<pre><code class="language-cpp">lbl.setHorizontal(fluffy::Label::Align::Center); // both return Label&amp; (chainable)
+lbl.setVertical(fluffy::Label::Align::Center);   // Center doubles as vertical middle
+</code></pre>
+<p>The vertical alignment reuses the same <code>Align</code> enum, where the values act as top/middle/bottom.</p>
+<h3 id="wrap-text-and-auto-size-the-label">Wrap text and auto-size the label</h3>
+<p>Word wrap is controlled with <code>setWordWrap</code>, and the current setting is available through <code>wordWrap</code>:</p>
+<pre><code class="language-cpp">lbl.setWordWrap(true);
+bool w = lbl.wordWrap();
+</code></pre>
+<p>To let the label grow with its content, use <code>setAutoSize</code>:</p>
+<pre><code class="language-cpp">lbl.setAutoSize(fluffy::AutoSize::Both); // height grows to fit wrapped lines
+</code></pre>
+<p><code>naturalWidth()</code> and <code>naturalHeight()</code> return the size needed for the current text or inline content. When <code>wordWrap</code> is on, the natural height accounts for the wrapped lines.</p>
+<h3 id="load-a-label-from-yaml">Load a label from YAML</h3>
+<pre><code class="language-yaml">Label:
+  text: &quot;Hello, World!&quot;
+  x: 40
+  y: 40
+  width: 200
+  height: 32
+  align: center
+</code></pre>
+<p>YAML alignment keys are <code>align</code> (sets both axes), <code>horizontal_align</code>, and <code>vertical_align</code>. There is no <code>word_wrap</code> key, so word wrap stays at its code default (<code>true</code>) for YAML-loaded labels. A <code>color</code> key is parsed but currently has no effect.</p>
+<h2 id="good-to-know">Good to know</h2>
+<ul>
+<li>Setting <code>text</code> clears any previous <code>Inline</code>; setting <code>inline</code> replaces <code>text</code>.</li>
+<li><code>Label</code> does not fire user events. Use <code>Button</code> for clicks.</li>
+<li>All <code>Widget</code> properties also apply: <code>bounds</code>, <code>visible</code>, <code>enabled</code>, <code>font</code>, <code>textSize</code>, <code>autoSize</code>, and <code>userdata</code>.</li>
+</ul>
+<h2 id="quick-reference">Quick reference</h2>
+<h3 id="properties">Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>text</code></td>
+<td><code>string</code></td>
+<td>Plain text. Setting it clears any previous <code>Inline</code>.</td>
+</tr>
+<tr>
+<td><code>inline</code></td>
+<td><code>Inline</code></td>
+<td>Rich content (<code>Color</code> + <code>Icons::*</code> + <code>Style</code>). Setting it replaces <code>text</code>.</td>
+</tr>
+<tr>
+<td><code>align</code> / <code>horizontal</code> / <code>vertical</code></td>
+<td><code>Align {Left,Center,Right}</code></td>
+<td>How text sits inside the rect (vertical reuses the same enum as top/middle/bottom).</td>
+</tr>
+<tr>
+<td><code>wordWrap</code></td>
+<td><code>bool</code></td>
+<td><code>true</code> wraps at word boundaries using the label width. Default <code>true</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="methods">Methods</h3>
+<pre><code class="language-cpp">auto&amp; lbl = win.add&lt;fluffy::Label&gt;(&quot;Hello&quot;);
+lbl.setBounds(fluffy::Rect{40, 40, 200, 32});
+lbl.setText(&quot;New text&quot;);
+std::string t = lbl.text();
+
+lbl.setInline(fluffy::$(fluffy::Icons::rocket &lt;&lt; &quot; Launch&quot;)); // Inline content is write-only
+
+lbl.setHorizontal(fluffy::Label::Align::Center); // both return Label&amp; (chainable)
+lbl.setVertical(fluffy::Label::Align::Center);   // Center doubles as vertical middle
+
+lbl.setWordWrap(true);
+bool w = lbl.wordWrap();
+
+lbl.setAutoSize(fluffy::AutoSize::Both); // height grows to fit wrapped lines
+</code></pre>
+<h3 id="events">Events</h3>
+<p><code>Label</code> does not fire user events. Use <code>Button</code> for clicks.</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="button.html">Button</a> — clickable label.</li>
+<li><a href="inline.html">Inline</a> · <a href="icons.html">Icons</a></li>
+<li><a href="widget.html">Widget</a></li>
+</ul>
+    </article>
+    <nav class="pager">
+    <a class="prev" href="../documentation/application.html"><span class="dir">← Previous</span><span class="ttl">Application</span></a>
+    <a class="next" href="../documentation/button.html"><span class="dir">Next →</span><span class="ttl">Button</span></a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc">
+    <span>On this page</span>
+    <a class="lvl-2" href="#what-its-for">What it&#x27;s for</a>
+    <a class="lvl-2" href="#the-words-you-need">The words you need</a>
+    <a class="lvl-2" href="#a-first-example">A first example</a>
+    <a class="lvl-2" href="#common-tasks">Common tasks</a>
+    <a class="lvl-3" href="#show-rich-content-with-icons-and-colors">Show rich content with icons and colors</a>
+    <a class="lvl-3" href="#align-the-text">Align the text</a>
+    <a class="lvl-3" href="#wrap-text-and-auto-size-the-label">Wrap text and auto-size the label</a>
+    <a class="lvl-3" href="#load-a-label-from-yaml">Load a label from YAML</a>
+    <a class="lvl-2" href="#good-to-know">Good to know</a>
+    <a class="lvl-2" href="#quick-reference">Quick reference</a>
+    <a class="lvl-3" href="#properties">Properties</a>
+    <a class="lvl-3" href="#methods">Methods</a>
+    <a class="lvl-3" href="#events">Events</a>
+    <a class="lvl-2" href="#see-also">See also</a>
+  </aside>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div class="about">
+        <a class="brand" href="../index.html" style="font-size:20px">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:30px;height:30px">
+            <defs><linearGradient id="footGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+            </linearGradient></defs>
+            <path fill="url(#footGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          </svg>
+          Fluffy
+        </a>
+        <div class="about-copy">
+          <p>The soft answer to stiff, native UI frameworks. MIT licensed — because software should be free, fluffy and fun.</p>
+          <span class="copyright">© 2026 Tine Samir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

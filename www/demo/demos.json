@@ -1,0 +1,282 @@
+{
+  "application-0": {
+    "title": "Application",
+    "width": 720,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": true
+  },
+  "checkbox-0": {
+    "title": "Checkbox",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "color_picker-0": {
+    "title": "ColorPicker",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "combobox-0": {
+    "title": "ComboBox",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "container-0": {
+    "title": "Container",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "custom-0": {
+    "title": "Custom widgets (1)",
+    "width": 520,
+    "height": 260,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "custom-1": {
+    "title": "Custom widgets (2)",
+    "width": 560,
+    "height": 260,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "dialog-0": {
+    "title": "Dialogs",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "icons-0": {
+    "title": "Icons",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "inline-0": {
+    "title": "Inline \u2014 text + icons + colors",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "layouts-0": {
+    "title": "Layouts",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "listview-0": {
+    "title": "ListView",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "menu-0": {
+    "title": "Menu",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "nav-0": {
+    "title": "Nav",
+    "width": 800,
+    "height": 500,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "progress_ring-0": {
+    "title": "ProgressRing",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "radiobutton-0": {
+    "title": "RadioButton",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "readme-0": {
+    "title": "Welcome to Fluffy",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "slider-0": {
+    "title": "Slider",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "switch-0": {
+    "title": "Switch",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "table-0": {
+    "title": "Table",
+    "width": 720,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "tabview-0": {
+    "title": "TabView",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "theme-0": {
+    "title": "Theme",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "tooltip-0": {
+    "title": "Tooltip",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "webview-0": {
+    "title": "WebView",
+    "width": 720,
+    "height": 480,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "window-0": {
+    "title": "Window",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "yaml-0": {
+    "title": "YAML UI loader (1)",
+    "width": 800,
+    "height": 600,
+    "yaml": true,
+    "multiwindow": false
+  },
+  "yaml-1": {
+    "title": "YAML UI loader (2)",
+    "width": 800,
+    "height": 600,
+    "yaml": true,
+    "multiwindow": false
+  },
+  "01-hello-fluffy-0": {
+    "title": "Tutorial 1 \u2014 Hello Fluffy",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "02-counter-0": {
+    "title": "Tutorial 2 \u2014 Counter",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "03-input-form-0": {
+    "title": "Tutorial 3 \u2014 Input Form",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "04-layouts-0": {
+    "title": "Tutorial 4 \u2014 Layouts",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "05-icons-and-themes-0": {
+    "title": "Tutorial 5 \u2014 Icons and Themes",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "06-yaml-ui-0": {
+    "title": "Tutorial 6 \u2014 YAML UI",
+    "width": 640,
+    "height": 400,
+    "yaml": true,
+    "multiwindow": false
+  },
+  "07-dialogs-0": {
+    "title": "Tutorial 7 \u2014 Dialogs",
+    "width": 640,
+    "height": 400,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "08-data-widgets-0": {
+    "title": "Tutorial 8 \u2014 Data Widgets",
+    "width": 900,
+    "height": 600,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "09-webview-0": {
+    "title": "Tutorial 9 \u2014 WebView",
+    "width": 680,
+    "height": 380,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "10-multiwindow-0": {
+    "title": "Tutorial 10 \u2014 Multiwindow with Application",
+    "width": 440,
+    "height": 300,
+    "yaml": false,
+    "multiwindow": true
+  },
+  "11-custom-widget-0": {
+    "title": "Tutorial 11 \u2014 Custom Widget (Link)",
+    "width": 640,
+    "height": 320,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "nav": {
+    "title": "Navigation",
+    "width": 920,
+    "height": 640,
+    "yaml": false,
+    "multiwindow": false
+  },
+  "helloworld": {
+    "title": "Hello Fluffy",
+    "width": 400,
+    "height": 240,
+    "yaml": false,
+    "multiwindow": false
+  }
+}

@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Theme · Fluffy</title>
+<meta name="description" content="A theme is the set of visual choices Fluffy uses to draw your app: colors, spacing, text size, fonts, animation speeds, and shadows.">
+<link rel="canonical" href="https://samyeyo.github.io/fluffy/documentation/theme.html">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Samir Tine">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Fluffy">
+<meta property="og:title" content="Theme · Fluffy">
+<meta property="og:description" content="A theme is the set of visual choices Fluffy uses to draw your app: colors, spacing, text size, fonts, animation speeds, and shadows.">
+<meta property="og:url" content="https://samyeyo.github.io/fluffy/documentation/theme.html">
+<meta property="og:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<meta property="og:image:width" content="819">
+<meta property="og:image:height" content="390">
+<meta property="og:image:alt" content="Fluffy — a modern C++ desktop UI toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Theme · Fluffy">
+<meta name="twitter:description" content="A theme is the set of visual choices Fluffy uses to draw your app: colors, spacing, text size, fonts, animation speeds, and shadows.">
+<meta name="twitter:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Theme · Fluffy","description":"A theme is the set of visual choices Fluffy uses to draw your app: colors, spacing, text size, fonts, animation speeds, and shadows.","url":"https://samyeyo.github.io/fluffy/documentation/theme.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://samyeyo.github.io/fluffy/documentation/theme.html"},"inLanguage":"en","author":{"@type":"Person","name":"Samir Tine"},"publisher":{"@type":"Organization","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"isPartOf":{"@type":"WebSite","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"image":"https://samyeyo.github.io/fluffy/fluffy-light.png"}</script>
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('fluffy-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) { /* ignore */ }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="../assets/site.css?v=21">
+<script src="../assets/highlight.min.js" defer></script>
+<script src="../assets/site.js?v=11" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="logoGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+        </linearGradient></defs>
+        <path fill="url(#logoGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+      </svg>
+      Fluffy
+    </a>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../documentation/index.html" class="active">Docs</a>
+      <a href="../tutorials/index.html">Tutorials</a>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar">
+  <div class="group"><span>Getting started</span>
+  <a href="../documentation/index.html">Welcome to Fluffy</a>
+  <a href="../documentation/install.html">Installing Fluffy</a>
+  <a href="../documentation/geom.html">Geometry &amp; colors</a>
+  <a href="../documentation/widget.html">Widget basics</a>
+  <a href="../documentation/custom.html">Custom widgets</a>
+  <a href="../documentation/window.html">Window</a>
+  <a href="../documentation/application.html">Application</a>
+  </div>
+  <div class="group"><span>Core widgets</span>
+  <a href="../documentation/label.html">Label</a>
+  <a href="../documentation/button.html">Button</a>
+  <a href="../documentation/textinput.html">TextInput</a>
+  <a href="../documentation/image.html">Image</a>
+  </div>
+  <div class="group"><span>Layout</span>
+  <a href="../documentation/container.html">Container</a>
+  <a href="../documentation/layouts.html">Layouts</a>
+  </div>
+  <div class="group"><span>Toggles &amp; pickers</span>
+  <a href="../documentation/checkbox.html">Checkbox</a>
+  <a href="../documentation/radiobutton.html">RadioButton</a>
+  <a href="../documentation/switch.html">Switch</a>
+  <a href="../documentation/slider.html">Slider</a>
+  <a href="../documentation/color_picker.html">ColorPicker</a>
+  </div>
+  <div class="group"><span>Data widgets</span>
+  <a href="../documentation/combobox.html">ComboBox</a>
+  <a href="../documentation/listview.html">ListView</a>
+  <a href="../documentation/tabview.html">TabView</a>
+  <a href="../documentation/table.html">Table</a>
+  <a href="../documentation/progress_ring.html">ProgressRing</a>
+  </div>
+  <div class="group"><span>Navigation &amp; overlays</span>
+  <a href="../documentation/menu.html">Menu</a>
+  <a href="../documentation/nav.html">Nav</a>
+  <a href="../documentation/tooltip.html">Tooltip</a>
+  <a href="../documentation/dialog.html">Dialogs</a>
+  <a href="../documentation/webview.html">WebView</a>
+  </div>
+  <div class="group"><span>Styling</span>
+  <a href="../documentation/theme.html" class="active">Theme</a>
+  <a href="../documentation/inline.html">Inline</a>
+  <a href="../documentation/icons.html">Icons</a>
+  </div>
+  <div class="group"><span>Declarative UI</span>
+  <a href="../documentation/yaml.html">YAML UI</a>
+  </div>
+  </aside>
+
+  <main class="docs-main">
+    <nav class="breadcrumb">
+      <a href="../index.html">Fluffy</a>
+      <span class="sep">/</span>
+      <a href="../documentation/index.html">Documentation</a>
+      <span class="sep">/</span>
+      <span>Theme</span>
+    </nav>
+    <article class="prose">
+      <h1>Theme</h1>
+<p>A <strong>theme</strong> is the set of visual choices Fluffy uses to draw your app: colors, spacing, text size, fonts, animation speeds, and shadows. Set a theme on a window and every widget in it follows that theme. Change the theme and the whole window changes at once — you do not restyle widgets one by one.</p>
+<h2 id="what-its-for">What it's for</h2>
+<p>Use a theme when you want to control how your interface looks without changing the widgets themselves. A theme groups colors, layout metrics, animation timings, and shadows. Fluffy ships with three ready-made themes, called presets, and you can also start from a preset and change individual fields. A new window starts with <code>Theme::defaultLight()</code>.</p>
+<h2 id="the-words-you-need">The words you need</h2>
+<ul>
+<li><strong>Window</strong> — the operating-system window your app draws into. <code>Window::open</code> creates one.</li>
+<li><strong>Widget</strong> — any visible element inside a window, such as a label or a button. <code>win.add&lt;T&gt;(...)</code> adds one and returns a reference to it.</li>
+<li><strong>Theme</strong> — the bundle of colors, metrics, fonts, and animation settings used to draw a window.</li>
+<li><strong>Preset</strong> — a complete theme that Fluffy provides for you. You can use it as-is or copy it and change a few fields.</li>
+<li><strong>Color</strong> — an RGBA color value. <code>Color::fromHex</code> builds one from a packed <code>0xAARRGGBB</code> number.</li>
+<li><strong>Metric</strong> — a number that controls size or spacing, such as <code>padding</code>, <code>corner_radius</code>, or <code>text_size</code>.</li>
+<li><strong>Callback</strong> — a small function you give to a widget so it can call you back when something happens, such as a click. In C++ you usually write these as lambdas, like <code>[] { … }</code>.</li>
+</ul>
+<h2 id="a-first-example">A first example</h2>
+<p>This program opens a window, adds a label and a button, and lets the button switch between the light and dark presets while the app runs.</p>
+<pre data-try="theme-0" data-w="640" data-h="400"><code class="language-cpp">#include &lt;fluffy/fluffy.hpp&gt;
+
+int main() {
+    fluffy::Window win = fluffy::Window::open(&quot;Theme demo&quot;, 640, 400);
+    if (!win) return 1;
+
+    auto&amp; label = win.add&lt;fluffy::Label&gt;(&quot;Theme demo&quot;);
+    label.setBounds(fluffy::Rect{40, 40, 560, 32});
+
+    bool dark = false;
+    auto&amp; btn = win.add&lt;fluffy::Button&gt;(&quot;Switch theme&quot;);
+    btn.setBounds(fluffy::Rect{40, 120, 160, 40});
+    btn.onClick([&amp;] {
+        dark = !dark;
+        win.setTheme(dark ? fluffy::Theme::defaultDark()
+                          : fluffy::Theme::defaultLight());
+    });
+
+    win.run();
+}
+</code></pre>
+<p><code>Window::open</code> creates the window, and <code>if (!win)</code> checks that it opened successfully. <code>win.add&lt;fluffy::Label&gt;(...)</code> creates a label inside the window and returns a reference to it; <code>auto&amp;</code> keeps that reference, so you work with the real widget rather than a copy. The window owns the widget for its whole life, so you never delete it. <code>setBounds</code> places a widget with a rectangle, written <code>Rect{x, y, width, height}</code>; <code>x</code> and <code>y</code> are the top-left corner, and <code>width</code> and <code>height</code> are the size in pixels.</p>
+<p><code>win.setTheme(...)</code> replaces the window's current theme. The next frame is drawn with the new colors and measurements, so every widget updates together. The <code>bool dark</code> variable remembers which theme is active, and the lambda passed to <code>onClick</code> flips it on each click.</p>
+<p>The three presets are <code>fluffy::Theme::defaultLight()</code>, <code>fluffy::Theme::defaultDark()</code>, and <code>fluffy::Theme::solarized()</code>. You can call <code>setTheme</code> at startup or later, as this example does. The snippets on the rest of this page assume <code>win</code> is the window opened above.</p>
+<h2 id="common-tasks">Common tasks</h2>
+<h3 id="customize-a-preset">Customize a preset</h3>
+<p>Start from a preset, change the fields you care about, then apply the result:</p>
+<pre><code class="language-cpp">fluffy::Theme theme = fluffy::Theme::defaultDark();
+theme.colors.background = fluffy::Color::fromHex(0xFF101010);
+theme.colors.accent = fluffy::Color::fromHex(0xFF4F8DFF);
+theme.metrics.corner_radius = 12.0f;
+theme.metrics.text_size = 16.0f;
+win.setTheme(theme);
+</code></pre>
+<p><code>defaultDark()</code> gives you a complete theme. Changing <code>colors.background</code> and <code>colors.accent</code> only touches those colors; everything else keeps the preset's values. <code>Color::fromHex</code> takes an <code>0xAARRGGBB</code> value, where the leading <code>FF</code> means fully opaque. <code>metrics.corner_radius</code> and <code>metrics.text_size</code> adjust the rounded corners and the default text size.</p>
+<h3 id="load-a-theme-from-yaml">Load a theme from YAML</h3>
+<p>A theme can also be written as YAML, a plain-text format that uses indentation to group related settings. This example sets a name, a font family, a few colors, two metrics, and one animation timing:</p>
+<pre><code class="language-yaml">name: &quot;midnight&quot;
+font_family: &quot;default&quot;
+colors:
+  background: &quot;#101010&quot;
+  accent: &quot;#4F8DFF&quot;
+metrics:
+  corner_radius: 12
+  text_size: 16
+animation:
+  hover_tau: 0.12
+</code></pre>
+<p>Load the file and apply the result:</p>
+<pre><code class="language-cpp">fluffy::Theme theme = fluffy::Theme::fromYamlFile(&quot;theme.yaml&quot;);
+win.setTheme(theme);
+</code></pre>
+<p><code>Theme::fromYamlFile(path)</code> reads the file and returns a <code>Theme</code> you can pass to <code>setTheme</code>. If the YAML is already in memory, call <code>Theme::fromYaml(text)</code> instead. Keys you leave out keep their default values. If the file cannot be read, <code>fromYamlFile</code> falls back to <code>Theme::defaultLight()</code>.</p>
+<p>The theme YAML recognizes <code>name</code>, <code>font_family</code>, <code>colors</code>, <code>metrics</code>, <code>shadows</code>, and <code>animation</code>. The Quick reference below lists the individual fields.</p>
+<h3 id="register-a-custom-font">Register a custom font</h3>
+<p>If you have loaded a font file into memory, register it with the window, then name it in the theme:</p>
+<pre><code class="language-cpp">win.registerFontMemory(&quot;Inter&quot;, ttf_data, ttf_data_size);
+fluffy::Theme theme = fluffy::Theme::defaultLight();
+theme.font_family = &quot;Inter&quot;;
+win.setTheme(theme);
+</code></pre>
+<p>Here <code>ttf_data</code> points to the font bytes and <code>ttf_data_size</code> is their length. <code>registerFontMemory</code> gives those bytes a name. Setting <code>theme.font_family</code> to the same name makes that font the default for every widget that does not choose its own.</p>
+<h3 id="show-a-slider-value-with-a-custom-format">Show a slider value with a custom format</h3>
+<p>A <code>Slider</code> is a widget with a track and a draggable thumb. It can show its current value above the thumb, and you can choose how that value is formatted.</p>
+<pre><code class="language-cpp">auto&amp; slider = win.add&lt;fluffy::Slider&gt;(
+    fluffy::Rect{40, 200, 300, 32}, 0.5f);
+slider.setShowValue(true);
+slider.setValueFormat(&quot;{:.1f} units&quot;);
+</code></pre>
+<p><code>win.add&lt;fluffy::Slider&gt;(...)</code> creates the slider and returns a reference to it, so <code>slider</code> is the real widget. The second constructor argument is the starting value, <code>0.5f</code>. <code>setShowValue(true)</code> turns on the value display, and <code>setValueFormat</code> sets its format. The format uses C++20 <code>std::format</code> syntax, and the default is <code>"{:.2f}"</code>.</p>
+<p>With <code>"{:.1f} units"</code>, the value <code>0.5</code> is displayed as <code>0.5 units</code>. See the <a href="slider.html">Slider</a> documentation for the full API.</p>
+<h2 id="good-to-know">Good to know</h2>
+<ul>
+<li>All animation fields live under <code>theme.metrics.animation</code>, for example
+  <code>theme.metrics.animation.hover_tau</code>.</li>
+<li>Each theme carries four shadows under <code>metrics</code>: <code>shadow</code>, <code>shadow_hover</code>,
+  <code>shadow_pressed</code>, and <code>shadow_disabled</code>. A <code>Shadow</code> has a <code>color</code>, a <code>blur</code>
+  radius, and <code>offset_x</code> / <code>offset_y</code> offsets. A <code>blur</code> of <code>0</code> disables the
+  shadow.</li>
+<li>A theme is a plain value. Copying a preset and changing a few fields leaves
+  the original preset untouched, so you can keep several variants in one app.</li>
+</ul>
+<h2 id="quick-reference">Quick reference</h2>
+<h3 id="colors">Colors</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Used for</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>background</code></td>
+<td>Window background</td>
+</tr>
+<tr>
+<td><code>surface</code></td>
+<td>Widget backgrounds, cards</td>
+</tr>
+<tr>
+<td><code>on_surface</code></td>
+<td>Primary text and icons</td>
+</tr>
+<tr>
+<td><code>on_surface_mute</code></td>
+<td>Secondary text, placeholders</td>
+</tr>
+<tr>
+<td><code>accent</code></td>
+<td>Focus rings, hover highlights</td>
+</tr>
+<tr>
+<td><code>accent_pressed</code></td>
+<td>Pressed state</td>
+</tr>
+<tr>
+<td><code>border</code></td>
+<td>Borders and separators</td>
+</tr>
+<tr>
+<td><code>disabled</code></td>
+<td>Disabled text</td>
+</tr>
+</tbody>
+</table>
+<h3 id="metrics">Metrics</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>padding</code></td>
+<td>Default spacing between widgets</td>
+</tr>
+<tr>
+<td><code>corner_radius</code></td>
+<td>Rounded corner radius</td>
+</tr>
+<tr>
+<td><code>text_size</code></td>
+<td>Default text size</td>
+</tr>
+<tr>
+<td><code>border_width</code></td>
+<td>Default border thickness</td>
+</tr>
+<tr>
+<td><code>button_padding_x/y</code></td>
+<td>Button internal padding</td>
+</tr>
+<tr>
+<td><code>input_padding_x/y</code></td>
+<td>Text input internal padding</td>
+</tr>
+<tr>
+<td><code>input_min_height</code></td>
+<td>Minimum input height</td>
+</tr>
+<tr>
+<td><code>input_focus_width</code></td>
+<td>Focus ring thickness</td>
+</tr>
+<tr>
+<td><code>toggle_size</code></td>
+<td>Switch / checkbox indicator size</td>
+</tr>
+<tr>
+<td><code>slider_thumb_size</code></td>
+<td>Slider thumb diameter</td>
+</tr>
+<tr>
+<td><code>slider_track_height</code></td>
+<td>Slider track thickness</td>
+</tr>
+</tbody>
+</table>
+<h3 id="animation">Animation</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>hover_tau</code></td>
+<td>How fast hover state changes (lower = snappier)</td>
+</tr>
+<tr>
+<td><code>press_tau</code></td>
+<td>How fast press state changes</td>
+</tr>
+<tr>
+<td><code>press_inset</code></td>
+<td>Pressed-state inset distance</td>
+</tr>
+<tr>
+<td><code>press_drop</code></td>
+<td>Pressed-state drop distance</td>
+</tr>
+<tr>
+<td><code>icon_size_gain</code></td>
+<td>Icons drawn at <code>text_size * icon_size_gain</code></td>
+</tr>
+<tr>
+<td><code>icon_padding</code></td>
+<td>Padding around icons</td>
+</tr>
+</tbody>
+</table>
+<h3 id="shadows">Shadows</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>color</code></td>
+<td>Shadow color</td>
+</tr>
+<tr>
+<td><code>blur</code></td>
+<td>Blur radius (<code>0</code> disables the shadow)</td>
+</tr>
+<tr>
+<td><code>offset_x</code> / <code>offset_y</code></td>
+<td>Shadow offset</td>
+</tr>
+</tbody>
+</table>
+<h3 id="theme-identity-and-loading">Theme identity and loading</h3>
+<table>
+<thead>
+<tr>
+<th>Field / Function</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Theme name (e.g. <code>"fluffy-light"</code>)</td>
+</tr>
+<tr>
+<td><code>font_family</code></td>
+<td>Default font spec for all widgets</td>
+</tr>
+<tr>
+<td><code>Theme::fromYaml(text)</code></td>
+<td>Parse a theme from a YAML string</td>
+</tr>
+<tr>
+<td><code>Theme::fromYamlFile(path)</code></td>
+<td>Parse a theme from a YAML file</td>
+</tr>
+</tbody>
+</table>
+<h3 id="slider-value-format">Slider value format</h3>
+<p>Format specifiers follow C++20 <code>std::format</code> syntax:</p>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Example output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"{:.2f}"</code></td>
+<td><code>0.50</code></td>
+</tr>
+<tr>
+<td><code>"{:.1f} units"</code></td>
+<td><code>0.5 units</code></td>
+</tr>
+<tr>
+<td><code>"{:.0f}%"</code></td>
+<td><code>50%</code></td>
+</tr>
+<tr>
+<td><code>"{:&gt;6.2f}"</code></td>
+<td><code>0.50</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="window.html">Window</a> — <code>setTheme</code> and <code>registerFontMemory</code>.</li>
+<li><a href="geom.html">Geometry &amp; colors</a> — <code>Color</code> helpers.</li>
+<li><a href="inline.html">Inline</a> — icon sizing via the theme.</li>
+<li><a href="slider.html">Slider</a> — full slider API, including value display.</li>
+</ul>
+    </article>
+    <nav class="pager">
+    <a class="prev" href="../documentation/webview.html"><span class="dir">← Previous</span><span class="ttl">WebView</span></a>
+    <a class="next" href="../documentation/inline.html"><span class="dir">Next →</span><span class="ttl">Inline</span></a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc">
+    <span>On this page</span>
+    <a class="lvl-2" href="#what-its-for">What it&#x27;s for</a>
+    <a class="lvl-2" href="#the-words-you-need">The words you need</a>
+    <a class="lvl-2" href="#a-first-example">A first example</a>
+    <a class="lvl-2" href="#common-tasks">Common tasks</a>
+    <a class="lvl-3" href="#customize-a-preset">Customize a preset</a>
+    <a class="lvl-3" href="#load-a-theme-from-yaml">Load a theme from YAML</a>
+    <a class="lvl-3" href="#register-a-custom-font">Register a custom font</a>
+    <a class="lvl-3" href="#show-a-slider-value-with-a-custom-format">Show a slider value with a custom format</a>
+    <a class="lvl-2" href="#good-to-know">Good to know</a>
+    <a class="lvl-2" href="#quick-reference">Quick reference</a>
+    <a class="lvl-3" href="#colors">Colors</a>
+    <a class="lvl-3" href="#metrics">Metrics</a>
+    <a class="lvl-3" href="#animation">Animation</a>
+    <a class="lvl-3" href="#shadows">Shadows</a>
+    <a class="lvl-3" href="#theme-identity-and-loading">Theme identity and loading</a>
+    <a class="lvl-3" href="#slider-value-format">Slider value format</a>
+    <a class="lvl-2" href="#see-also">See also</a>
+  </aside>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div class="about">
+        <a class="brand" href="../index.html" style="font-size:20px">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:30px;height:30px">
+            <defs><linearGradient id="footGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+            </linearGradient></defs>
+            <path fill="url(#footGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          </svg>
+          Fluffy
+        </a>
+        <div class="about-copy">
+          <p>The soft answer to stiff, native UI frameworks. MIT licensed — because software should be free, fluffy and fun.</p>
+          <span class="copyright">© 2026 Tine Samir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

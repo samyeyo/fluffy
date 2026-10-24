@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image · Fluffy</title>
+<meta name="description" content="An Image shows a raster file (PNG, JPG, etc.) inside its Rect using the platform decoder.">
+<link rel="canonical" href="https://samyeyo.github.io/fluffy/documentation/image.html">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Samir Tine">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Fluffy">
+<meta property="og:title" content="Image · Fluffy">
+<meta property="og:description" content="An Image shows a raster file (PNG, JPG, etc.) inside its Rect using the platform decoder.">
+<meta property="og:url" content="https://samyeyo.github.io/fluffy/documentation/image.html">
+<meta property="og:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<meta property="og:image:width" content="819">
+<meta property="og:image:height" content="390">
+<meta property="og:image:alt" content="Fluffy — a modern C++ desktop UI toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Image · Fluffy">
+<meta name="twitter:description" content="An Image shows a raster file (PNG, JPG, etc.) inside its Rect using the platform decoder.">
+<meta name="twitter:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Image · Fluffy","description":"An Image shows a raster file (PNG, JPG, etc.) inside its Rect using the platform decoder.","url":"https://samyeyo.github.io/fluffy/documentation/image.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://samyeyo.github.io/fluffy/documentation/image.html"},"inLanguage":"en","author":{"@type":"Person","name":"Samir Tine"},"publisher":{"@type":"Organization","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"isPartOf":{"@type":"WebSite","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"image":"https://samyeyo.github.io/fluffy/fluffy-light.png"}</script>
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('fluffy-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) { /* ignore */ }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="../assets/site.css?v=21">
+<script src="../assets/highlight.min.js" defer></script>
+<script src="../assets/site.js?v=11" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="logoGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+        </linearGradient></defs>
+        <path fill="url(#logoGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+      </svg>
+      Fluffy
+    </a>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../documentation/index.html" class="active">Docs</a>
+      <a href="../tutorials/index.html">Tutorials</a>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar">
+  <div class="group"><span>Getting started</span>
+  <a href="../documentation/index.html">Welcome to Fluffy</a>
+  <a href="../documentation/install.html">Installing Fluffy</a>
+  <a href="../documentation/geom.html">Geometry &amp; colors</a>
+  <a href="../documentation/widget.html">Widget basics</a>
+  <a href="../documentation/custom.html">Custom widgets</a>
+  <a href="../documentation/window.html">Window</a>
+  <a href="../documentation/application.html">Application</a>
+  </div>
+  <div class="group"><span>Core widgets</span>
+  <a href="../documentation/label.html">Label</a>
+  <a href="../documentation/button.html">Button</a>
+  <a href="../documentation/textinput.html">TextInput</a>
+  <a href="../documentation/image.html" class="active">Image</a>
+  </div>
+  <div class="group"><span>Layout</span>
+  <a href="../documentation/container.html">Container</a>
+  <a href="../documentation/layouts.html">Layouts</a>
+  </div>
+  <div class="group"><span>Toggles &amp; pickers</span>
+  <a href="../documentation/checkbox.html">Checkbox</a>
+  <a href="../documentation/radiobutton.html">RadioButton</a>
+  <a href="../documentation/switch.html">Switch</a>
+  <a href="../documentation/slider.html">Slider</a>
+  <a href="../documentation/color_picker.html">ColorPicker</a>
+  </div>
+  <div class="group"><span>Data widgets</span>
+  <a href="../documentation/combobox.html">ComboBox</a>
+  <a href="../documentation/listview.html">ListView</a>
+  <a href="../documentation/tabview.html">TabView</a>
+  <a href="../documentation/table.html">Table</a>
+  <a href="../documentation/progress_ring.html">ProgressRing</a>
+  </div>
+  <div class="group"><span>Navigation &amp; overlays</span>
+  <a href="../documentation/menu.html">Menu</a>
+  <a href="../documentation/nav.html">Nav</a>
+  <a href="../documentation/tooltip.html">Tooltip</a>
+  <a href="../documentation/dialog.html">Dialogs</a>
+  <a href="../documentation/webview.html">WebView</a>
+  </div>
+  <div class="group"><span>Styling</span>
+  <a href="../documentation/theme.html">Theme</a>
+  <a href="../documentation/inline.html">Inline</a>
+  <a href="../documentation/icons.html">Icons</a>
+  </div>
+  <div class="group"><span>Declarative UI</span>
+  <a href="../documentation/yaml.html">YAML UI</a>
+  </div>
+  </aside>
+
+  <main class="docs-main">
+    <nav class="breadcrumb">
+      <a href="../index.html">Fluffy</a>
+      <span class="sep">/</span>
+      <a href="../documentation/index.html">Documentation</a>
+      <span class="sep">/</span>
+      <span>Image</span>
+    </nav>
+    <article class="prose">
+      <h1>Image</h1>
+<p>An <code>Image</code> shows a raster file (PNG, JPG, etc.) inside its <code>Rect</code> using the platform decoder.</p>
+<p><img width="1120" height="600" loading="lazy" decoding="async" alt="Image widget" src="../assets/widgets/image.png"></p>
+<p><em>A JPEG scaled to fit its bounds.</em></p>
+<h2 id="what-its-for">What it's for</h2>
+<p>Use an <code>Image</code> when you need to display raster graphics in a window. It loads either a <code>file</code> or raw <code>RGBA</code> pixels, uploads them as a texture, scales them to its <code>bounds</code> according to <code>scaleMode</code>, and can optionally draw a border.</p>
+<h2 id="the-words-you-need">The words you need</h2>
+<ul>
+<li><strong>raster image</strong> — a picture made of pixels, such as a PNG or a JPG file.</li>
+<li><strong>RGBA</strong> — the four bytes that describe one pixel: red, green, blue, alpha.</li>
+<li><strong>bounds</strong> — where the image sits and how big it is, given as a <code>Rect</code>. See <a href="geom.html">Geometry &amp; colors</a>.</li>
+</ul>
+<p>In the examples below, <code>win</code> is an open window (see <a href="window.html">Window</a>).</p>
+<h2 id="a-first-example">A first example</h2>
+<pre><code class="language-cpp">auto&amp; img = win.add&lt;fluffy::Image&gt;(fluffy::Rect{40, 40, 300, 200}, &quot;photo.png&quot;);
+</code></pre>
+<p>This creates an image inside the window and loads <code>photo.png</code>. The file is decoded by <code>CoreGraphics</code> on macOS, <code>WIC</code> on Windows, or <code>GdkPixbuf</code> on Linux. If the file cannot be read, the image stays empty; check it with <code>hasImage()</code>.</p>
+<h2 id="common-tasks">Common tasks</h2>
+<h3 id="load-another-file">Load another file</h3>
+<pre><code class="language-cpp">img.setImage(&quot;another.jpg&quot;);
+</code></pre>
+<p>The new file replaces the current image.</p>
+<h3 id="load-raw-rgba-pixels">Load raw RGBA pixels</h3>
+<pre><code class="language-cpp">img.setImage(width, height, pixels); // RGBA (no-op on null pixels or non-positive size)
+</code></pre>
+<p>This overload takes the pixel dimensions and the RGBA data. It does nothing if <code>pixels</code> is null or the size is not positive.</p>
+<h3 id="check-what-is-loaded">Check what is loaded</h3>
+<pre><code class="language-cpp">bool ok = img.hasImage();
+int w = img.imageWidth();
+int h = img.imageHeight();
+</code></pre>
+<h3 id="choose-how-the-image-fits-its-bounds">Choose how the image fits its bounds</h3>
+<pre><code class="language-cpp">img.setScaleMode(fluffy::ScaleMode::Fill);
+fluffy::ScaleMode m = img.scaleMode();
+</code></pre>
+<ul>
+<li><code>Fit</code> fits the image inside the bounds, keeps the aspect ratio, and centers it.</li>
+<li><code>Fill</code> covers the bounds, keeps the aspect ratio, and may clip the image.</li>
+<li><code>Stretch</code> fills the bounds exactly and ignores the aspect ratio.</li>
+<li><code>None</code> uses the native pixel size.</li>
+</ul>
+<h3 id="add-a-border-or-clear-the-image">Add a border or clear the image</h3>
+<pre><code class="language-cpp">img.setBorder(true);
+bool b = img.hasBorder();
+img.clearImage();
+</code></pre>
+<h2 id="good-to-know">Good to know</h2>
+<ul>
+<li>On WebAssembly there is no file decoder. <code>setImage(path)</code> is a stub, and only raw RGBA pixels display.</li>
+<li><code>Image</code> has no YAML support because it is not registered with the YAML widget factory. Create it in code instead; see <a href="yaml.html">YAML</a>, where <code>Image</code> must be created in code.</li>
+</ul>
+<p>The properties <code>file</code>, <code>scale_mode</code>, and <code>border</code> are available through <code>setProperty</code> for programmatic use, but not through YAML:</p>
+<pre><code class="language-yaml"># This would be ignored — Image not in factory
+# Image:
+#   file: &quot;photo.png&quot;
+#   scale_mode: fit
+#   border: true
+</code></pre>
+<h2 id="quick-reference">Quick reference</h2>
+<h3 id="properties">Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>file</code></td>
+<td><code>string</code></td>
+<td>Path to image file. Decoding via <code>CoreGraphics</code> (macOS) / <code>WIC</code> (Win) / <code>GdkPixbuf</code> (Linux).</td>
+</tr>
+<tr>
+<td><code>scaleMode</code></td>
+<td><code>ScaleMode</code></td>
+<td><code>Fit</code> (default) / <code>Fill</code> / <code>Stretch</code> / <code>None</code>.</td>
+</tr>
+<tr>
+<td><code>border</code></td>
+<td><code>bool</code></td>
+<td>Whether to draw a <code>border</code> stroke.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="methods">Methods</h3>
+<pre><code class="language-cpp">auto&amp; img = win.add&lt;fluffy::Image&gt;(fluffy::Rect{40, 40, 300, 200}, &quot;photo.png&quot;);
+img.setImage(&quot;another.jpg&quot;);
+img.setImage(width, height, pixels); // RGBA (no-op on null pixels or non-positive size)
+
+bool ok = img.hasImage();
+int w = img.imageWidth();
+int h = img.imageHeight();
+
+img.setScaleMode(fluffy::ScaleMode::Fill);
+fluffy::ScaleMode m = img.scaleMode();
+
+img.setBorder(true);
+bool b = img.hasBorder();
+img.clearImage();
+</code></pre>
+<h3 id="scale-modes">Scale modes</h3>
+<table>
+<thead>
+<tr>
+<th><code>ScaleMode</code></th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Fit</code></td>
+<td>Fit inside, keep aspect, centered</td>
+</tr>
+<tr>
+<td><code>Fill</code></td>
+<td>Cover bounds, keep aspect, may clip</td>
+</tr>
+<tr>
+<td><code>Stretch</code></td>
+<td>Fill exactly, ignore aspect</td>
+</tr>
+<tr>
+<td><code>None</code></td>
+<td>Native pixels</td>
+</tr>
+</tbody>
+</table>
+<h3 id="events">Events</h3>
+<p>None.</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="widget.html">Widget</a></li>
+</ul>
+    </article>
+    <nav class="pager">
+    <a class="prev" href="../documentation/textinput.html"><span class="dir">← Previous</span><span class="ttl">TextInput</span></a>
+    <a class="next" href="../documentation/container.html"><span class="dir">Next →</span><span class="ttl">Container</span></a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc">
+    <span>On this page</span>
+    <a class="lvl-2" href="#what-its-for">What it&#x27;s for</a>
+    <a class="lvl-2" href="#the-words-you-need">The words you need</a>
+    <a class="lvl-2" href="#a-first-example">A first example</a>
+    <a class="lvl-2" href="#common-tasks">Common tasks</a>
+    <a class="lvl-3" href="#load-another-file">Load another file</a>
+    <a class="lvl-3" href="#load-raw-rgba-pixels">Load raw RGBA pixels</a>
+    <a class="lvl-3" href="#check-what-is-loaded">Check what is loaded</a>
+    <a class="lvl-3" href="#choose-how-the-image-fits-its-bounds">Choose how the image fits its bounds</a>
+    <a class="lvl-3" href="#add-a-border-or-clear-the-image">Add a border or clear the image</a>
+    <a class="lvl-2" href="#good-to-know">Good to know</a>
+    <a class="lvl-2" href="#quick-reference">Quick reference</a>
+    <a class="lvl-3" href="#properties">Properties</a>
+    <a class="lvl-3" href="#methods">Methods</a>
+    <a class="lvl-3" href="#scale-modes">Scale modes</a>
+    <a class="lvl-3" href="#events">Events</a>
+    <a class="lvl-2" href="#see-also">See also</a>
+  </aside>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div class="about">
+        <a class="brand" href="../index.html" style="font-size:20px">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:30px;height:30px">
+            <defs><linearGradient id="footGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+            </linearGradient></defs>
+            <path fill="url(#footGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          </svg>
+          Fluffy
+        </a>
+        <div class="about-copy">
+          <p>The soft answer to stiff, native UI frameworks. MIT licensed — because software should be free, fluffy and fun.</p>
+          <span class="copyright">© 2026 Tine Samir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

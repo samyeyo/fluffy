@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WebView · Fluffy</title>
+<meta name="description" content="A WebView displays web content inside your window using the platform&#x27;s native web engine.">
+<link rel="canonical" href="https://samyeyo.github.io/fluffy/documentation/webview.html">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Samir Tine">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Fluffy">
+<meta property="og:title" content="WebView · Fluffy">
+<meta property="og:description" content="A WebView displays web content inside your window using the platform&#x27;s native web engine.">
+<meta property="og:url" content="https://samyeyo.github.io/fluffy/documentation/webview.html">
+<meta property="og:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<meta property="og:image:width" content="819">
+<meta property="og:image:height" content="390">
+<meta property="og:image:alt" content="Fluffy — a modern C++ desktop UI toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="WebView · Fluffy">
+<meta name="twitter:description" content="A WebView displays web content inside your window using the platform&#x27;s native web engine.">
+<meta name="twitter:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"WebView · Fluffy","description":"A WebView displays web content inside your window using the platform's native web engine.","url":"https://samyeyo.github.io/fluffy/documentation/webview.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://samyeyo.github.io/fluffy/documentation/webview.html"},"inLanguage":"en","author":{"@type":"Person","name":"Samir Tine"},"publisher":{"@type":"Organization","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"isPartOf":{"@type":"WebSite","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"image":"https://samyeyo.github.io/fluffy/fluffy-light.png"}</script>
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('fluffy-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) { /* ignore */ }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="../assets/site.css?v=21">
+<script src="../assets/highlight.min.js" defer></script>
+<script src="../assets/site.js?v=11" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="logoGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+        </linearGradient></defs>
+        <path fill="url(#logoGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+      </svg>
+      Fluffy
+    </a>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../documentation/index.html" class="active">Docs</a>
+      <a href="../tutorials/index.html">Tutorials</a>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar">
+  <div class="group"><span>Getting started</span>
+  <a href="../documentation/index.html">Welcome to Fluffy</a>
+  <a href="../documentation/install.html">Installing Fluffy</a>
+  <a href="../documentation/geom.html">Geometry &amp; colors</a>
+  <a href="../documentation/widget.html">Widget basics</a>
+  <a href="../documentation/custom.html">Custom widgets</a>
+  <a href="../documentation/window.html">Window</a>
+  <a href="../documentation/application.html">Application</a>
+  </div>
+  <div class="group"><span>Core widgets</span>
+  <a href="../documentation/label.html">Label</a>
+  <a href="../documentation/button.html">Button</a>
+  <a href="../documentation/textinput.html">TextInput</a>
+  <a href="../documentation/image.html">Image</a>
+  </div>
+  <div class="group"><span>Layout</span>
+  <a href="../documentation/container.html">Container</a>
+  <a href="../documentation/layouts.html">Layouts</a>
+  </div>
+  <div class="group"><span>Toggles &amp; pickers</span>
+  <a href="../documentation/checkbox.html">Checkbox</a>
+  <a href="../documentation/radiobutton.html">RadioButton</a>
+  <a href="../documentation/switch.html">Switch</a>
+  <a href="../documentation/slider.html">Slider</a>
+  <a href="../documentation/color_picker.html">ColorPicker</a>
+  </div>
+  <div class="group"><span>Data widgets</span>
+  <a href="../documentation/combobox.html">ComboBox</a>
+  <a href="../documentation/listview.html">ListView</a>
+  <a href="../documentation/tabview.html">TabView</a>
+  <a href="../documentation/table.html">Table</a>
+  <a href="../documentation/progress_ring.html">ProgressRing</a>
+  </div>
+  <div class="group"><span>Navigation &amp; overlays</span>
+  <a href="../documentation/menu.html">Menu</a>
+  <a href="../documentation/nav.html">Nav</a>
+  <a href="../documentation/tooltip.html">Tooltip</a>
+  <a href="../documentation/dialog.html">Dialogs</a>
+  <a href="../documentation/webview.html" class="active">WebView</a>
+  </div>
+  <div class="group"><span>Styling</span>
+  <a href="../documentation/theme.html">Theme</a>
+  <a href="../documentation/inline.html">Inline</a>
+  <a href="../documentation/icons.html">Icons</a>
+  </div>
+  <div class="group"><span>Declarative UI</span>
+  <a href="../documentation/yaml.html">YAML UI</a>
+  </div>
+  </aside>
+
+  <main class="docs-main">
+    <nav class="breadcrumb">
+      <a href="../index.html">Fluffy</a>
+      <span class="sep">/</span>
+      <a href="../documentation/index.html">Documentation</a>
+      <span class="sep">/</span>
+      <span>WebView</span>
+    </nav>
+    <article class="prose">
+      <h1>WebView</h1>
+<p>A <code>WebView</code> displays web content inside your window using the platform's native
+web engine.</p>
+<hr>
+<h2 id="what-its-for">What it's for</h2>
+<p>Use a <code>WebView</code> when you need to show a web page, a local HTML page, or raw
+HTML inside your app and let the browser engine render it. It is useful for
+documentation, embedded web apps, and rich HTML content that would be tedious to
+rebuild from native widgets.</p>
+<p>The web view is an overlay: the native page is composited on top of Fluffy's
+own drawing. Until the native view is ready, a rounded placeholder appears in
+its place. The web view can load a URL or HTML, run JavaScript, and receive JSON
+messages from the page. Navigation and title callbacks are reserved for a future
+native delegate.</p>
+<hr>
+<h2 id="a-first-example">A first example</h2>
+<p>A window is the operating-system window your app draws into. <code>Window::open</code>
+creates it, and <code>if (!win)</code> stops the program if the window could not be opened.
+<code>win.add&lt;T&gt;(...)</code> creates a widget inside that window and returns a
+reference to it. <code>Rect{x, y, width, height}</code> places the widget.</p>
+<pre data-try="webview-0" data-w="720" data-h="480"><code class="language-cpp">#include &lt;fluffy/fluffy.hpp&gt;
+
+int main() {
+    fluffy::Window win = fluffy::Window::open(&quot;WebView demo&quot;, 720, 480);
+    if (!win) return 1;
+
+    auto&amp; wv = win.add&lt;fluffy::WebView&gt;(
+        fluffy::Rect{20, 20, 680, 320}, &quot;https://example.com&quot;);
+
+    win.run();
+}
+</code></pre>
+<p>The constructor takes the bounds and an optional source URL, which defaults to
+<code>https://example.com</code>. The native view is composited on top of the rest of your
+Fluffy content.</p>
+<p>The snippets below assume <code>win</code> and <code>wv</code> from this example.</p>
+<hr>
+<h2 id="declare-in-yaml">Declare in YAML</h2>
+<p>A <code>WebView</code> can also be created by the YAML loader:</p>
+<pre><code class="language-yaml">WebView:
+  x: 20
+  y: 20
+  width: 680
+  height: 320
+  url: &quot;https://example.com&quot;
+  radius: 12
+</code></pre>
+<p>The YAML keys are:</p>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td>URL to load.</td>
+</tr>
+<tr>
+<td><code>html</code></td>
+<td>Raw HTML to load instead of <code>url</code>.</td>
+</tr>
+<tr>
+<td><code>base_url</code></td>
+<td>Base URL for <code>html</code>, used to resolve relative assets.</td>
+</tr>
+<tr>
+<td><code>radius</code></td>
+<td>Corner radius in logical pixels, or <code>-1</code> to follow the theme.</td>
+</tr>
+</tbody>
+</table>
+<p><code>baseUrl</code> is accepted as an alias for <code>base_url</code>; <code>corner_radius</code> and
+<code>cornerRadius</code> are aliases for <code>radius</code>. Use one of <code>url</code> or <code>html</code>; when both
+are present, the last one wins. For raw HTML:</p>
+<pre><code class="language-yaml">WebView:
+  x: 20
+  y: 20
+  width: 680
+  height: 320
+  html: &quot;&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;&quot;
+  base_url: &quot;file:///Users/you/site/&quot;
+  radius: 12
+</code></pre>
+<p>YAML cannot attach typed callbacks. Add <code>setOnMessage</code>, <code>setOnNavigation</code>, and
+<code>setOnTitle</code> in C++ after loading the UI.</p>
+<hr>
+<h2 id="common-tasks">Common tasks</h2>
+<h3 id="load-content">Load content</h3>
+<pre><code class="language-cpp">wv.navigate(&quot;https://www.google.com&quot;);
+wv.navigate(&quot;file:///Users/you/site/index.html&quot;);
+wv.setHtml(&quot;&lt;html&gt;&lt;body&gt;Hello&lt;/body&gt;&lt;/html&gt;&quot;);
+wv.setHtml(html, &quot;file:///Users/you/site/&quot;);
+</code></pre>
+<p>Use <code>navigate</code> to load a URL. Local files work with a <code>file://</code> URL, and
+directories need a trailing <code>/</code>. Use <code>setHtml</code> for raw HTML. When the page
+references relative assets or calls <code>fetch</code>, pass a base URL as the second
+argument so those requests resolve.</p>
+<h3 id="run-javascript">Run JavaScript</h3>
+<pre><code class="language-cpp">wv.evalJS(&quot;document.title&quot;, [](const std::string&amp; res) {
+    std::printf(&quot;%s\n&quot;, res.c_str());
+});
+</code></pre>
+<p><code>evalJS</code> evaluates an expression in the page and delivers the result to your
+callback as a string. Results are returned by the macOS, Windows, and Linux
+backends. On WebAssembly there is no native web view, so <code>evalJS</code> answers
+<code>"error: no native webview"</code>.</p>
+<h3 id="receive-messages-from-the-page">Receive messages from the page</h3>
+<pre><code class="language-cpp">wv.setOnMessage([](const std::string&amp; json, fluffy::WebView&amp; self) { });
+</code></pre>
+<p><code>onMessage</code> receives messages posted by page JavaScript as JSON text. Fluffy
+does not inject any helper object into the page. Instead, page code calls the
+platform web view's own bridge:</p>
+<pre><code class="language-js">// macOS and Linux (WKWebView / WebKitGTK)
+window.webkit.messageHandlers.fluffy.postMessage(JSON.stringify({type: 'buy', id: 42}));
+
+// Windows (WebView2)
+window.chrome.webview.postMessage(JSON.stringify({type: 'buy', id: 42}));
+</code></pre>
+<p>Because the bridge object belongs to the platform, the JavaScript call differs
+by platform. Always pass JSON text with <code>JSON.stringify</code>; Fluffy delivers the
+payload to <code>onMessage</code> as a string.</p>
+<h3 id="react-to-navigation-and-title-changes">React to navigation and title changes</h3>
+<pre><code class="language-cpp">wv.setOnNavigation([](const std::string&amp; url) { return true; });
+wv.setOnTitle([](const std::string&amp; title) { });
+</code></pre>
+<p><code>onNavigation</code> lets you inspect a navigation request and return <code>false</code> to block
+it. <code>onTitle</code> receives the page title. These callbacks are reserved for a future
+native navigation delegate and are not delivered by the current backends.</p>
+<h3 id="control-the-corner-radius">Control the corner radius</h3>
+<pre><code class="language-cpp">wv.setCornerRadius(12.0f);
+float r = wv.effectiveRadius(win.theme());
+</code></pre>
+<p><code>setCornerRadius</code> fixes the radius in logical pixels, or uses <code>-1</code> to follow the
+theme. A theme is the set of colors, fonts, and sizes your app uses.
+<code>effectiveRadius</code> resolves the radius for the current theme.</p>
+<hr>
+<h2 id="good-to-know">Good to know</h2>
+<ul>
+<li>The <code>url</code> property is write-only: it is set by the constructor, <code>navigate</code>,
+  <code>setHtml</code>, or the YAML <code>url</code>/<code>html</code> keys. There is no <code>url()</code> getter. The value
+  is stored exactly as given; <code>setHtml</code> stores it with a <code>data:text/html,</code>
+  prefix.</li>
+<li>On macOS, Windows, and Linux, <code>evalJS</code> returns the real result and <code>onMessage</code>
+  receives page messages. On WebAssembly there is no native web view, so
+  <code>evalJS</code> answers <code>"error: no native webview"</code> and no messages arrive.</li>
+<li>Windows uses WebView2's <code>NavigateToString</code> for <code>setHtml</code>, which has no base
+  URL. Relative assets may not resolve there; prefer an absolute <code>file://</code> URL
+  with <code>navigate</code> when local assets are needed. macOS and Linux apply the base
+  URL passed to <code>setHtml</code>.</li>
+<li>Linux uses WebKitGTK and requires <code>webkit2gtk-4.1</code> plus an X11 window. Wayland
+  windows fall back to the placeholder.</li>
+<li>A local <code>file://</code> page can read files in its containing folder. Pages loaded
+  from <code>file://</code> still cannot fetch <code>https://</code> resources because of browser CORS
+  rules, so keep local assets in the same folder as the page.</li>
+<li>The widget is focusable, takes focus when clicked, and reports its bounds as
+  its natural size (falling back to <code>320</code>). Set an explicit width and height for
+  a predictable overlay.</li>
+<li>Because this is a native overlay, it sits above Fluffy's canvas and is not
+  clipped by Fluffy containers or scroll views. Keep its bounds inside the
+  window.</li>
+<li>WebView support is enabled by default. Pass
+  <code>-DFLUFFY_ENABLE_WEBVIEW=OFF</code> to compile it out and use the placeholder only.
+  On Windows, CMake fetches the WebView2 package automatically; the WebView2
+  Runtime must be installed. On Linux, install <code>libwebkit2gtk-4.1-dev</code> and run
+  on X11. On WebAssembly only a placeholder is shown.</li>
+</ul>
+<hr>
+<h2 id="quick-reference">Quick reference</h2>
+<h3 id="properties">Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td>—</td>
+<td>Source URL, write-only (constructor / <code>navigate</code> / <code>setHtml</code>). There is no <code>url()</code> getter. Stored verbatim (<code>setHtml</code> prefixes <code>data:text/html,</code>, no percent-encoding).</td>
+</tr>
+<tr>
+<td><code>cornerRadius</code></td>
+<td><code>float</code></td>
+<td><code>-1</code> tracks theme, otherwise fixed radius in logical pixels.</td>
+</tr>
+<tr>
+<td><code>effectiveRadius</code></td>
+<td><code>float</code></td>
+<td>Resolved radius for the current theme (<code>cornerRadius &lt; -0.5</code> tracks; re-applied only when the value changes).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="methods">Methods</h3>
+<pre><code class="language-cpp">auto&amp; wv = win.add&lt;fluffy::WebView&gt;(
+    fluffy::Rect{20, 20, 680, 320}, &quot;https://example.com&quot;);
+wv.navigate(&quot;https://www.google.com&quot;);
+wv.navigate(&quot;file:///Users/you/site/index.html&quot;);
+wv.setHtml(&quot;&lt;html&gt;&lt;body&gt;Hello&lt;/body&gt;&lt;/html&gt;&quot;);
+wv.setHtml(html, &quot;file:///Users/you/site/&quot;);
+wv.evalJS(&quot;document.title&quot;, [](const std::string&amp; res) {
+    std::printf(&quot;%s\n&quot;, res.c_str());
+});
+
+wv.setOnMessage([](const std::string&amp; json, fluffy::WebView&amp; self) { });
+wv.setOnNavigation([](const std::string&amp; url) { return true; });
+wv.setOnTitle([](const std::string&amp; title) { });
+
+wv.setCornerRadius(12.0f);
+float r = wv.effectiveRadius(win.theme());
+</code></pre>
+<h3 id="events">Events</h3>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Signature</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>onMessage</code></td>
+<td><code>void(const string&amp; json, WebView&amp;)</code></td>
+<td>Page calls <code>postMessage</code> (see JavaScript bridge).</td>
+</tr>
+<tr>
+<td><code>onNavigation</code></td>
+<td><code>bool(const string&amp; url)</code></td>
+<td><strong>Not delivered yet</strong> (needs a native navigation delegate).</td>
+</tr>
+<tr>
+<td><code>onTitle</code></td>
+<td><code>void(const string&amp; title)</code></td>
+<td><strong>Not delivered yet</strong> (needs a native navigation delegate).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="yaml">YAML</h3>
+<pre><code class="language-yaml">WebView:
+  x: 20
+  y: 20
+  width: 680
+  height: 320
+  url: &quot;https://example.com&quot;
+  radius: 12
+</code></pre>
+<pre><code class="language-yaml">WebView:
+  x: 20
+  y: 20
+  width: 680
+  height: 320
+  html: &quot;&lt;html&gt;&lt;body&gt;&lt;h1&gt;Hello&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;&quot;
+  base_url: &quot;file:///Users/you/site/&quot;
+  radius: 12
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>url</code></td>
+<td>URL to load.</td>
+</tr>
+<tr>
+<td><code>html</code></td>
+<td>Raw HTML to load instead of <code>url</code>.</td>
+</tr>
+<tr>
+<td><code>base_url</code></td>
+<td>Base URL for <code>html</code>; resolves relative assets.</td>
+</tr>
+<tr>
+<td><code>radius</code></td>
+<td>Corner radius in logical pixels, or <code>-1</code> for the theme.</td>
+</tr>
+</tbody>
+</table>
+<p>Aliases: <code>baseUrl</code> for <code>base_url</code>; <code>corner_radius</code> and <code>cornerRadius</code> for
+<code>radius</code>. If both <code>url</code> and <code>html</code> are present, the last key wins. Registered
+<code>onXxx</code> names do not drive WebView callbacks; attach handlers in C++.</p>
+<hr>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="window.html">Window</a> — <code>nativeHandle()</code>.</li>
+</ul>
+    </article>
+    <nav class="pager">
+    <a class="prev" href="../documentation/dialog.html"><span class="dir">← Previous</span><span class="ttl">Dialogs</span></a>
+    <a class="next" href="../documentation/theme.html"><span class="dir">Next →</span><span class="ttl">Theme</span></a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc">
+    <span>On this page</span>
+    <a class="lvl-2" href="#what-its-for">What it&#x27;s for</a>
+    <a class="lvl-2" href="#a-first-example">A first example</a>
+    <a class="lvl-2" href="#declare-in-yaml">Declare in YAML</a>
+    <a class="lvl-2" href="#common-tasks">Common tasks</a>
+    <a class="lvl-3" href="#load-content">Load content</a>
+    <a class="lvl-3" href="#run-javascript">Run JavaScript</a>
+    <a class="lvl-3" href="#receive-messages-from-the-page">Receive messages from the page</a>
+    <a class="lvl-3" href="#react-to-navigation-and-title-changes">React to navigation and title changes</a>
+    <a class="lvl-3" href="#control-the-corner-radius">Control the corner radius</a>
+    <a class="lvl-2" href="#good-to-know">Good to know</a>
+    <a class="lvl-2" href="#quick-reference">Quick reference</a>
+    <a class="lvl-3" href="#properties">Properties</a>
+    <a class="lvl-3" href="#methods">Methods</a>
+    <a class="lvl-3" href="#events">Events</a>
+    <a class="lvl-3" href="#yaml">YAML</a>
+    <a class="lvl-2" href="#see-also">See also</a>
+  </aside>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div class="about">
+        <a class="brand" href="../index.html" style="font-size:20px">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:30px;height:30px">
+            <defs><linearGradient id="footGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+            </linearGradient></defs>
+            <path fill="url(#footGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          </svg>
+          Fluffy
+        </a>
+        <div class="about-copy">
+          <p>The soft answer to stiff, native UI frameworks. MIT licensed — because software should be free, fluffy and fun.</p>
+          <span class="copyright">© 2026 Tine Samir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

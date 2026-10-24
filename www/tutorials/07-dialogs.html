@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tutorial 7 — Dialogs · Fluffy</title>
+<meta name="description" content="Ask the user to confirm an action before you perform it, using a modal dialog and a typed answer.">
+<link rel="canonical" href="https://samyeyo.github.io/fluffy/tutorials/07-dialogs.html">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Samir Tine">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Fluffy">
+<meta property="og:title" content="Tutorial 7 — Dialogs · Fluffy">
+<meta property="og:description" content="Ask the user to confirm an action before you perform it, using a modal dialog and a typed answer.">
+<meta property="og:url" content="https://samyeyo.github.io/fluffy/tutorials/07-dialogs.html">
+<meta property="og:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<meta property="og:image:width" content="819">
+<meta property="og:image:height" content="390">
+<meta property="og:image:alt" content="Fluffy — a modern C++ desktop UI toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tutorial 7 — Dialogs · Fluffy">
+<meta name="twitter:description" content="Ask the user to confirm an action before you perform it, using a modal dialog and a typed answer.">
+<meta name="twitter:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Tutorial 7 — Dialogs · Fluffy","description":"Ask the user to confirm an action before you perform it, using a modal dialog and a typed answer.","url":"https://samyeyo.github.io/fluffy/tutorials/07-dialogs.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://samyeyo.github.io/fluffy/tutorials/07-dialogs.html"},"inLanguage":"en","author":{"@type":"Person","name":"Samir Tine"},"publisher":{"@type":"Organization","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"isPartOf":{"@type":"WebSite","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"image":"https://samyeyo.github.io/fluffy/fluffy-light.png"}</script>
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('fluffy-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) { /* ignore */ }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="../assets/site.css?v=21">
+<script src="../assets/highlight.min.js" defer></script>
+<script src="../assets/site.js?v=11" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="logoGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+        </linearGradient></defs>
+        <path fill="url(#logoGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+      </svg>
+      Fluffy
+    </a>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../documentation/index.html">Docs</a>
+      <a href="../tutorials/index.html" class="active">Tutorials</a>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar">
+  <div class="group"><span>Tutorials</span>
+  <a href="../tutorials/index.html">Tutorial overview</a>
+  <a href="../tutorials/01-hello-fluffy.html">1 · Hello Fluffy</a>
+  <a href="../tutorials/02-counter.html">2 · Counter</a>
+  <a href="../tutorials/03-input-form.html">3 · Input Form</a>
+  <a href="../tutorials/04-layouts.html">4 · Layouts</a>
+  <a href="../tutorials/05-icons-and-themes.html">5 · Icons &amp; Themes</a>
+  <a href="../tutorials/06-yaml-ui.html">6 · YAML UI</a>
+  <a href="../tutorials/07-dialogs.html" class="active">7 · Dialogs</a>
+  <a href="../tutorials/08-data-widgets.html">8 · Data Widgets</a>
+  <a href="../tutorials/09-webview.html">9 · WebView</a>
+  <a href="../tutorials/10-multiwindow.html">10 · Multiwindow</a>
+  <a href="../tutorials/11-custom-widget.html">11 · Custom Widget</a>
+  </div>
+  <div class="group"><span>Reference</span>
+  <a href="../documentation/window.html">Window</a>
+  <a href="../documentation/widget.html">Widgets</a>
+  <a href="../documentation/theme.html">Theme</a>
+  <a href="../documentation/yaml.html">YAML UI</a>
+  </div>
+  </aside>
+
+  <main class="docs-main">
+    <nav class="breadcrumb">
+      <a href="../index.html">Fluffy</a>
+      <span class="sep">/</span>
+      <a href="../tutorials/index.html">Tutorials</a>
+      <span class="sep">/</span>
+      <span>Tutorial 7 — Dialogs</span>
+    </nav>
+    <article class="prose">
+      <h1>Tutorial 7 — Dialogs</h1>
+<p>Ask the user to confirm an action before you perform it, using a modal dialog and a typed answer.</p>
+<h2 id="what-you-will-build">What you will build</h2>
+<p>A window with a Delete button and a status label. Clicking Delete opens a small
+confirmation dialog. The label then reports whether the item was deleted or the
+action was cancelled. Confirming destructive actions is a small habit that
+prevents accidental data loss.</p>
+<h2 id="what-you-will-learn">What you will learn</h2>
+<ul>
+<li>What a modal dialog is, and how it returns an answer.</li>
+<li>How to show a dialog with <code>showDialog</code>.</li>
+<li>How to read the button the user clicked.</li>
+<li>How to use icons and custom labels in a dialog.</li>
+</ul>
+<h2 id="the-words-you-need">The words you need</h2>
+<ul>
+<li><strong>Modal dialog</strong> — a small separate window that takes over input until the user
+  answers it. While it is open, the main window does not accept clicks. When the
+  user chooses a button, the dialog closes and hands the answer back to your
+  code.</li>
+<li><strong>Dialog result</strong> — the answer the dialog returns. With <code>showDialog</code> it is a
+  <code>DialogChoice</code> value: <code>First</code>, <code>Second</code>, <code>Third</code>, or <code>Dismissed</code> if the user
+  closed the dialog without choosing.</li>
+<li><strong>Inline content</strong> — as in <a href="05-icons-and-themes.html">Tutorial 5</a>, <code>Inline</code> mixes
+  an icon and text in one label or button. <code>$()</code> is the shorthand that builds it.</li>
+</ul>
+<h2 id="the-full-program">The full program</h2>
+<pre data-try="07-dialogs-0" data-w="640" data-h="400"><code class="language-cpp">#include &lt;fluffy/button.hpp&gt;
+#include &lt;fluffy/icons.hpp&gt;
+#include &lt;fluffy/inline.hpp&gt;
+#include &lt;fluffy/label.hpp&gt;
+#include &lt;fluffy/window.hpp&gt;
+
+int main() {
+    fluffy::Window win = fluffy::Window::open(&quot;Dialogs&quot;, 640, 400);
+    if (!win) return 1;
+
+    auto&amp; status = win.add&lt;fluffy::Label&gt;(&quot;Nothing deleted yet.&quot;);
+    status.setBounds(fluffy::Rect{40, 40, 560, 32});
+
+    auto&amp; deleteBtn = win.add&lt;fluffy::Button&gt;(
+        fluffy::$(fluffy::Icons::trash &lt;&lt; &quot; Delete&quot;));
+    deleteBtn.setBounds(fluffy::Rect{40, 120, 160, 40});
+
+    deleteBtn.onClick([&amp;] {
+        auto answer = win.showDialog(
+            &quot;Confirm delete&quot;,
+            &quot;Are you sure you want to delete this item?&quot;,
+            {&quot;Yes&quot;, &quot;No&quot;});
+
+        if (answer == fluffy::Window::DialogChoice::First) {
+            status.setText(&quot;Item deleted.&quot;);
+        } else {
+            status.setText(&quot;Delete cancelled.&quot;);
+        }
+    });
+
+    win.run();
+}
+</code></pre>
+<h2 id="build-and-run">Build and run</h2>
+<p>Compile this program the same way you compiled the first tutorial, then run the
+resulting executable. If you need the build commands, revisit
+<a href="01-hello-fluffy.html#build-and-run">Tutorial 1</a>.</p>
+<h2 id="step-by-step">Step by step</h2>
+<h3 id="1-add-a-status-label">1. Add a status label</h3>
+<pre><code class="language-cpp">auto&amp; status = win.add&lt;fluffy::Label&gt;(&quot;Nothing deleted yet.&quot;);
+status.setBounds(fluffy::Rect{40, 40, 560, 32});
+</code></pre>
+<p><code>win.add&lt;fluffy::Label&gt;(...)</code> creates the label inside the window and returns a
+reference to it. We keep that reference in <code>status</code> so the callback can change
+the text later.</p>
+<h3 id="2-add-a-delete-button-with-an-icon">2. Add a Delete button with an icon</h3>
+<pre><code class="language-cpp">auto&amp; deleteBtn = win.add&lt;fluffy::Button&gt;(
+    fluffy::$(fluffy::Icons::trash &lt;&lt; &quot; Delete&quot;));
+deleteBtn.setBounds(fluffy::Rect{40, 120, 160, 40});
+</code></pre>
+<p><code>$()</code> builds <code>Inline</code> content, so the button shows the trash icon followed by the
+word <code>" Delete"</code>. The leading space keeps the icon and the text from touching.
+<code>deleteBtn</code> is a reference to the real button, ready for a click callback.</p>
+<h3 id="3-ask-with-showdialog">3. Ask with <code>showDialog</code></h3>
+<pre><code class="language-cpp">auto answer = win.showDialog(
+    &quot;Confirm delete&quot;,
+    &quot;Are you sure you want to delete this item?&quot;,
+    {&quot;Yes&quot;, &quot;No&quot;});
+</code></pre>
+<p><code>showDialog</code> shows a modal dialog and waits for the user to answer. You pass the
+dialog title, the message, and the button labels in order. Because <code>"Yes"</code> is the
+first label, choosing it returns <code>DialogChoice::First</code>; <code>"No"</code> returns
+<code>DialogChoice::Second</code>. Closing the dialog without choosing returns
+<code>DialogChoice::Dismissed</code>.</p>
+<h3 id="4-react-to-the-answer">4. React to the answer</h3>
+<pre><code class="language-cpp">if (answer == fluffy::Window::DialogChoice::First) {
+    status.setText(&quot;Item deleted.&quot;);
+} else {
+    status.setText(&quot;Delete cancelled.&quot;);
+}
+</code></pre>
+<p>Only the first choice performs the delete. Everything else, including a dismissed
+dialog, is treated as a cancellation. This is what makes the confirmation
+meaningful: nothing destructive happens until the user explicitly confirms.</p>
+<h3 id="5-use-a-preset-button-set">5. Use a preset button set</h3>
+<p><code>showDialog</code> also accepts a preset set of buttons. The typed answer still
+indexes the buttons, so <code>Yes</code> is <code>First</code> and <code>No</code> is <code>Second</code>:</p>
+<pre><code class="language-cpp">auto answer = win.showDialog(
+    &quot;Confirm delete&quot;,
+    &quot;Are you sure?&quot;,
+    fluffy::Window::DialogButtons::YesNo);
+
+if (answer == fluffy::Window::DialogChoice::First) {
+    status.setText(&quot;Item deleted.&quot;);
+}
+</code></pre>
+<p><code>showDialog</code> blocks until the user answers, and a dismissed dialog returns
+<code>DialogChoice::Dismissed</code>.</p>
+<h3 id="6-use-icons-in-the-message-and-buttons">6. Use icons in the message and buttons</h3>
+<p><code>Inline</code> content also works for the message and for the buttons:</p>
+<pre><code class="language-cpp">win.showDialog(
+    &quot;Warning&quot;,
+    fluffy::$(fluffy::Icons::alert_triangle &lt;&lt; &quot; This cannot be undone.&quot;),
+    std::vector&lt;fluffy::Inline&gt;{
+        fluffy::Inline{} &lt;&lt; &quot;OK&quot;,
+        fluffy::Inline{} &lt;&lt; &quot;Cancel&quot;});
+</code></pre>
+<p>When the message is <code>Inline</code>, pass the buttons as a <code>std::vector&lt;fluffy::Inline&gt;</code>
+too. The preset-buttons form (<code>DialogButtons</code>) is for plain text messages.</p>
+<h2 id="exercises">Exercises</h2>
+<ol>
+<li>Show a dialog with custom button labels such as <code>"Keep"</code> and <code>"Delete"</code>, and
+   react to the correct <code>DialogChoice</code>.</li>
+<li>Add an icon to the Yes and No buttons with <code>Inline</code>.</li>
+<li>Ask for confirmation before the window closes.</li>
+</ol>
+<h2 id="next-tutorial">Next tutorial</h2>
+<p><a href="08-data-widgets.html">Data Widgets →</a></p>
+    </article>
+    <nav class="pager">
+    <a class="prev" href="../tutorials/06-yaml-ui.html"><span class="dir">← Previous</span><span class="ttl">6 · YAML UI</span></a>
+    <a class="next" href="../tutorials/08-data-widgets.html"><span class="dir">Next →</span><span class="ttl">8 · Data Widgets</span></a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc">
+    <span>On this page</span>
+    <a class="lvl-2" href="#what-you-will-build">What you will build</a>
+    <a class="lvl-2" href="#what-you-will-learn">What you will learn</a>
+    <a class="lvl-2" href="#the-words-you-need">The words you need</a>
+    <a class="lvl-2" href="#the-full-program">The full program</a>
+    <a class="lvl-2" href="#build-and-run">Build and run</a>
+    <a class="lvl-2" href="#step-by-step">Step by step</a>
+    <a class="lvl-3" href="#1-add-a-status-label">1. Add a status label</a>
+    <a class="lvl-3" href="#2-add-a-delete-button-with-an-icon">2. Add a Delete button with an icon</a>
+    <a class="lvl-3" href="#3-ask-with-showdialog">3. Ask with &lt;codeshowDialog&lt;/code</a>
+    <a class="lvl-3" href="#4-react-to-the-answer">4. React to the answer</a>
+    <a class="lvl-3" href="#5-use-a-preset-button-set">5. Use a preset button set</a>
+    <a class="lvl-3" href="#6-use-icons-in-the-message-and-buttons">6. Use icons in the message and buttons</a>
+    <a class="lvl-2" href="#exercises">Exercises</a>
+    <a class="lvl-2" href="#next-tutorial">Next tutorial</a>
+  </aside>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div class="about">
+        <a class="brand" href="../index.html" style="font-size:20px">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:30px;height:30px">
+            <defs><linearGradient id="footGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+            </linearGradient></defs>
+            <path fill="url(#footGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          </svg>
+          Fluffy
+        </a>
+        <div class="about-copy">
+          <p>The soft answer to stiff, native UI frameworks. MIT licensed — because software should be free, fluffy and fun.</p>
+          <span class="copyright">© 2026 Tine Samir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

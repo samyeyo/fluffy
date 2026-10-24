@@ -1,0 +1,63 @@
+third_party/fluffy_emoji/LICENSE.txt
+----------------------------------------------------------------------------
+Lucide Icons — ISC License
+----------------------------------------------------------------------------
+
+This directory's purpose is to ship the upstream Lucide licence and
+attribution alongside the bundled lucide.ttf file that
+cmake/FetchEmojiFont.cmake downloads at configure time and that
+examples/helloworld/main.cpp registers at runtime via
+Window::register_emoji_font_memory() as the canonical "icon" face for
+Private Use Area (U+E000..U+E650) codepoints.
+
+Lucide is licensed ISC.  Anyone shipping a binary that embeds the
+lucide.ttf bytes must:
+  1. preserve this licence file;
+  2. preserve the upstream attribution for Lucide and its contributors;
+  3. (no ShareAlike — ISC permits unrestricted re-distribution).
+
+A stand-alone binary that links the unmodified upstream font satisfies
+(1)+(2) trivially because the font is an unmodified upstream artifact.
+A Fluffy distribution that bundles the font inherits the upstream's
+ISC terms on the FONT ITSELF only — unrelated Fluffy source code is
+NOT bound to ISC by this attribution file.
+
+============================================================================
+ISC Licence (verbatim, from https://github.com/lucide-icons/lucide/blob/main/LICENSE)
+============================================================================
+
+ISC License
+
+Copyright (c) for portions of Lucide are held by Cole Bemis 2013-2022 as
+part of Feather (MIT licensed).  All other copyright for Lucide are held
+by Lucide Contributors 2022.
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+----------------------------------------------------------------------------
+Upstream attribution
+----------------------------------------------------------------------------
+
+Lucide — https://lucide.dev
+Source: https://github.com/lucide-icons/lucide
+Distribution artifact: https://cdn.jsdelivr.net/npm/lucide-static/font/lucide.ttf
+
+The bundled file is the consolidated "lucide-static" font (single TTF
+containing every icon as a `glyf` outline glyph) shipped under the
+lucide-static npm package at https://www.npmjs.com/package/lucide-static.
+Each icon is mapped to a Private Use Area codepoint in the range
+U+E000..U+E650 (see https://lucide.dev/guide for the icon-name →
+codepoint table for the current release).
+
+Pin version: 0.473.0 — see FLUFFY_EMOJI_FONT_VERSION in
+cmake/FetchEmojiFont.cmake.

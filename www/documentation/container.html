@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Container · Fluffy</title>
+<meta name="description" content="A Container is a widget that holds other widgets. You use it to group widgets, arrange them in a row, column, or grid, or make a region that scrolls.">
+<link rel="canonical" href="https://samyeyo.github.io/fluffy/documentation/container.html">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Samir Tine">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Fluffy">
+<meta property="og:title" content="Container · Fluffy">
+<meta property="og:description" content="A Container is a widget that holds other widgets. You use it to group widgets, arrange them in a row, column, or grid, or make a region that scrolls.">
+<meta property="og:url" content="https://samyeyo.github.io/fluffy/documentation/container.html">
+<meta property="og:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<meta property="og:image:width" content="819">
+<meta property="og:image:height" content="390">
+<meta property="og:image:alt" content="Fluffy — a modern C++ desktop UI toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Container · Fluffy">
+<meta name="twitter:description" content="A Container is a widget that holds other widgets. You use it to group widgets, arrange them in a row, column, or grid, or make a region that scrolls.">
+<meta name="twitter:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Container · Fluffy","description":"A Container is a widget that holds other widgets. You use it to group widgets, arrange them in a row, column, or grid, or make a region that scrolls.","url":"https://samyeyo.github.io/fluffy/documentation/container.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://samyeyo.github.io/fluffy/documentation/container.html"},"inLanguage":"en","author":{"@type":"Person","name":"Samir Tine"},"publisher":{"@type":"Organization","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"isPartOf":{"@type":"WebSite","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"image":"https://samyeyo.github.io/fluffy/fluffy-light.png"}</script>
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('fluffy-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) { /* ignore */ }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="../assets/site.css?v=21">
+<script src="../assets/highlight.min.js" defer></script>
+<script src="../assets/site.js?v=11" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="logoGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+        </linearGradient></defs>
+        <path fill="url(#logoGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+      </svg>
+      Fluffy
+    </a>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../documentation/index.html" class="active">Docs</a>
+      <a href="../tutorials/index.html">Tutorials</a>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar">
+  <div class="group"><span>Getting started</span>
+  <a href="../documentation/index.html">Welcome to Fluffy</a>
+  <a href="../documentation/install.html">Installing Fluffy</a>
+  <a href="../documentation/geom.html">Geometry &amp; colors</a>
+  <a href="../documentation/widget.html">Widget basics</a>
+  <a href="../documentation/custom.html">Custom widgets</a>
+  <a href="../documentation/window.html">Window</a>
+  <a href="../documentation/application.html">Application</a>
+  </div>
+  <div class="group"><span>Core widgets</span>
+  <a href="../documentation/label.html">Label</a>
+  <a href="../documentation/button.html">Button</a>
+  <a href="../documentation/textinput.html">TextInput</a>
+  <a href="../documentation/image.html">Image</a>
+  </div>
+  <div class="group"><span>Layout</span>
+  <a href="../documentation/container.html" class="active">Container</a>
+  <a href="../documentation/layouts.html">Layouts</a>
+  </div>
+  <div class="group"><span>Toggles &amp; pickers</span>
+  <a href="../documentation/checkbox.html">Checkbox</a>
+  <a href="../documentation/radiobutton.html">RadioButton</a>
+  <a href="../documentation/switch.html">Switch</a>
+  <a href="../documentation/slider.html">Slider</a>
+  <a href="../documentation/color_picker.html">ColorPicker</a>
+  </div>
+  <div class="group"><span>Data widgets</span>
+  <a href="../documentation/combobox.html">ComboBox</a>
+  <a href="../documentation/listview.html">ListView</a>
+  <a href="../documentation/tabview.html">TabView</a>
+  <a href="../documentation/table.html">Table</a>
+  <a href="../documentation/progress_ring.html">ProgressRing</a>
+  </div>
+  <div class="group"><span>Navigation &amp; overlays</span>
+  <a href="../documentation/menu.html">Menu</a>
+  <a href="../documentation/nav.html">Nav</a>
+  <a href="../documentation/tooltip.html">Tooltip</a>
+  <a href="../documentation/dialog.html">Dialogs</a>
+  <a href="../documentation/webview.html">WebView</a>
+  </div>
+  <div class="group"><span>Styling</span>
+  <a href="../documentation/theme.html">Theme</a>
+  <a href="../documentation/inline.html">Inline</a>
+  <a href="../documentation/icons.html">Icons</a>
+  </div>
+  <div class="group"><span>Declarative UI</span>
+  <a href="../documentation/yaml.html">YAML UI</a>
+  </div>
+  </aside>
+
+  <main class="docs-main">
+    <nav class="breadcrumb">
+      <a href="../index.html">Fluffy</a>
+      <span class="sep">/</span>
+      <a href="../documentation/index.html">Documentation</a>
+      <span class="sep">/</span>
+      <span>Container</span>
+    </nav>
+    <article class="prose">
+      <h1>Container</h1>
+<p>A <code>Container</code> is a widget that holds other widgets. You use it to group widgets, arrange them in a row, column, or grid, or make a region that scrolls.</p>
+<h2 id="what-its-for">What it's for</h2>
+<p>A container is a widget whose job is to own and organize other widgets. The widgets inside it are called its <strong>children</strong>. You create the children once, and the container keeps them alive: when the container is destroyed, its children go with it.</p>
+<p>Children are drawn and receive input through their container, so a button inside a container still behaves like a button. You can also put containers inside containers when you need groups within groups.</p>
+<p>A container can have a <strong>layout</strong>. A layout is a rule that decides where the container's children sit and how much space they get. Without a layout, children keep the bounds you give them. With a layout, the container positions the children for you every frame.</p>
+<p>If you make a container <strong>scrollable</strong>, it clips anything that runs past its edges, shows scroll indicators, and lets the mouse wheel move the content. This is useful when the content is taller or wider than the visible area.</p>
+<h2 id="a-first-example">A first example</h2>
+<pre data-try="container-0" data-w="640" data-h="400"><code class="language-cpp">#include &lt;fluffy/fluffy.hpp&gt;
+
+int main() {
+    fluffy::Window win = fluffy::Window::open(&quot;Container&quot;, 640, 400);
+    if (!win) return 1;
+
+    auto&amp; box = win.add&lt;fluffy::Container&gt;();
+    box.setBounds(fluffy::Rect{40, 40, 400, 200});
+    box.setVertical(4.0f, 8.0f);
+
+    auto&amp; first = box.add&lt;fluffy::Label&gt;(&quot;First&quot;);
+    box.add&lt;fluffy::Label&gt;(&quot;Second&quot;);
+
+    win.run();
+}
+</code></pre>
+<p><code>Window::open</code> creates the window, and <code>if (!win)</code> stops early if it could not be opened. <code>win.add&lt;fluffy::Container&gt;()</code> creates a container inside the window and returns a reference to it. The <code>auto&amp;</code> matters: <code>box</code> is that reference, so you work with the real container rather than a copy.</p>
+<p><code>setBounds</code> gives the container its position and size. <code>Rect{40, 40, 400, 200}</code> puts its top-left corner at (40, 40), with a width of 400 and a height of 200 pixels.</p>
+<p><code>setVertical(4.0f, 8.0f)</code> installs a vertical layout. The first number is the <strong>spacing</strong>: 4 pixels between children. The second is the <strong>padding</strong>: 8 pixels of empty space inside the container, around all children.</p>
+<p><code>box.add&lt;fluffy::Label&gt;("First")</code> adds a child. The layout places it for you, so children do not need their own <code>setBounds</code> calls. The <code>add</code> call returns a reference too, which you can keep when you need to talk to the child again.</p>
+<h2 id="common-tasks">Common tasks</h2>
+<h3 id="arrange-children-with-a-layout">Arrange children with a layout</h3>
+<p>Once a container has a layout, the layout assigns child bounds every frame. Children may start with an empty <code>Rect{}</code>; the layout fills it in.</p>
+<p><code>setHorizontal()</code>, <code>setVertical()</code>, and <code>setGrid()</code> install a layout in one call. The spacing and padding shortcuts are chainable, and <code>align()</code> and <code>justify()</code> forward to the layout:</p>
+<pre><code class="language-cpp">box.setPadding(8.0f)
+   .setSpacing(4.0f)
+   .align(fluffy::Align::Center)
+   .justify(fluffy::Justify::Start);
+
+fluffy::Layout* lo = box.layout();
+</code></pre>
+<p><code>align</code> positions children on the layout's cross axis; <code>justify</code> distributes them along its main axis. For a vertical layout the main axis is vertical, so <code>align</code> moves children left and right. For a horizontal layout it is the other way around. The layout itself is a <code>HorizontalLayout</code>, <code>VerticalLayout</code>, or <code>GridLayout</code>; the <a href="layouts.html">Layouts</a> page explains each one.</p>
+<h3 id="add-nested-groups">Add nested groups</h3>
+<p><code>addRow()</code> creates a child container with a horizontal layout, and <code>addColumn()</code> creates one with a vertical layout. Both have automatic height and return a pointer to the new container.</p>
+<pre><code class="language-cpp">auto* row = box.addRow();
+auto* col = box.addColumn();
+
+row-&gt;add&lt;fluffy::Label&gt;(&quot;Name&quot;);
+col-&gt;add&lt;fluffy::Label&gt;(&quot;Value&quot;);
+</code></pre>
+<p>Nesting is useful for layouts such as a label and a value side by side inside a vertical form.</p>
+<h3 id="inspect-and-remove-children">Inspect and remove children</h3>
+<pre><code class="language-cpp">std::size_t n = box.childCount();
+fluffy::Widget* first = box.child(0);
+box.removeAllChildren();
+</code></pre>
+<p><code>childCount()</code> returns how many children the container has. <code>child(0)</code> returns a pointer to the first child, or <code>nullptr</code> when the index is out of range. <code>removeAllChildren()</code> destroys every child.</p>
+<h3 id="make-a-container-scrollable">Make a container scrollable</h3>
+<p>A scrollable container keeps a <strong>scroll offset</strong>: how far its content has been moved, in pixels. The offset is clamped so you cannot scroll past the content.</p>
+<pre><code class="language-cpp">box.setScrollable(true);
+bool s = box.isScrollable();
+float sx = box.scrollX();
+float sy = box.scrollY();
+box.setScrollX(0.0f).setScrollY(40.0f);
+</code></pre>
+<p><code>setScrollable(true)</code> turns on clipping, indicators, and wheel scrolling. <code>scrollX()</code> and <code>scrollY()</code> read the current offsets, and <code>setScrollX()</code> / <code>setScrollY()</code> change them. The setters are chainable and clamp their values.</p>
+<p>For a scrollable container, keep <code>setAutoSize(fluffy::AutoSize::Disabled)</code> so the container stays at a fixed size and its content can overflow.</p>
+<h3 id="define-a-container-in-yaml">Define a container in YAML</h3>
+<p>YAML is a text format for describing a widget tree. A <code>Container:</code> entry holds its own geometry, then a layout key, then its children:</p>
+<pre><code class="language-yaml">Container:
+  x: 40
+  y: 40
+  width: 400
+  height: 200
+  scrollable: true
+  Vertical:
+    spacing: 8
+    padding: 8
+  Label: { text: &quot;First&quot; }
+  Label: { text: &quot;Second&quot; }
+</code></pre>
+<p><code>x</code>, <code>y</code>, <code>width</code>, and <code>height</code> are the same rectangle you would pass to <code>setBounds</code>. <code>scrollable</code> matches <code>setScrollable</code>. <code>Vertical</code> is the layout key; <code>spacing</code> and <code>padding</code> configure it. Each <code>Label</code> entry becomes a child.</p>
+<h2 id="good-to-know">Good to know</h2>
+<ul>
+<li>A container fills its parent and reports that it is a container, so parents know to pass events and drawing down to its children.</li>
+<li>The window pointer and focus clearing are passed down through the whole tree, so nested widgets keep working normally.</li>
+<li>You can walk every child with <code>forEachChild()</code>.</li>
+<li>A container supports the usual widget properties in YAML and can size itself from its children's natural sizes.</li>
+<li>The layout repositions children every frame. Child rectangles may be empty and will be assigned by the layout.</li>
+<li>A container has no events of its own. When it is scrollable, it uses the mouse wheel to adjust <code>scrollX</code> / <code>scrollY</code>.</li>
+</ul>
+<h2 id="quick-reference">Quick reference</h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>scrollable</code></td>
+<td><code>bool</code></td>
+<td><code>true</code> clips children to bounds and enables wheel scrolling. Default <code>false</code>.</td>
+</tr>
+<tr>
+<td><code>scrollX</code> / <code>scrollY</code></td>
+<td><code>float</code></td>
+<td>Current scroll offset (clamped).</td>
+</tr>
+<tr>
+<td><code>layout</code></td>
+<td><code>unique_ptr&lt;Layout&gt;</code></td>
+<td><code>HorizontalLayout</code>, <code>VerticalLayout</code>, or <code>GridLayout</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>Plus <code>Widget</code> properties: <code>bounds</code>, <code>visible</code>, <code>enabled</code>, <code>autoSize</code>.</p>
+<pre><code class="language-cpp">auto&amp; box = win.add&lt;fluffy::Container&gt;();
+box.setBounds(fluffy::Rect{40, 40, 400, 200});
+box.setVertical(4.0f, 8.0f);
+fluffy::Layout* lo = box.layout();
+
+box.setPadding(8.0f).setSpacing(4.0f)
+   .align(fluffy::Align::Center).justify(fluffy::Justify::Start);
+
+box.add&lt;fluffy::Label&gt;(&quot;First&quot;);
+auto&amp; lbl = box.add&lt;fluffy::Label&gt;(&quot;Second&quot;);
+auto* row = box.addRow();
+auto* col = box.addColumn();
+std::size_t n = box.childCount();
+fluffy::Widget* c = box.child(0);
+box.removeAllChildren();
+
+box.setScrollable(true);
+bool s = box.isScrollable();
+float sx = box.scrollX();
+float sy = box.scrollY();
+box.setScrollX(0.0f).setScrollY(40.0f);
+</code></pre>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="layouts.html">Layouts</a> — <code>HorizontalLayout</code>, <code>VerticalLayout</code> and <code>GridLayout</code>.</li>
+<li><a href="widget.html">Widget</a></li>
+</ul>
+    </article>
+    <nav class="pager">
+    <a class="prev" href="../documentation/image.html"><span class="dir">← Previous</span><span class="ttl">Image</span></a>
+    <a class="next" href="../documentation/layouts.html"><span class="dir">Next →</span><span class="ttl">Layouts</span></a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc">
+    <span>On this page</span>
+    <a class="lvl-2" href="#what-its-for">What it&#x27;s for</a>
+    <a class="lvl-2" href="#a-first-example">A first example</a>
+    <a class="lvl-2" href="#common-tasks">Common tasks</a>
+    <a class="lvl-3" href="#arrange-children-with-a-layout">Arrange children with a layout</a>
+    <a class="lvl-3" href="#add-nested-groups">Add nested groups</a>
+    <a class="lvl-3" href="#inspect-and-remove-children">Inspect and remove children</a>
+    <a class="lvl-3" href="#make-a-container-scrollable">Make a container scrollable</a>
+    <a class="lvl-3" href="#define-a-container-in-yaml">Define a container in YAML</a>
+    <a class="lvl-2" href="#good-to-know">Good to know</a>
+    <a class="lvl-2" href="#quick-reference">Quick reference</a>
+    <a class="lvl-2" href="#see-also">See also</a>
+  </aside>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div class="about">
+        <a class="brand" href="../index.html" style="font-size:20px">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:30px;height:30px">
+            <defs><linearGradient id="footGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+            </linearGradient></defs>
+            <path fill="url(#footGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          </svg>
+          Fluffy
+        </a>
+        <div class="about-copy">
+          <p>The soft answer to stiff, native UI frameworks. MIT licensed — because software should be free, fluffy and fun.</p>
+          <span class="copyright">© 2026 Tine Samir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

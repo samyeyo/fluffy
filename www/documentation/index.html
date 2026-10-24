@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome to Fluffy</title>
+<meta name="description" content="Fluffy is a small C++ library for building desktop apps with windows, buttons, labels, text inputs, and layouts, and it is intentionally tiny.">
+<link rel="canonical" href="https://samyeyo.github.io/fluffy/documentation/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Samir Tine">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Fluffy">
+<meta property="og:title" content="Welcome to Fluffy">
+<meta property="og:description" content="Fluffy is a small C++ library for building desktop apps with windows, buttons, labels, text inputs, and layouts, and it is intentionally tiny.">
+<meta property="og:url" content="https://samyeyo.github.io/fluffy/documentation/">
+<meta property="og:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<meta property="og:image:width" content="819">
+<meta property="og:image:height" content="390">
+<meta property="og:image:alt" content="Fluffy — a modern C++ desktop UI toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Welcome to Fluffy">
+<meta name="twitter:description" content="Fluffy is a small C++ library for building desktop apps with windows, buttons, labels, text inputs, and layouts, and it is intentionally tiny.">
+<meta name="twitter:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Welcome to Fluffy","description":"Fluffy is a small C++ library for building desktop apps with windows, buttons, labels, text inputs, and layouts, and it is intentionally tiny.","url":"https://samyeyo.github.io/fluffy/documentation/","inLanguage":"en","author":{"@type":"Person","name":"Samir Tine"},"isPartOf":{"@type":"WebSite","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"image":"https://samyeyo.github.io/fluffy/fluffy-light.png"}</script>
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('fluffy-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) { /* ignore */ }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="../assets/site.css?v=21">
+<script src="../assets/highlight.min.js" defer></script>
+<script src="../assets/site.js?v=11" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="logoGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+        </linearGradient></defs>
+        <path fill="url(#logoGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+      </svg>
+      Fluffy
+    </a>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../documentation/index.html" class="active">Docs</a>
+      <a href="../tutorials/index.html">Tutorials</a>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar">
+  <div class="group"><span>Getting started</span>
+  <a href="../documentation/index.html" class="active">Welcome to Fluffy</a>
+  <a href="../documentation/install.html">Installing Fluffy</a>
+  <a href="../documentation/geom.html">Geometry &amp; colors</a>
+  <a href="../documentation/widget.html">Widget basics</a>
+  <a href="../documentation/custom.html">Custom widgets</a>
+  <a href="../documentation/window.html">Window</a>
+  <a href="../documentation/application.html">Application</a>
+  </div>
+  <div class="group"><span>Core widgets</span>
+  <a href="../documentation/label.html">Label</a>
+  <a href="../documentation/button.html">Button</a>
+  <a href="../documentation/textinput.html">TextInput</a>
+  <a href="../documentation/image.html">Image</a>
+  </div>
+  <div class="group"><span>Layout</span>
+  <a href="../documentation/container.html">Container</a>
+  <a href="../documentation/layouts.html">Layouts</a>
+  </div>
+  <div class="group"><span>Toggles &amp; pickers</span>
+  <a href="../documentation/checkbox.html">Checkbox</a>
+  <a href="../documentation/radiobutton.html">RadioButton</a>
+  <a href="../documentation/switch.html">Switch</a>
+  <a href="../documentation/slider.html">Slider</a>
+  <a href="../documentation/color_picker.html">ColorPicker</a>
+  </div>
+  <div class="group"><span>Data widgets</span>
+  <a href="../documentation/combobox.html">ComboBox</a>
+  <a href="../documentation/listview.html">ListView</a>
+  <a href="../documentation/tabview.html">TabView</a>
+  <a href="../documentation/table.html">Table</a>
+  <a href="../documentation/progress_ring.html">ProgressRing</a>
+  </div>
+  <div class="group"><span>Navigation &amp; overlays</span>
+  <a href="../documentation/menu.html">Menu</a>
+  <a href="../documentation/nav.html">Nav</a>
+  <a href="../documentation/tooltip.html">Tooltip</a>
+  <a href="../documentation/dialog.html">Dialogs</a>
+  <a href="../documentation/webview.html">WebView</a>
+  </div>
+  <div class="group"><span>Styling</span>
+  <a href="../documentation/theme.html">Theme</a>
+  <a href="../documentation/inline.html">Inline</a>
+  <a href="../documentation/icons.html">Icons</a>
+  </div>
+  <div class="group"><span>Declarative UI</span>
+  <a href="../documentation/yaml.html">YAML UI</a>
+  </div>
+  </aside>
+
+  <main class="docs-main">
+    <nav class="breadcrumb">
+      <a href="../index.html">Fluffy</a>
+      <span class="sep">/</span>
+      <a href="../documentation/index.html">Documentation</a>
+      <span class="sep">/</span>
+      <span>Welcome to Fluffy</span>
+    </nav>
+    <article class="prose">
+      <h1>Welcome to Fluffy</h1>
+<p>Fluffy is a small C++ library for building desktop apps with windows, buttons, labels, text inputs, and layouts, and it is intentionally tiny.</p>
+<p>New here? Start with <a href="install.html">Installing Fluffy</a> to download, build, and install the library, then come back for the API tour.</p>
+<h2 id="what-its-for">What it's for</h2>
+<p>Use Fluffy when you want to build a small GUI app without learning a massive framework. You can learn the whole API in an afternoon, and the same few building blocks cover both code-driven and declarative interfaces.</p>
+<p>A few words come up in every Fluffy program, so here they are before we start:</p>
+<ul>
+<li><strong>Window</strong> — the operating-system window your app draws into. It owns everything inside it.</li>
+<li><strong>Widget</strong> — any visible element in a window: a label, a button, a text field, an image… Widgets live inside a window, and the window owns them.</li>
+<li><strong>Callback</strong> — a small function you hand to a widget so it can call you back when something happens, such as a click. In C++ you usually write these as lambdas, like <code>[] { … }</code>.</li>
+</ul>
+<h2 id="a-first-example">A first example</h2>
+<p>A window with a label and a button that prints “Hello!” when you click it:</p>
+<pre data-try="readme-0" data-w="640" data-h="400"><code class="language-cpp">#include &lt;cstdio&gt;
+
+#include &lt;fluffy/fluffy.hpp&gt;
+
+int main() {
+    fluffy::Window win = fluffy::Window::open(&quot;My App&quot;, 640, 400);
+    if (!win) return 1;
+
+    auto&amp; label = win.add&lt;fluffy::Label&gt;(&quot;Hello, Fluffy!&quot;);
+    label.setBounds(fluffy::Rect{40, 40, 560, 32});
+
+    auto&amp; btn = win.add&lt;fluffy::Button&gt;(&quot;Say hello&quot;);
+    btn.setBounds(fluffy::Rect{40, 120, 120, 40});
+    btn.onClick([] {
+        std::printf(&quot;Hello!\n&quot;);
+    });
+
+    win.run();
+}
+</code></pre>
+<p>That is almost all there is to a Fluffy program: you open a window, add widgets, set callbacks, and run. <code>Window::open</code> gives you the window, and <code>if (!win)</code> checks that it opened. Each widget is added with <code>add&lt;...&gt;()</code>, which returns a reference to the widget the window owns.</p>
+<p>For two windows, open both and then call <code>Application::get().run()</code> — each window keeps its own <code>Theme</code> (see <a href="application.html">Application</a>).</p>
+<p>If you are brand new, <a href="../tutorials/01-hello-fluffy.html">Tutorial 1 — Hello Fluffy</a> walks through this exact program line by line.</p>
+<h2 id="reading-path">Reading path</h2>
+<p>New here? Read in this order:</p>
+<ol>
+<li><strong><a href="install.html">Installing Fluffy</a></strong> — build, install, and link Fluffy from your own project.</li>
+<li><strong><a href="geom.html">Geometry &amp; colors</a></strong> — how to say “put a box here” and “paint it blue”.</li>
+<li><strong><a href="window.html">Window</a></strong> — the top-level window, main loop, and themes.</li>
+<li><strong><a href="widget.html">Widget basics</a></strong> — what every widget can do (move, hide, resize, focus).</li>
+<li><strong><a href="label.html">Label</a></strong> · <strong><a href="button.html">Button</a></strong> · <strong><a href="textinput.html">TextInput</a></strong> — the three everyday widgets.</li>
+<li><strong><a href="container.html">Container</a></strong> and <strong><a href="layouts.html">Layouts</a></strong> — grouping widgets and arranging them automatically.</li>
+<li><strong><a href="image.html">Image</a></strong> — displaying raster images with platform-native decoders.</li>
+<li><strong><a href="checkbox.html">Toggles</a></strong> — <strong><a href="checkbox.html">Checkbox</a></strong>, <strong><a href="radiobutton.html">RadioButton</a></strong>, <strong><a href="switch.html">Switch</a></strong>, <strong><a href="slider.html">Slider</a></strong>, <strong><a href="color_picker.html">ColorPicker</a></strong>.</li>
+<li><strong><a href="combobox.html">Data</a></strong> — <strong><a href="combobox.html">ComboBox</a></strong>, <strong><a href="listview.html">ListView</a></strong>, <strong><a href="tabview.html">TabView</a></strong>, <strong><a href="table.html">Table</a></strong>, <strong><a href="progress_ring.html">ProgressRing</a></strong>.</li>
+<li><strong><a href="tooltip.html">Overlays</a></strong> — <strong><a href="tooltip.html">Tooltip</a></strong>, <strong><a href="menu.html">Menu</a></strong> / <strong><a href="nav.html">Nav</a></strong>, <strong><a href="webview.html">WebView</a></strong>.</li>
+</ol>
+<p>After that, the fun parts:</p>
+<ul>
+<li><strong><a href="inline.html">Inline</a></strong> — mix text and icons in one label or button (now also in <code>ComboBox</code>/<code>ListView</code>/<code>Tooltip</code>/<code>Menu</code>).</li>
+<li><strong><a href="icons.html">Icons</a></strong> — the built-in icon catalog.</li>
+<li><strong><a href="theme.html">Theme</a></strong> — light mode, dark mode, or your own colors.</li>
+<li><strong><a href="dialog.html">Dialogs</a></strong> — show yes/no popups with one line of code.</li>
+<li><strong><a href="yaml.html">YAML</a></strong> — describe your whole UI in a file.</li>
+<li><strong>Scrollable containers</strong> — clip overflow and show scroll indicators.</li>
+<li><strong>Word wrapping</strong> — labels wrap text at word boundaries automatically.</li>
+<li><strong>Dropdown menus</strong> — buttons that open vertical menus on click.</li>
+</ul>
+    </article>
+    <nav class="pager">
+    <span></span>
+    <a class="next" href="../documentation/install.html"><span class="dir">Next →</span><span class="ttl">Installing Fluffy</span></a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc">
+    <span>On this page</span>
+    <a class="lvl-2" href="#what-its-for">What it&#x27;s for</a>
+    <a class="lvl-2" href="#a-first-example">A first example</a>
+    <a class="lvl-2" href="#reading-path">Reading path</a>
+  </aside>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div class="about">
+        <a class="brand" href="../index.html" style="font-size:20px">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:30px;height:30px">
+            <defs><linearGradient id="footGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+            </linearGradient></defs>
+            <path fill="url(#footGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          </svg>
+          Fluffy
+        </a>
+        <div class="about-copy">
+          <p>The soft answer to stiff, native UI frameworks. MIT licensed — because software should be free, fluffy and fun.</p>
+          <span class="copyright">© 2026 Tine Samir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

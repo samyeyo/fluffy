@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YAML UI · Fluffy</title>
+<meta name="description" content="YAML is a plain-text format that uses indentation to describe nested data.">
+<link rel="canonical" href="https://samyeyo.github.io/fluffy/documentation/yaml.html">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Samir Tine">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Fluffy">
+<meta property="og:title" content="YAML UI · Fluffy">
+<meta property="og:description" content="YAML is a plain-text format that uses indentation to describe nested data.">
+<meta property="og:url" content="https://samyeyo.github.io/fluffy/documentation/yaml.html">
+<meta property="og:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<meta property="og:image:width" content="819">
+<meta property="og:image:height" content="390">
+<meta property="og:image:alt" content="Fluffy — a modern C++ desktop UI toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="YAML UI · Fluffy">
+<meta name="twitter:description" content="YAML is a plain-text format that uses indentation to describe nested data.">
+<meta name="twitter:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"YAML UI · Fluffy","description":"YAML is a plain-text format that uses indentation to describe nested data.","url":"https://samyeyo.github.io/fluffy/documentation/yaml.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://samyeyo.github.io/fluffy/documentation/yaml.html"},"inLanguage":"en","author":{"@type":"Person","name":"Samir Tine"},"publisher":{"@type":"Organization","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"isPartOf":{"@type":"WebSite","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"image":"https://samyeyo.github.io/fluffy/fluffy-light.png"}</script>
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('fluffy-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) { /* ignore */ }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="../assets/site.css?v=21">
+<script src="../assets/highlight.min.js" defer></script>
+<script src="../assets/site.js?v=11" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="logoGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+        </linearGradient></defs>
+        <path fill="url(#logoGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+      </svg>
+      Fluffy
+    </a>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../documentation/index.html" class="active">Docs</a>
+      <a href="../tutorials/index.html">Tutorials</a>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar">
+  <div class="group"><span>Getting started</span>
+  <a href="../documentation/index.html">Welcome to Fluffy</a>
+  <a href="../documentation/install.html">Installing Fluffy</a>
+  <a href="../documentation/geom.html">Geometry &amp; colors</a>
+  <a href="../documentation/widget.html">Widget basics</a>
+  <a href="../documentation/custom.html">Custom widgets</a>
+  <a href="../documentation/window.html">Window</a>
+  <a href="../documentation/application.html">Application</a>
+  </div>
+  <div class="group"><span>Core widgets</span>
+  <a href="../documentation/label.html">Label</a>
+  <a href="../documentation/button.html">Button</a>
+  <a href="../documentation/textinput.html">TextInput</a>
+  <a href="../documentation/image.html">Image</a>
+  </div>
+  <div class="group"><span>Layout</span>
+  <a href="../documentation/container.html">Container</a>
+  <a href="../documentation/layouts.html">Layouts</a>
+  </div>
+  <div class="group"><span>Toggles &amp; pickers</span>
+  <a href="../documentation/checkbox.html">Checkbox</a>
+  <a href="../documentation/radiobutton.html">RadioButton</a>
+  <a href="../documentation/switch.html">Switch</a>
+  <a href="../documentation/slider.html">Slider</a>
+  <a href="../documentation/color_picker.html">ColorPicker</a>
+  </div>
+  <div class="group"><span>Data widgets</span>
+  <a href="../documentation/combobox.html">ComboBox</a>
+  <a href="../documentation/listview.html">ListView</a>
+  <a href="../documentation/tabview.html">TabView</a>
+  <a href="../documentation/table.html">Table</a>
+  <a href="../documentation/progress_ring.html">ProgressRing</a>
+  </div>
+  <div class="group"><span>Navigation &amp; overlays</span>
+  <a href="../documentation/menu.html">Menu</a>
+  <a href="../documentation/nav.html">Nav</a>
+  <a href="../documentation/tooltip.html">Tooltip</a>
+  <a href="../documentation/dialog.html">Dialogs</a>
+  <a href="../documentation/webview.html">WebView</a>
+  </div>
+  <div class="group"><span>Styling</span>
+  <a href="../documentation/theme.html">Theme</a>
+  <a href="../documentation/inline.html">Inline</a>
+  <a href="../documentation/icons.html">Icons</a>
+  </div>
+  <div class="group"><span>Declarative UI</span>
+  <a href="../documentation/yaml.html" class="active">YAML UI</a>
+  </div>
+  </aside>
+
+  <main class="docs-main">
+    <nav class="breadcrumb">
+      <a href="../index.html">Fluffy</a>
+      <span class="sep">/</span>
+      <a href="../documentation/index.html">Documentation</a>
+      <span class="sep">/</span>
+      <span>YAML UI</span>
+    </nav>
+    <article class="prose">
+      <h1>YAML UI</h1>
+<p>YAML is a plain-text format that uses indentation to describe nested data. Fluffy can read a YAML file that describes a tree of widgets and build those widgets in a window for you. That lets you keep the shape of a screen in a file instead of in C++ code.</p>
+<h2 id="what-its-for">What it's for</h2>
+<p>Use the YAML UI loader when you want to separate layout from code. You describe widgets and containers in YAML, then load them into a window. This is useful for keeping the structure of a screen out of your C++ source, and for changing a screen without recompiling.</p>
+<h2 id="the-words-you-need">The words you need</h2>
+<ul>
+<li><strong>YAML</strong> — a text format that uses indentation to describe nested data. Here it describes a tree of widgets instead of C++ calls.</li>
+<li><strong>Window</strong> — the operating-system window your app draws into. <code>Window::open</code> creates one.</li>
+<li><strong>Entry</strong> — one named block in the YAML tree. <code>Label:</code> is an entry, and the lines indented under it are that label's properties.</li>
+<li><strong>Container</strong> — a widget that holds other widgets. It is how you group a screen into one loadable piece.</li>
+<li><strong>Layout entry</strong> — a map entry inside a <code>Container</code> that names a layout (<code>Horizontal</code>, <code>Vertical</code> or <code>Grid</code>) and tells the container how to arrange the entries that follow. Put it first, before the widget entries.</li>
+<li><strong>Callback</strong> — a small function you register under a name. In YAML you write the name, not the code.</li>
+<li><strong>Dispatcher</strong> — the per-window registry that matches a name in the YAML to the callback registered under that name.</li>
+<li><strong>Loading</strong> — <code>win.load("ui.yaml")</code> reads the file and adds its widgets to the window. It reports whether the file could be loaded so you can stop with a clear message.</li>
+</ul>
+<h2 id="a-first-example">A first example</h2>
+<p>Create a file named <code>ui.yaml</code>:</p>
+<pre><code class="language-yaml">Label:
+  text: &quot;Hello, World!&quot;
+  x: 40
+  y: 40
+  width: 200
+  height: 32
+</code></pre>
+<p>Then load it from a program:</p>
+<pre data-try="yaml-0" data-w="800" data-h="600"><code class="language-cpp">#include &lt;cstdio&gt;
+
+#include &lt;fluffy/fluffy.hpp&gt;
+
+int main() {
+    fluffy::Window win = fluffy::Window::open(&quot;YAML UI&quot;, 800, 600);
+    if (!win) return 1;
+
+    auto loaded = win.load(&quot;ui.yaml&quot;);
+    if (!loaded) {
+        std::printf(&quot;Failed to load UI: %s\n&quot;, loaded.error().c_str());
+    }
+
+    win.run();
+}
+</code></pre>
+<p><code>Window::open</code> creates the window, and <code>if (!win)</code> checks that it opened successfully. The YAML creates a single <code>Label</code> at <code>(40, 40)</code> with size <code>200×32</code>. Each widget is a map with one type key (<code>Label:</code>), and the lines indented under it are that widget's properties. Use two spaces per indentation level.</p>
+<p><code>win.load("ui.yaml")</code> reads the file and adds its widgets to the window. It reports whether the file could be loaded: when <code>loaded</code> is true, the content was built; when it is false, <code>loaded.error()</code> returns the message to print. Put <code>ui.yaml</code> in the directory you run the program from.</p>
+<p>The snippets on the rest of this page assume <code>win</code> is the window opened above.</p>
+<h2 id="common-tasks">Common tasks</h2>
+<h3 id="load-a-ui-from-a-string">Load a UI from a string</h3>
+<p>Use <code>loadFromString</code> when the YAML is already in memory instead of in a file:</p>
+<pre><code class="language-cpp">auto loaded = win.loadFromString(
+    &quot;Label:\n&quot;
+    &quot;  text: \&quot;Hello\&quot;\n&quot;
+    &quot;  x: 40\n&quot;
+    &quot;  y: 40\n&quot;
+    &quot;  width: 200\n&quot;
+    &quot;  height: 32\n&quot;);
+if (!loaded) {
+    std::printf(&quot;Failed to load UI: %s\n&quot;, loaded.error().c_str());
+}
+</code></pre>
+<p>The string has the same structure as the file, with newlines written as <code>\n</code>.</p>
+<h3 id="build-a-container-with-a-layout">Build a container with a layout</h3>
+<p>A <code>Container</code> holds other widgets. When you want a layout, make it the first map child, before the widget entries:</p>
+<pre><code class="language-yaml">Container:
+  x: 0
+  y: 0
+  width: 800
+  height: 600
+  Vertical:
+    spacing: 16
+    padding: 24
+  Label:
+    text: &quot;Welcome&quot;
+  Button:
+    text: &quot;Start&quot;
+    onClick: &quot;start&quot;
+</code></pre>
+<p>The <code>Vertical</code> layout places children top-to-bottom with 16 pixels between them and 24 pixels of padding inside the container. <code>Horizontal</code> places them left-to-right, and <code>Grid</code> arranges them in columns. The <code>Label</code> and <code>Button</code> entries after the layout become the container's children.</p>
+<p><code>onClick: "start"</code> stores a callback name. The <a href="#connect-callbacks">Connect callbacks</a> section shows how to register the code for that name.</p>
+<h3 id="configure-widgets">Configure widgets</h3>
+<p><strong>Label</strong></p>
+<pre><code class="language-yaml">Label:
+  text: &quot;Hello&quot;
+  x: 40
+  y: 40
+  width: 200
+  height: 32
+  align: center
+</code></pre>
+<p>Alignment keys are <code>align</code> (both axes), <code>horizontal_align</code> and <code>vertical_align</code>. Note: a plain <code>color</code> key is parsed but currently has no effect; use an <code>inline</code> color run instead.</p>
+<p><strong>Button</strong></p>
+<pre><code class="language-yaml">Button:
+  text: &quot;Save&quot;
+  x: 40
+  y: 120
+  width: 120
+  height: 40
+  onClick: &quot;save&quot;
+</code></pre>
+<p>There is no <code>dropdownMenu</code> key — attach menus in code.</p>
+<p><strong>Rich text with <code>inline</code></strong></p>
+<p><code>Label</code> and <code>Button</code> accept either a plain <code>text</code> key or an <code>inline</code> run list. Use <code>inline</code> when you want icons, colors, or mixed styles in one label. The two keys are mutually exclusive: if both are present, loading fails.</p>
+<pre><code class="language-yaml">Button:
+  inline:
+    - icon: check
+    - text: &quot; Save&quot;
+    - color: &quot;#FF4F8DFF&quot;
+    - text: &quot; (draft)&quot;
+    - reset: true
+    - text: &quot;!&quot;
+  onClick: &quot;save&quot;
+</code></pre>
+<p>Each list item is one run. <code>text</code> adds text, <code>icon</code> adds a built-in Lucide icon by name (for example <code>check</code>, <code>heart</code>, or <code>rocket</code>), and <code>color</code>, <code>size</code>, <code>bold</code>, and <code>italic</code> change the style of the runs that follow. <code>reset</code> clears the current style. Style runs produce no visible content by themselves. <code>onClick</code> stays a normal sibling key; it is not part of the inline content.</p>
+<p><strong>TextInput</strong></p>
+<pre><code class="language-yaml">TextInput:
+  text: &quot;Hello&quot;
+  placeholder: &quot;Search…&quot;
+  multiline: false
+  growable: true
+  x: 40
+  y: 80
+  width: 300
+  height: 36
+  onSubmit: &quot;search&quot;
+</code></pre>
+<p><strong>WebView</strong></p>
+<pre><code class="language-yaml">WebView:
+  url: &quot;https://example.com&quot;
+  x: 20
+  y: 20
+  width: 680
+  height: 320
+  radius: 12
+</code></pre>
+<p>Use <code>url</code> for a URL and <code>html</code> for raw markup. Add <code>base_url</code> when the HTML
+references relative assets. Use one source per view; the last <code>url</code> or <code>html</code>
+key wins. <code>radius</code> accepts a fixed corner radius, or <code>-1</code> to track the theme.
+Message handlers still need to be attached in C++ with <code>setOnMessage</code>.</p>
+<p><strong>More widgets</strong></p>
+<p>The Quick reference below lists every supported widget type and its special keys. A few limits to keep in mind: there is no <code>Image</code> YAML support, so create images in code, and <code>Menu</code> items plus <code>Button</code> dropdown menus are also built in code.</p>
+<p><strong>Base properties</strong></p>
+<p>Every widget also accepts the base properties: <code>x</code>, <code>y</code>, <code>w</code>/<code>width</code>, <code>h</code>/<code>height</code>, <code>visible</code>, <code>enabled</code>, <code>font</code>, <code>font_size</code>/<code>text_size</code>, <code>userdata</code>, <code>accent</code>, and <code>autoSize</code>. <code>autoSize</code> accepts <code>disabled</code>, <code>none</code>, <code>width</code>, <code>w</code>, <code>height</code>, <code>h</code>, or <code>both</code>.</p>
+<h3 id="connect-callbacks">Connect callbacks</h3>
+<p>A window keeps a dispatcher: a small registry that matches a name to a callback. In YAML an event key stores the name; at runtime Fluffy looks up that name and calls the matching callback.</p>
+<p>Any <code>onXxx</code> scalar key (for example <code>onClick</code>, <code>onChange</code>, <code>onSubmit</code>) is the name of a callback registered on the window's dispatcher. Non-scalar values are silently dropped. In practice <code>Button</code> fires <code>"onClick"</code> and <code>TextInput</code> fires <code>"onSubmit"</code>:</p>
+<pre><code class="language-yaml">Button:
+  text: &quot;Click me&quot;
+  onClick: &quot;sayHello&quot;
+</code></pre>
+<pre><code class="language-cpp">win.dispatcher().registerHandler(&quot;sayHello&quot;,
+    [](const fluffy::EventArgument&amp;) {
+        std::printf(&quot;Hello!\n&quot;);
+    });
+</code></pre>
+<p>The string value of <code>onClick</code> is the callback name. Register that name on the window's dispatcher, and the callback runs when the button is clicked. The lambda receives an <code>EventArgument</code> with details about the event; this example ignores it and prints a line.</p>
+<h2 id="complete-example">Complete example</h2>
+<pre><code class="language-yaml">Container:
+  x: 0
+  y: 0
+  width: 800
+  height: 600
+  Vertical:
+    spacing: 16
+    padding: 40
+    align_items: middle
+  Label:
+    text: &quot;Welcome&quot;
+    width: 200
+    height: 32
+    align: center
+  TextInput:
+    placeholder: &quot;Your name&quot;
+    width: 300
+    height: 36
+  Button:
+    text: &quot;Greet&quot;
+    width: 120
+    height: 40
+    onClick: &quot;greet&quot;
+</code></pre>
+<pre data-try="yaml-1" data-w="800" data-h="600"><code class="language-cpp">#include &lt;cstdio&gt;
+
+#include &lt;fluffy/fluffy.hpp&gt;
+
+int main() {
+    fluffy::Window win = fluffy::Window::open(&quot;YAML UI&quot;, 800, 600);
+    if (!win) return 1;
+
+    win.dispatcher().registerHandler(&quot;greet&quot;,
+        [](const fluffy::EventArgument&amp;) {
+            std::printf(&quot;Greetings!\n&quot;);
+        });
+
+    auto loaded = win.load(&quot;ui.yaml&quot;);
+    if (!loaded) {
+        std::printf(&quot;Failed to load UI: %s\n&quot;, loaded.error().c_str());
+        return 1;
+    }
+
+    win.run();
+}
+</code></pre>
+<p>This screen uses a <code>Vertical</code> layout with <code>spacing</code>, <code>padding</code>, and <code>align_items</code>, then places a label, a text input, and a button inside it. The button's <code>onClick</code> key names the <code>"greet"</code> callback, which is registered on the window's dispatcher before the file is loaded.</p>
+<h2 id="good-to-know">Good to know</h2>
+<ul>
+<li>A plain <code>color</code> key on a <code>Label</code> is parsed but currently has no effect; put <code>color</code> runs inside <code>inline</code> instead.</li>
+<li><code>text</code> and <code>inline</code> are mutually exclusive on <code>Label</code> and <code>Button</code>.</li>
+<li>There is no <code>dropdownMenu</code> key for <code>Button</code> — attach menus in code.</li>
+<li><code>Menu</code> has no item keys — build items in code.</li>
+<li>For <code>Table</code>, <code>rows:</code> is silently ignored.</li>
+<li>For <code>TabView</code>, other keys such as geometry are ignored.</li>
+<li>There is no <code>Image</code> YAML support — create images in code.</li>
+<li>Non-scalar callback-name values are silently dropped.</li>
+<li>Fluffy's loader accepts repeated widget-type keys, so two <code>TextInput:</code> entries in the same container both become fields. A generic YAML linter may warn about the repeated keys; Fluffy itself accepts the file.</li>
+</ul>
+<h2 id="quick-reference">Quick reference</h2>
+<h3 id="layout-properties">Layout properties</h3>
+<p><code>Horizontal</code>, <code>Vertical</code> and <code>Grid</code> support:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>spacing</code></td>
+<td>Space between children</td>
+</tr>
+<tr>
+<td><code>padding</code></td>
+<td>Space inside the container</td>
+</tr>
+<tr>
+<td><code>margin</code></td>
+<td>Per-side inset on both axes</td>
+</tr>
+<tr>
+<td><code>align</code> / <code>align_items</code></td>
+<td><code>start</code>/<code>left</code>/<code>top</code>, <code>center</code>/<code>centre</code>/<code>middle</code>, <code>end</code>/<code>right</code>/<code>bottom</code> (case-insensitive)</td>
+</tr>
+<tr>
+<td><code>justify</code> / <code>justify_content</code></td>
+<td><code>start</code>, <code>center</code>, <code>end</code>, <code>space-between</code>, <code>space-evenly</code></td>
+</tr>
+<tr>
+<td><code>cols</code> / <code>columns</code></td>
+<td><code>Grid</code> column count</td>
+</tr>
+<tr>
+<td><code>rows</code></td>
+<td><code>Grid</code> row count (<code>0</code> = auto)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="widget-keys">Widget keys</h3>
+<p><code>Button</code> (<code>text</code> or <code>inline</code>), <code>Checkbox</code> (<code>label</code>, <code>checked</code>), <code>ColorPicker</code>
+(<code>color</code>), <code>ComboBox</code> (<code>placeholder</code>, <code>selected</code>|<code>value</code>, <code>items</code>|<code>options</code>
+sequence), <code>Container</code> (<code>scrollable</code>), <code>Label</code> (<code>text</code> or <code>inline</code>), <code>ListView</code>
+(<code>items</code> sequence, <code>selected</code> int), <code>Menu</code>
+(no item keys — build items in code), <code>Nav</code> (<code>selected</code>), <code>ModalWindow</code>,
+<code>ProgressRing</code> (<code>value</code>, <code>indeterminate</code>), <code>RadioButton</code> (<code>label</code>, <code>group</code>,
+<code>checked</code>), <code>Slider</code> (<code>value</code>, <code>min</code>, <code>max</code>, <code>show_value</code>, <code>value_format</code>),
+<code>Switch</code> (<code>label</code>, <code>checked</code>), <code>Table</code> (<code>columns</code> sequence or comma-separated
+scalar — <code>rows:</code> is silently ignored), <code>TabView</code> (<code>tabs</code>, <code>selected</code>; other
+keys such as geometry are ignored for <code>TabView</code>), <code>TextInput</code>, <code>Tooltip</code> (base
+properties only), <code>WebView</code> (<code>url</code>, <code>html</code>, <code>base_url</code>, <code>radius</code>).</p>
+<h3 id="inline-run-keys">Inline run keys</h3>
+<p>Inside <code>inline:</code> each item accepts one key: <code>text</code>, <code>icon</code>, <code>color</code>, <code>size</code>,
+<code>bold</code>, <code>italic</code>, or <code>reset</code>. <code>color</code> and <code>size</code> apply to following runs;
+<code>bold</code>/<code>italic</code> accept <code>true</code> or <code>false</code>; <code>reset: true</code> clears the style.</p>
+<h3 id="base-properties">Base properties</h3>
+<p>Every widget accepts: <code>x</code>, <code>y</code>, <code>w</code>/<code>width</code>, <code>h</code>/<code>height</code>, <code>visible</code>,
+<code>enabled</code>, <code>font</code>, <code>autoSize</code> (<code>disabled</code>|<code>none</code>|<code>width</code>|<code>w</code>|<code>height</code>|<code>h</code>|
+<code>both</code>), <code>font_size</code>|<code>text_size</code>, <code>userdata</code>, <code>accent</code>.</p>
+<h3 id="event-callback-keys">Event callback keys</h3>
+<p>Any <code>onXxx</code> scalar key is the name of a callback registered on the window's
+dispatcher. Non-scalar values are silently dropped.</p>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="container.html">Container</a> · <a href="layouts.html">Layouts</a></li>
+<li><a href="window.html#show-dialogs-and-wire-events">Window</a></li>
+<li><code>examples/yamlui</code> in the repository</li>
+</ul>
+    </article>
+    <nav class="pager">
+    <a class="prev" href="../documentation/icons.html"><span class="dir">← Previous</span><span class="ttl">Icons</span></a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc">
+    <span>On this page</span>
+    <a class="lvl-2" href="#what-its-for">What it&#x27;s for</a>
+    <a class="lvl-2" href="#the-words-you-need">The words you need</a>
+    <a class="lvl-2" href="#a-first-example">A first example</a>
+    <a class="lvl-2" href="#common-tasks">Common tasks</a>
+    <a class="lvl-3" href="#load-a-ui-from-a-string">Load a UI from a string</a>
+    <a class="lvl-3" href="#build-a-container-with-a-layout">Build a container with a layout</a>
+    <a class="lvl-3" href="#configure-widgets">Configure widgets</a>
+    <a class="lvl-3" href="#connect-callbacks">Connect callbacks</a>
+    <a class="lvl-2" href="#complete-example">Complete example</a>
+    <a class="lvl-2" href="#good-to-know">Good to know</a>
+    <a class="lvl-2" href="#quick-reference">Quick reference</a>
+    <a class="lvl-3" href="#layout-properties">Layout properties</a>
+    <a class="lvl-3" href="#widget-keys">Widget keys</a>
+    <a class="lvl-3" href="#inline-run-keys">Inline run keys</a>
+    <a class="lvl-3" href="#base-properties">Base properties</a>
+    <a class="lvl-3" href="#event-callback-keys">Event callback keys</a>
+    <a class="lvl-2" href="#see-also">See also</a>
+  </aside>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div class="about">
+        <a class="brand" href="../index.html" style="font-size:20px">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:30px;height:30px">
+            <defs><linearGradient id="footGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+            </linearGradient></defs>
+            <path fill="url(#footGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          </svg>
+          Fluffy
+        </a>
+        <div class="about-copy">
+          <p>The soft answer to stiff, native UI frameworks. MIT licensed — because software should be free, fluffy and fun.</p>
+          <span class="copyright">© 2026 Tine Samir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

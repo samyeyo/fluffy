@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkbox · Fluffy</title>
+<meta name="description" content="A Checkbox is a square box with a text label that holds a boolean checked state.">
+<link rel="canonical" href="https://samyeyo.github.io/fluffy/documentation/checkbox.html">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Samir Tine">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Fluffy">
+<meta property="og:title" content="Checkbox · Fluffy">
+<meta property="og:description" content="A Checkbox is a square box with a text label that holds a boolean checked state.">
+<meta property="og:url" content="https://samyeyo.github.io/fluffy/documentation/checkbox.html">
+<meta property="og:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<meta property="og:image:width" content="819">
+<meta property="og:image:height" content="390">
+<meta property="og:image:alt" content="Fluffy — a modern C++ desktop UI toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Checkbox · Fluffy">
+<meta name="twitter:description" content="A Checkbox is a square box with a text label that holds a boolean checked state.">
+<meta name="twitter:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Checkbox · Fluffy","description":"A Checkbox is a square box with a text label that holds a boolean checked state.","url":"https://samyeyo.github.io/fluffy/documentation/checkbox.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://samyeyo.github.io/fluffy/documentation/checkbox.html"},"inLanguage":"en","author":{"@type":"Person","name":"Samir Tine"},"publisher":{"@type":"Organization","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"isPartOf":{"@type":"WebSite","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"image":"https://samyeyo.github.io/fluffy/fluffy-light.png"}</script>
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('fluffy-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) { /* ignore */ }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="../assets/site.css?v=21">
+<script src="../assets/highlight.min.js" defer></script>
+<script src="../assets/site.js?v=11" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="logoGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+        </linearGradient></defs>
+        <path fill="url(#logoGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+      </svg>
+      Fluffy
+    </a>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../documentation/index.html" class="active">Docs</a>
+      <a href="../tutorials/index.html">Tutorials</a>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar">
+  <div class="group"><span>Getting started</span>
+  <a href="../documentation/index.html">Welcome to Fluffy</a>
+  <a href="../documentation/install.html">Installing Fluffy</a>
+  <a href="../documentation/geom.html">Geometry &amp; colors</a>
+  <a href="../documentation/widget.html">Widget basics</a>
+  <a href="../documentation/custom.html">Custom widgets</a>
+  <a href="../documentation/window.html">Window</a>
+  <a href="../documentation/application.html">Application</a>
+  </div>
+  <div class="group"><span>Core widgets</span>
+  <a href="../documentation/label.html">Label</a>
+  <a href="../documentation/button.html">Button</a>
+  <a href="../documentation/textinput.html">TextInput</a>
+  <a href="../documentation/image.html">Image</a>
+  </div>
+  <div class="group"><span>Layout</span>
+  <a href="../documentation/container.html">Container</a>
+  <a href="../documentation/layouts.html">Layouts</a>
+  </div>
+  <div class="group"><span>Toggles &amp; pickers</span>
+  <a href="../documentation/checkbox.html" class="active">Checkbox</a>
+  <a href="../documentation/radiobutton.html">RadioButton</a>
+  <a href="../documentation/switch.html">Switch</a>
+  <a href="../documentation/slider.html">Slider</a>
+  <a href="../documentation/color_picker.html">ColorPicker</a>
+  </div>
+  <div class="group"><span>Data widgets</span>
+  <a href="../documentation/combobox.html">ComboBox</a>
+  <a href="../documentation/listview.html">ListView</a>
+  <a href="../documentation/tabview.html">TabView</a>
+  <a href="../documentation/table.html">Table</a>
+  <a href="../documentation/progress_ring.html">ProgressRing</a>
+  </div>
+  <div class="group"><span>Navigation &amp; overlays</span>
+  <a href="../documentation/menu.html">Menu</a>
+  <a href="../documentation/nav.html">Nav</a>
+  <a href="../documentation/tooltip.html">Tooltip</a>
+  <a href="../documentation/dialog.html">Dialogs</a>
+  <a href="../documentation/webview.html">WebView</a>
+  </div>
+  <div class="group"><span>Styling</span>
+  <a href="../documentation/theme.html">Theme</a>
+  <a href="../documentation/inline.html">Inline</a>
+  <a href="../documentation/icons.html">Icons</a>
+  </div>
+  <div class="group"><span>Declarative UI</span>
+  <a href="../documentation/yaml.html">YAML UI</a>
+  </div>
+  </aside>
+
+  <main class="docs-main">
+    <nav class="breadcrumb">
+      <a href="../index.html">Fluffy</a>
+      <span class="sep">/</span>
+      <a href="../documentation/index.html">Documentation</a>
+      <span class="sep">/</span>
+      <span>Checkbox</span>
+    </nav>
+    <article class="prose">
+      <h1>Checkbox</h1>
+<p>A <code>Checkbox</code> is a square box with a text label that holds a boolean <code>checked</code> state.</p>
+<p><img width="720" height="440" loading="lazy" decoding="async" alt="Checkbox widget" src="../assets/widgets/checkbox.png"></p>
+<p><em>Checked, unchecked and disabled.</em></p>
+<h2 id="what-its-for">What it's for</h2>
+<p>A checkbox is an <strong>on/off control</strong>: it has exactly two states, checked and unchecked. Use it when the user is making a single choice that is independent of other controls — several checkboxes can be checked at the same time.</p>
+<p>The checkbox shows a small square and a text label to its right. Clicking anywhere on the control toggles it. There is no keyboard activation yet.</p>
+<p>Because the choice is independent, a checkbox is the right tool for things like "Enable notifications" or "Accept terms". If the user must choose exactly one option from a set, use a <a href="radiobutton.html">RadioButton</a> instead.</p>
+<p>You can also disable a checkbox so it is greyed out and ignores input.</p>
+<h2 id="a-first-example">A first example</h2>
+<pre data-try="checkbox-0" data-w="640" data-h="400"><code class="language-cpp">#include &lt;cstdio&gt;
+
+#include &lt;fluffy/fluffy.hpp&gt;
+
+int main() {
+    fluffy::Window win = fluffy::Window::open(&quot;Checkbox&quot;, 640, 400);
+    if (!win) return 1;
+
+    auto&amp; cb = win.add&lt;fluffy::Checkbox&gt;(
+        fluffy::Rect{40, 40, 180, 28}, &quot;Enable notifications&quot;);
+    cb.setChecked(true);
+
+    bool on = cb.isChecked();
+    std::printf(&quot;checked: %d\n&quot;, on);
+
+    win.run();
+}
+</code></pre>
+<p><code>Window::open</code> creates the window, and <code>if (!win)</code> stops early if it could not be opened. <code>win.add&lt;fluffy::Checkbox&gt;()</code> creates the checkbox inside the window and returns a reference to it. The <code>auto&amp;</code> matters: <code>cb</code> is that reference, so you work with the real checkbox rather than a copy.</p>
+<p>The first constructor argument is a <code>Rect</code> that sets the position and size. The second is the text label. <code>setChecked(true)</code> turns the checkbox on, and <code>isChecked()</code> reads the current state.</p>
+<h2 id="common-tasks">Common tasks</h2>
+<h3 id="change-the-label">Change the label</h3>
+<pre><code class="language-cpp">cb.setLabel(&quot;Accept terms&quot;);
+std::string t = cb.label();
+</code></pre>
+<p><code>setLabel()</code> replaces the text to the right of the box, and <code>label()</code> returns the current text.</p>
+<h3 id="enable-or-disable-the-checkbox">Enable or disable the checkbox</h3>
+<pre><code class="language-cpp">cb.setEnabled(false);
+cb.setFocused(true);
+</code></pre>
+<p>When you pass <code>false</code> to <code>setEnabled()</code>, the checkbox is greyed out and no longer responds to input. <code>setFocused(true)</code> gives it keyboard focus, which shows a focus ring; it still does not toggle from the keyboard.</p>
+<h3 id="react-to-changes">React to changes</h3>
+<p>A <strong>callback</strong> is a function you give to a widget so it can call you back when something happens. <code>onChange</code> is the checkbox's callback for its state changing:</p>
+<pre><code class="language-cpp">cb.setOnChange([](bool checked) {
+    std::printf(&quot;checked=%d\n&quot;, checked);
+});
+</code></pre>
+<p>The callback runs when the user clicks the checkbox, and also when you call <code>setChecked()</code> yourself. It receives the new boolean value. <code>setChecked()</code> only calls the callback when the value actually changes, so setting the same state twice does nothing.</p>
+<h3 id="declare-it-in-yaml">Declare it in YAML</h3>
+<pre><code class="language-yaml">Checkbox:
+  label: &quot;Enable notifications&quot;
+  checked: true
+  x: 40
+  y: 40
+</code></pre>
+<p><code>label</code> is the text beside the box, <code>checked</code> is the initial state, and <code>x</code> / <code>y</code> place it. Add <code>width</code> and <code>height</code> when you want to set the size too.</p>
+<h2 id="quick-reference">Quick reference</h2>
+<h3 id="properties">Properties</h3>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>label</code></td>
+<td><code>string</code></td>
+<td>Text to the right of the box.</td>
+</tr>
+<tr>
+<td><code>checked</code></td>
+<td><code>bool</code></td>
+<td>Whether the box shows a checkmark.</td>
+</tr>
+<tr>
+<td><code>enabled</code></td>
+<td><code>bool</code></td>
+<td>Inherited from <code>Widget</code>.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="events">Events</h3>
+<table>
+<thead>
+<tr>
+<th>Event</th>
+<th>Signature</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>onChange</code></td>
+<td><code>void(bool checked)</code></td>
+<td>Fires when <code>checked</code> changes — via click or programmatically via <code>setChecked()</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="radiobutton.html">RadioButton</a> — exclusive choice.</li>
+<li><a href="switch.html">Switch</a> — pill toggle.</li>
+</ul>
+    </article>
+    <nav class="pager">
+    <a class="prev" href="../documentation/layouts.html"><span class="dir">← Previous</span><span class="ttl">Layouts</span></a>
+    <a class="next" href="../documentation/radiobutton.html"><span class="dir">Next →</span><span class="ttl">RadioButton</span></a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc">
+    <span>On this page</span>
+    <a class="lvl-2" href="#what-its-for">What it&#x27;s for</a>
+    <a class="lvl-2" href="#a-first-example">A first example</a>
+    <a class="lvl-2" href="#common-tasks">Common tasks</a>
+    <a class="lvl-3" href="#change-the-label">Change the label</a>
+    <a class="lvl-3" href="#enable-or-disable-the-checkbox">Enable or disable the checkbox</a>
+    <a class="lvl-3" href="#react-to-changes">React to changes</a>
+    <a class="lvl-3" href="#declare-it-in-yaml">Declare it in YAML</a>
+    <a class="lvl-2" href="#quick-reference">Quick reference</a>
+    <a class="lvl-3" href="#properties">Properties</a>
+    <a class="lvl-3" href="#events">Events</a>
+    <a class="lvl-2" href="#see-also">See also</a>
+  </aside>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div class="about">
+        <a class="brand" href="../index.html" style="font-size:20px">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:30px;height:30px">
+            <defs><linearGradient id="footGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+            </linearGradient></defs>
+            <path fill="url(#footGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          </svg>
+          Fluffy
+        </a>
+        <div class="about-copy">
+          <p>The soft answer to stiff, native UI frameworks. MIT licensed — because software should be free, fluffy and fun.</p>
+          <span class="copyright">© 2026 Tine Samir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" data-root="../">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Widget basics · Fluffy</title>
+<meta name="description" content="A Widget is anything you can put in a window — a label, a button, a text input, an image, or a container — and all widgets share a common set of properties and behaviors.">
+<link rel="canonical" href="https://samyeyo.github.io/fluffy/documentation/widget.html">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="author" content="Samir Tine">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Fluffy">
+<meta property="og:title" content="Widget basics · Fluffy">
+<meta property="og:description" content="A Widget is anything you can put in a window — a label, a button, a text input, an image, or a container — and all widgets share a common set of properties and behaviors.">
+<meta property="og:url" content="https://samyeyo.github.io/fluffy/documentation/widget.html">
+<meta property="og:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<meta property="og:image:width" content="819">
+<meta property="og:image:height" content="390">
+<meta property="og:image:alt" content="Fluffy — a modern C++ desktop UI toolkit">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Widget basics · Fluffy">
+<meta name="twitter:description" content="A Widget is anything you can put in a window — a label, a button, a text input, an image, or a container — and all widgets share a common set of properties and behaviors.">
+<meta name="twitter:image" content="https://samyeyo.github.io/fluffy/fluffy-light.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Widget basics · Fluffy","description":"A Widget is anything you can put in a window — a label, a button, a text input, an image, or a container — and all widgets share a common set of properties and behaviors.","url":"https://samyeyo.github.io/fluffy/documentation/widget.html","mainEntityOfPage":{"@type":"WebPage","@id":"https://samyeyo.github.io/fluffy/documentation/widget.html"},"inLanguage":"en","author":{"@type":"Person","name":"Samir Tine"},"publisher":{"@type":"Organization","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"isPartOf":{"@type":"WebSite","name":"Fluffy","url":"https://samyeyo.github.io/fluffy/"},"image":"https://samyeyo.github.io/fluffy/fluffy-light.png"}</script>
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('fluffy-theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) { /* ignore */ }
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&amp;family=Nunito:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"></noscript>
+<link rel="stylesheet" href="../assets/site.css?v=21">
+<script src="../assets/highlight.min.js" defer></script>
+<script src="../assets/site.js?v=11" defer></script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="../index.html">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="logoGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+        </linearGradient></defs>
+        <path fill="url(#logoGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+      </svg>
+      Fluffy
+    </a>
+    <button class="icon-btn nav-toggle" type="button" aria-label="Toggle menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../documentation/index.html" class="active">Docs</a>
+      <a href="../tutorials/index.html">Tutorials</a>
+      <button class="icon-btn theme-toggle" type="button" aria-label="Toggle dark mode">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div class="docs-shell">
+  <aside class="docs-sidebar">
+  <div class="group"><span>Getting started</span>
+  <a href="../documentation/index.html">Welcome to Fluffy</a>
+  <a href="../documentation/install.html">Installing Fluffy</a>
+  <a href="../documentation/geom.html">Geometry &amp; colors</a>
+  <a href="../documentation/widget.html" class="active">Widget basics</a>
+  <a href="../documentation/custom.html">Custom widgets</a>
+  <a href="../documentation/window.html">Window</a>
+  <a href="../documentation/application.html">Application</a>
+  </div>
+  <div class="group"><span>Core widgets</span>
+  <a href="../documentation/label.html">Label</a>
+  <a href="../documentation/button.html">Button</a>
+  <a href="../documentation/textinput.html">TextInput</a>
+  <a href="../documentation/image.html">Image</a>
+  </div>
+  <div class="group"><span>Layout</span>
+  <a href="../documentation/container.html">Container</a>
+  <a href="../documentation/layouts.html">Layouts</a>
+  </div>
+  <div class="group"><span>Toggles &amp; pickers</span>
+  <a href="../documentation/checkbox.html">Checkbox</a>
+  <a href="../documentation/radiobutton.html">RadioButton</a>
+  <a href="../documentation/switch.html">Switch</a>
+  <a href="../documentation/slider.html">Slider</a>
+  <a href="../documentation/color_picker.html">ColorPicker</a>
+  </div>
+  <div class="group"><span>Data widgets</span>
+  <a href="../documentation/combobox.html">ComboBox</a>
+  <a href="../documentation/listview.html">ListView</a>
+  <a href="../documentation/tabview.html">TabView</a>
+  <a href="../documentation/table.html">Table</a>
+  <a href="../documentation/progress_ring.html">ProgressRing</a>
+  </div>
+  <div class="group"><span>Navigation &amp; overlays</span>
+  <a href="../documentation/menu.html">Menu</a>
+  <a href="../documentation/nav.html">Nav</a>
+  <a href="../documentation/tooltip.html">Tooltip</a>
+  <a href="../documentation/dialog.html">Dialogs</a>
+  <a href="../documentation/webview.html">WebView</a>
+  </div>
+  <div class="group"><span>Styling</span>
+  <a href="../documentation/theme.html">Theme</a>
+  <a href="../documentation/inline.html">Inline</a>
+  <a href="../documentation/icons.html">Icons</a>
+  </div>
+  <div class="group"><span>Declarative UI</span>
+  <a href="../documentation/yaml.html">YAML UI</a>
+  </div>
+  </aside>
+
+  <main class="docs-main">
+    <nav class="breadcrumb">
+      <a href="../index.html">Fluffy</a>
+      <span class="sep">/</span>
+      <a href="../documentation/index.html">Documentation</a>
+      <span class="sep">/</span>
+      <span>Widget basics</span>
+    </nav>
+    <article class="prose">
+      <h1>Widget basics</h1>
+<p>A <code>Widget</code> is anything you can put in a window — a label, a button, a text input, an image, or a container — and all widgets share a common set of properties and behaviors.</p>
+<h2 id="what-its-for">What it's for</h2>
+<p>Use the common <code>Widget</code> API whenever you need to work with a widget without caring which concrete type it is. You never create <code>Widget</code> directly. You create concrete widgets like <code>Label</code>, <code>Button</code>, or <code>TextInput</code>, and they all inherit from <code>Widget</code>, so everything on this page applies to all of them.</p>
+<p>A window <strong>owns</strong> the widgets you add to it. A widget lives for as long as the window, and you never delete it yourself.</p>
+<h2 id="a-first-example">A first example</h2>
+<pre><code class="language-cpp">auto&amp; btn = win.add&lt;fluffy::Button&gt;(&quot;Click&quot;);
+btn.setBounds(fluffy::Rect{40, 40, 120, 40});
+
+btn.onClick([] {
+    std::printf(&quot;Clicked!\n&quot;);
+});
+</code></pre>
+<p><code>win.add&lt;fluffy::Button&gt;(...)</code> creates the button inside the window and returns a reference to it. Because it is a reference, you call its methods with <code>.</code> — never <code>-&gt;</code>. Its bounds start empty (<code>Rect{}</code>), so you call <code>setBounds</code> when you position it by hand. <code>onClick</code> then hands the button a <strong>callback</strong> — a small function it calls when something happens, here written as a lambda — so it can run your code on a click.</p>
+<p>In the examples below, <code>win</code> is an open window (see <a href="window.html">Window</a>).</p>
+<h2 id="common-tasks">Common tasks</h2>
+<h3 id="chain-configuration-calls">Chain configuration calls</h3>
+<p><code>win.add&lt;T&gt;(...)</code>, <code>win.verticalLayout()</code>, and many setters return a reference to the object they just changed. That lets you configure a widget in one expression:</p>
+<pre><code class="language-cpp">auto&amp; col = win.verticalLayout()
+    .setPadding(24.0f)
+    .setSpacing(8.0f)
+    .align(fluffy::Align::Center)
+    .justify(fluffy::Justify::Start);
+
+col.add&lt;fluffy::Label&gt;(&quot;Welcome&quot;)
+    .setTextSize(24.0f)
+    .setHorizontal(fluffy::Label::Align::Center);
+
+col.add&lt;fluffy::Button&gt;(&quot;Close&quot;)
+    .onClick([&amp;win] { win.requestClose(); });
+</code></pre>
+<p>Read the chain from left to right: each call returns a reference, and the next call runs on that same object. The pattern is optional — storing a reference is often clearer when you need the widget later. Only calls that return a reference can be chained. Plain setters such as <code>setBounds</code>, <code>setLabel</code>, <code>setInline</code>, and <code>setOnClick</code> return <code>void</code>. Setters inherited from <code>Widget</code>, such as <code>setFont</code>, return <code>Widget&amp;</code>; call concrete-type methods first or split the chain when you need <code>Label&amp;</code> or <code>Button&amp;</code> again.</p>
+<h3 id="position-size-and-weight-a-widget">Position, size, and weight a widget</h3>
+<pre><code class="language-cpp">auto&amp; btn = win.add&lt;fluffy::Button&gt;(&quot;Click&quot;); // bounds default to Rect{}
+btn.setBounds(fluffy::Rect{40, 40, 120, 40}); // only when positioning by hand
+
+btn.bounds();              // current rectangle
+btn.setBounds(newRect);    // move or resize
+btn.width();              // 120
+btn.height();             // 40
+btn.containsPoint(x, y);  // is the point inside?
+</code></pre>
+<p>A widget's <strong>bounds</strong> are the <code>Rect</code> that says where it sits and how big it is. See <a href="geom.html">Geometry &amp; colors</a> for <code>Rect</code> itself.</p>
+<p>When a layout distributes extra space, you can give a widget a larger share:</p>
+<pre><code class="language-cpp">btn.setStretchWeight(2.0f);       // share of extra space in layouts
+fluffy::Window* w = btn.window();
+</code></pre>
+<p><code>window()</code> gives you the window that currently owns the widget.</p>
+<h3 id="let-a-widget-size-itself">Let a widget size itself</h3>
+<p>Normally a widget uses the <code>Rect</code> you gave it. You can ask it to size itself from its content instead:</p>
+<pre><code class="language-cpp">btn.setAutoSize(fluffy::AutoSize::Width);  // width from text
+btn.setAutoSize(fluffy::AutoSize::Height); // height from text
+btn.setAutoSize(fluffy::AutoSize::Both);   // both from content
+btn.setAutoSize(fluffy::AutoSize::Disabled); // fixed size
+</code></pre>
+<p><code>AutoSize::Both</code> is the <strong>default</strong> for all widgets. The layout respects this: a widget with <code>AutoSize::Both</code> is sized by its <code>naturalWidth()</code> / <code>naturalHeight()</code>, while <code>AutoSize::Disabled</code> lets the layout assign the slot size. <code>AutoSize::Width</code> or <code>AutoSize::Height</code> locks one axis and lets the content drive the other.</p>
+<p><code>Label</code> and <code>Button</code> compute their natural size from their text. <code>Container</code> computes its natural size from its children and layout. You can inspect the current setting and the resulting natural size:</p>
+<pre><code class="language-cpp">auto as = btn.autoSize();
+float w = btn.naturalWidth(win.theme(), win);
+float h = btn.naturalHeight(win.theme(), win);
+</code></pre>
+<h3 id="control-visibility-enabled-state-and-focus">Control visibility, enabled state, and focus</h3>
+<pre><code class="language-cpp">btn.setVisible(false);  // hidden and ignored by mouse
+btn.setEnabled(false);  // visible but does not react
+</code></pre>
+<p>Whether a widget can receive keyboard focus depends on the widget. <code>Widget::isFocusable()</code> is <code>false</code> at the base level, and concrete widgets such as <code>Button</code> and <code>TextInput</code> override it. <code>setFocused()</code> is a no-op on the base class:</p>
+<pre><code class="language-cpp">btn.setFocused(true);
+btn.clearFocus();              // unfocus (calls setFocused(false))
+</code></pre>
+<p><code>isFocused()</code> exists only on concrete widgets (for example <code>Button::isFocused()</code>), not on the <code>Widget</code> base. Use <code>Window::requestFocus(w)</code> and <code>Window::clearFocus()</code> to move focus between widgets.</p>
+<h3 id="set-fonts-and-read-text-state">Set fonts and read text state</h3>
+<pre><code class="language-cpp">btn.setFont(&quot;Inter&quot;);          // by family name (loaded at runtime)
+btn.setFont(&quot;mem:body&quot;);       // from pre-registered memory
+btn.setFont(&quot;file:/path.ttf&quot;); // from disk (absolute or relative)
+btn.setFont(&quot;/path.ttf&quot;);      // auto-detected by .ttf/.ttc/.otf extension
+btn.setTextSize(18.0f);        // per-widget size override
+</code></pre>
+<p>Set the font to <code>"default"</code> or the size to <code>0.0f</code> to revert to the theme. You can read the current values back:</p>
+<pre><code class="language-cpp">std::string f = btn.font();       // &quot;&quot; means &quot;use theme font&quot;
+float sz = btn.textSize();        // 0.0f means &quot;use theme size&quot;
+</code></pre>
+<h3 id="customize-tag-introspect-and-drive-events">Customize, tag, introspect, and drive events</h3>
+<p>A widget can override the theme accent with its own colors:</p>
+<pre><code class="language-cpp">btn.setAccentOverride(fluffy::Color::fromHex(0xFF4F8DFF));
+btn.setAccentPressedOverride(fluffy::Color::fromHex(0xFF2C66D8));
+btn.clearAccentOverride();        // back to theme accent
+</code></pre>
+<p>You can ask what a widget is and walk its children:</p>
+<pre><code class="language-cpp">btn.isFocusable();   // can it take focus?
+btn.fillsParent();   // root container only
+btn.isContainer();   // Container
+btn.isMenu();        // Menu
+btn.isTooltip();     // Tooltip
+btn.forEachChild([](fluffy::Widget* c) { /* ... */ });
+</code></pre>
+<p>An arbitrary string can be attached to a widget. This is useful for finding widgets loaded from YAML:</p>
+<pre><code class="language-cpp">btn.userdata() = &quot;save-button&quot;;
+</code></pre>
+<p>Widgets can also be configured through the YAML path and can fire named events:</p>
+<pre><code class="language-cpp">btn.setProperty(&quot;width&quot;, node);   // YAML path (also x/y/height/visible/enabled/font/...)
+btn.setEvent(&quot;onClick&quot;, &quot;save&quot;);  // YAML path: bind a dispatcher handler
+
+btn.triggerEvent(&quot;customEvent&quot;, {});
+</code></pre>
+<p>Events route through the window's dispatcher. Most of the time you use the widget's typed helpers instead, like <code>onClick</code>, <code>onChange</code>, <code>onSelect</code>, or <code>onSubmit</code> (chainable; <code>setOnClick</code> and the other <code>set*</code> methods are the plain setters).</p>
+<h2 id="good-to-know">Good to know</h2>
+<ul>
+<li><code>AutoSize::Both</code> is the default for all widgets.</li>
+<li>Many setters return a reference to the same object and can be chained; see <a href="#chain-configuration-calls">Chain configuration calls</a>.</li>
+<li><code>Widget::isFocusable()</code> is <code>false</code> at the base level. <code>setFocused()</code> is a no-op on the base class, and <code>isFocused()</code> exists only on concrete widgets.</li>
+<li>Setting a widget's font to <code>"default"</code> or its text size to <code>0.0f</code> reverts that property to the theme.</li>
+<li>Widgets have per-frame hooks that the window calls automatically: <code>draw(...)</code> renders the widget, <code>handleEvent(...)</code> reacts to input, <code>updateHover(...)</code> tracks the mouse position, <code>tick(...)</code> updates animations, and <code>onResize(...)</code> reacts to window resize. You rarely call these yourself unless you write a custom widget.</li>
+<li>If you write a custom widget, start from <code>SimpleWidget</code>: override <code>paint(const Painter&amp;)</code> and <code>onPress(x, y)</code> instead of raw <code>draw(NVGcontext*, ...)</code> plus <code>handleEvent(Event, ...)</code>. See Tutorial 11.</li>
+</ul>
+<h2 id="quick-reference">Quick reference</h2>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>API</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Geometry</td>
+<td><code>bounds()</code>, <code>setBounds(Rect)</code>, <code>width()</code>, <code>height()</code>, <code>containsPoint(x, y)</code></td>
+</tr>
+<tr>
+<td>Layout</td>
+<td><code>setStretchWeight(float)</code>, <code>window()</code></td>
+</tr>
+<tr>
+<td>Auto sizing</td>
+<td><code>setAutoSize(AutoSize::Width)</code>, <code>setAutoSize(AutoSize::Height)</code>, <code>setAutoSize(AutoSize::Both)</code>, <code>setAutoSize(AutoSize::Disabled)</code>, <code>autoSize()</code></td>
+</tr>
+<tr>
+<td>Natural size</td>
+<td><code>naturalWidth(theme, win)</code>, <code>naturalHeight(theme, win)</code></td>
+</tr>
+<tr>
+<td>Visibility</td>
+<td><code>setVisible(bool)</code></td>
+</tr>
+<tr>
+<td>Enabled state</td>
+<td><code>setEnabled(bool)</code></td>
+</tr>
+<tr>
+<td>Focus</td>
+<td><code>setFocused(bool)</code>, <code>clearFocus()</code>, <code>isFocusable()</code>, <code>Window::requestFocus(w)</code>, <code>Window::clearFocus()</code></td>
+</tr>
+<tr>
+<td>Typography</td>
+<td><code>setFont(spec)</code>, <code>setTextSize(float)</code>, <code>font()</code>, <code>textSize()</code></td>
+</tr>
+<tr>
+<td>Accent</td>
+<td><code>setAccentOverride(Color)</code>, <code>setAccentPressedOverride(Color)</code>, <code>clearAccentOverride()</code></td>
+</tr>
+<tr>
+<td>Introspection</td>
+<td><code>isFocusable()</code>, <code>fillsParent()</code>, <code>isContainer()</code>, <code>isMenu()</code>, <code>isTooltip()</code>, <code>forEachChild(...)</code></td>
+</tr>
+<tr>
+<td>Tagging</td>
+<td><code>userdata()</code></td>
+</tr>
+<tr>
+<td>YAML</td>
+<td><code>setProperty(name, node)</code>, <code>setEvent(name, handler)</code></td>
+</tr>
+<tr>
+<td>Events</td>
+<td><code>triggerEvent(name, args)</code></td>
+</tr>
+<tr>
+<td>Frame hooks</td>
+<td><code>draw(...)</code>, <code>handleEvent(...)</code>, <code>updateHover(...)</code>, <code>tick(...)</code>, <code>onResize(...)</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="see-also">See also</h2>
+<ul>
+<li><a href="label.html">Label</a> · <a href="button.html">Button</a> · <a href="textinput.html">TextInput</a> · <a href="container.html">Container</a></li>
+<li><a href="custom.html">Custom widgets</a> — write your own <code>SimpleWidget</code> or <code>Widget</code>.</li>
+<li><a href="window.html">Window</a> — where widgets live.</li>
+</ul>
+    </article>
+    <nav class="pager">
+    <a class="prev" href="../documentation/geom.html"><span class="dir">← Previous</span><span class="ttl">Geometry &amp; colors</span></a>
+    <a class="next" href="../documentation/custom.html"><span class="dir">Next →</span><span class="ttl">Custom widgets</span></a>
+    </nav>
+  </main>
+
+  <aside class="docs-toc">
+    <span>On this page</span>
+    <a class="lvl-2" href="#what-its-for">What it&#x27;s for</a>
+    <a class="lvl-2" href="#a-first-example">A first example</a>
+    <a class="lvl-2" href="#common-tasks">Common tasks</a>
+    <a class="lvl-3" href="#chain-configuration-calls">Chain configuration calls</a>
+    <a class="lvl-3" href="#position-size-and-weight-a-widget">Position, size, and weight a widget</a>
+    <a class="lvl-3" href="#let-a-widget-size-itself">Let a widget size itself</a>
+    <a class="lvl-3" href="#control-visibility-enabled-state-and-focus">Control visibility, enabled state, and focus</a>
+    <a class="lvl-3" href="#set-fonts-and-read-text-state">Set fonts and read text state</a>
+    <a class="lvl-3" href="#customize-tag-introspect-and-drive-events">Customize, tag, introspect, and drive events</a>
+    <a class="lvl-2" href="#good-to-know">Good to know</a>
+    <a class="lvl-2" href="#quick-reference">Quick reference</a>
+    <a class="lvl-2" href="#see-also">See also</a>
+  </aside>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="cols">
+      <div class="about">
+        <a class="brand" href="../index.html" style="font-size:20px">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="width:30px;height:30px">
+            <defs><linearGradient id="footGrad" x1="0" y1="12" x2="24" y2="12" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2FE1E8"/><stop offset="1" stop-color="#9B5CFF"/>
+            </linearGradient></defs>
+            <path fill="url(#footGrad)" d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9Z"/>
+          </svg>
+          Fluffy
+        </a>
+        <div class="about-copy">
+          <p>The soft answer to stiff, native UI frameworks. MIT licensed — because software should be free, fluffy and fun.</p>
+          <span class="copyright">© 2026 Tine Samir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

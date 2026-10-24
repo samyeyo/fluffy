@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fluffy — live demo</title>
+<meta name="description" content="Try Fluffy widgets and themes live in your browser.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F3F3F3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1E1E1E" media="(prefers-color-scheme: dark)">
+<style>
+    :root {
+        color-scheme: light dark;
+        --demo-bg: #F3F3F3;
+        --demo-ink: #1B1B1F;
+        --demo-muted: #5F5F6B;
+    }
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --demo-bg: #1E1E1E;
+            --demo-ink: #EDEDF2;
+            --demo-muted: #A6A6B2;
+        }
+    }
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        background: var(--demo-bg);
+        color: var(--demo-ink);
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+    #canvas {
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: 100vw;
+        max-height: 100vh;
+        background: var(--demo-bg);
+        outline: none;
+        touch-action: none;
+    }
+    #demoFallback {
+        position: fixed;
+        inset: 0;
+        display: none;
+        place-items: center;
+        padding: 32px;
+        background: var(--demo-bg);
+        text-align: center;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+    #demoFallback.show { display: grid; }
+    #demoFallback strong {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 17px;
+    }
+    #demoFallback p {
+        max-width: 44ch;
+        margin: 0 auto;
+        color: var(--demo-muted);
+    }
+    #demoFallback code {
+        display: inline-block;
+        margin-top: 14px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: color-mix(in srgb, var(--demo-ink) 8%, transparent);
+        color: var(--demo-ink);
+        font-size: 12px;
+    }
+    #demoFallback code[hidden] { display: none; }
+</style>
+</head>
+<body>
+<canvas id="canvas" width="640" height="400" tabindex="0"></canvas>
+<div id="demoFallback" class="show">
+    <div>
+        <strong id="demoTitle">Loading the demo…</strong>
+        <p id="demoMsg">The Fluffy app is starting.</p>
+        <code id="demoHint" hidden>python3 -m http.server</code>
+    </div>
+</div>
+<script>
+(function () {
+    var params = new URLSearchParams(location.search);
+    var demo = params.get('demo') || 'nav';
+    demo = demo.replace(/[^A-Za-z0-9_-]/g, '');
+    var param_w = parseInt(params.get('w'), 10) || 0;
+    var param_h = parseInt(params.get('h'), 10) || 0;
+    var hint_w = param_w || 640;
+    var hint_h = param_h || 400;
+    var sized = false;
+
+    var canvas = document.getElementById('canvas');
+    var fallback = document.getElementById('demoFallback');
+    var title = document.getElementById('demoTitle');
+    var message = document.getElementById('demoMsg');
+    if (!canvas || !demo) return;
+
+    var demoVersion = '15';
+
+    canvas.width = hint_w;
+    canvas.height = hint_h;
+
+    function prettyName(id) {
+        var text = id.replace(/-\d+$/, '').replace(/[-_]+/g, ' ');
+        return text.replace(/\b\w/g, function (letter) { return letter.toUpperCase(); });
+    }
+
+    function setTitle(name) {
+        if (name) document.title = 'Fluffy — ' + name;
+    }
+
+    setTitle(prettyName(demo));
+
+    function applySize(width, height) {
+        if (width > 0) hint_w = width;
+        if (height > 0) hint_h = height;
+        canvas.width = hint_w;
+        canvas.height = hint_h;
+    }
+
+    function showFallback(heading, text, hint) {
+        if (fallback) fallback.classList.add('show');
+        if (title && heading) title.textContent = heading;
+        if (message && text) message.textContent = text;
+        var code = document.getElementById('demoHint');
+        if (!code) return;
+        if (hint) {
+            code.textContent = hint;
+            code.hidden = false;
+        } else {
+            code.hidden = true;
+        }
+    }
+
+    function fail(text) {
+        showFallback('The demo could not start', text, 'python3 -m http.server');
+    }
+
+    if (location.protocol === 'file:') {
+        fail('Browsers block WebAssembly data files over file://. Serve the www folder over HTTP and reload.');
+        return;
+    }
+
+    function fitWindow() {
+        if (!sized || !window.opener || !window.outerWidth || !window.innerWidth) return;
+        var cw = hint_w;
+        var ch = hint_h;
+        var w = cw + (window.outerWidth - window.innerWidth);
+        var h = ch + (window.outerHeight - window.innerHeight);
+        if (Math.abs(window.outerWidth - w) > 1 || Math.abs(window.outerHeight - h) > 1) {
+            window.resizeTo(w, h);
+        }
+    }
+
+    function startDemo() {
+        window.Module = {
+            canvas: canvas,
+            locateFile: function (path) {
+                var sep = path.indexOf('?') === -1 ? '?' : '&';
+                return path + sep + 'v=' + demoVersion;
+            },
+            preRun: [function () {
+                if (typeof GLFW === 'undefined' || !GLFW.defaultWindowHints) return;
+                var resetHints = GLFW.defaultWindowHints;
+                GLFW.defaultWindowHints = function () {
+                    resetHints();
+                    GLFW.hints[139276] = 1;
+                };
+            }],
+            onRuntimeInitialized: function () {
+                if (fallback) fallback.classList.remove('show');
+                setTimeout(fitWindow, 60);
+            },
+            onAbort: function () {
+                fail('The demo could not start. Serve the www folder over HTTP and reload.');
+            }
+        };
+
+        var script = document.createElement('script');
+        script.src = demo + '.js?v=' + demoVersion;
+        script.async = true;
+        script.onerror = function () {
+            fail('Could not load ' + demo + '.js — serve the www folder over HTTP and reload.');
+        };
+        document.head.appendChild(script);
+    }
+
+    fetch('demos.json', { cache: 'no-store' })
+        .then(function (response) { return response.ok ? response.json() : {}; })
+        .then(function (manifest) {
+            var meta = manifest && manifest[demo];
+            if (meta && meta.title) setTitle(meta.title);
+            if (meta && meta.multiwindow) {
+                showFallback(
+                    'Native-only demo',
+                    'This tutorial opens two operating-system windows. A browser can host only one Fluffy window, so run it locally to see both.',
+                    './build.sh examples');
+                return;
+            }
+            if (meta && !param_w) applySize(meta.width, meta.height);
+            sized = true;
+            startDemo();
+        })
+        .catch(function () {
+            sized = true;
+            startDemo();
+        });
+
+    window.addEventListener('load', fitWindow);
+    setTimeout(fitWindow, 300);
+})();
+</script>
+</body>
+</html>
