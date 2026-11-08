@@ -8,7 +8,7 @@
 
 <p align="center">
   <img src="https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black" alt="Linux">
-  <img src="https://img.shields.io/badge/Windows-0078D6?style=flat-square&logo=windows&logoColor=white" alt="Windows">
+  <img src="https://img.shields.io/badge/Windows-0078D6?style=flat-square&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI%2BPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTAgMy40NDlMOS43NSAyLjF2OS40NTFIMG0xMC45NDktOS42MDJMMjQgMHYxMS40SDEwLjk0OU0wIDEyLjZoOS43NXY5LjQ1MUwwIDIwLjY5OU0xMC45NDkgMTIuNkgyNFYyNGwtMTMuMDUxLTEuOHoiLz48L3N2Zz4%3D&logoColor=white" alt="Windows">
   <img src="https://img.shields.io/badge/macOS-000000?style=flat-square&logo=apple&logoColor=white" alt="macOS">
   <img src="https://img.shields.io/badge/C%2B%2B-20-0FA79C?style=flat-square" alt="C++20">
   <img src="https://img.shields.io/badge/license-MIT-6A46E5?style=flat-square" alt="MIT license">
@@ -52,7 +52,7 @@ Fluffy is a **tiny, cross-platform GUI toolkit** that wraps NanoVG with a modern
 ### What you'll need
 
 - **CMake ≥ 3.20**
-- **C++20 compiler** — Clang ≥ 15, GCC ≥ 13, MSVC ≥ 19.32 (Fluffy uses `std::format`)
+- **C++20 compiler** — Clang ≥ 15, GCC ≥ 13, Apple Clang ≥ 15, MSVC ≥ 19.32, or clang-cl ≥ 15
 - Internet on first build (deps auto-fetch)
 
 For the full Linux package list, Wayland/X11 notes, and optional WebView
@@ -66,7 +66,9 @@ no extra system packages.
 ./build.sh install    # build and install the library
 ```
 
-On Windows, use `build.bat examples` and `build.bat install`.
+On Windows, use `build.bat examples` and `build.bat install`. To build with the
+ClangCL toolset instead, use `build.bat clang-cl` (run `build.bat clean` first if
+the build directory was configured with MSVC).
 
 See [Installing Fluffy](doc/install.md) for the full walkthrough: requirements,
 all build-script commands, plain CMake usage, installation prefixes, installed
