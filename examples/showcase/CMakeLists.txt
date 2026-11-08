@@ -19,5 +19,6 @@ if(APPLE)
     )
 elseif(WIN32)
     set_target_properties(showcase PROPERTIES WIN32_EXECUTABLE TRUE)
+    target_link_options(showcase PRIVATE "/ENTRY:mainCRTStartup")
 endif()
 

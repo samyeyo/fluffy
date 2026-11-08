@@ -19,6 +19,7 @@ if(APPLE)
     )
 elseif(WIN32)
     set_target_properties(yamlui PROPERTIES WIN32_EXECUTABLE TRUE)
+    target_link_options(yamlui PRIVATE "/ENTRY:mainCRTStartup")
 endif()
 
 # POST_BUILD: mirror ui.yaml next to the binary so `win.load("ui.yaml")`
