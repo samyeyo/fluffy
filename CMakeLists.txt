@@ -31,10 +31,20 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # -dead_strip.  Applying the wrong spelling breaks the build (or, for GNU ld,
 # silently misparses -dead_strip as -d -e ad_strip).
 if(MSVC)
-    string(APPEND CMAKE_CXX_FLAGS " /Gy /Gw")
-    string(APPEND CMAKE_C_FLAGS   " /Gy /Gw")
+    string(APPEND CMAKE_CXX_FLAGS " /Gy /Gw /Zc:inline")
+    string(APPEND CMAKE_C_FLAGS   " /Gy /Gw /Zc:inline")
     string(APPEND CMAKE_EXE_LINKER_FLAGS    " /OPT:REF /OPT:ICF")
     string(APPEND CMAKE_SHARED_LINKER_FLAGS " /OPT:REF /OPT:ICF")
+
+    string(REPLACE "/O2" "/O1" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+    string(REPLACE "/O2" "/O1" CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE}")
+    string(REPLACE "/Ob2" "/Ob1" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+    string(REPLACE "/Ob2" "/Ob1" CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE}")
+    string(APPEND CMAKE_CXX_FLAGS_RELEASE " /GL")
+    string(APPEND CMAKE_C_FLAGS_RELEASE   " /GL")
+    string(APPEND CMAKE_EXE_LINKER_FLAGS_RELEASE    " /LTCG /OPT:REF /OPT:ICF")
+    string(APPEND CMAKE_SHARED_LINKER_FLAGS_RELEASE " /LTCG /OPT:REF /OPT:ICF")
+    string(APPEND CMAKE_STATIC_LINKER_FLAGS_RELEASE " /LTCG")
 else()
     string(APPEND CMAKE_CXX_FLAGS " -ffunction-sections -fdata-sections -fvisibility=hidden")
     string(APPEND CMAKE_C_FLAGS   " -ffunction-sections -fdata-sections -fvisibility=hidden")
@@ -299,7 +309,7 @@ if(FLUFFY_NO_RTTI)
     list(REMOVE_ITEM _fluffy_no_rtti_sources
         src/widget.cpp src/layout.cpp src/simple_widget.cpp)
     set_source_files_properties(${_fluffy_no_rtti_sources} PROPERTIES
-        COMPILE_OPTIONS "$<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-fno-rtti>")
+        COMPILE_OPTIONS "$<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-fno-rtti>$<$<CXX_COMPILER_ID:MSVC>:/GR->")
     message(STATUS "Fluffy: RTTI disabled (-fno-rtti), Widget/Layout TUs keep RTTI")
 endif()
 
