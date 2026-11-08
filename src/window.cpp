@@ -33,7 +33,6 @@
 #include <nanovg.h>
 #include <nanovg_gl.h>  
 #include <GLFW/glfw3.h>
-#include <format>
 #ifndef __EMSCRIPTEN__
 #if defined(__APPLE__)
 #  define GLFW_EXPOSE_NATIVE_COCOA
@@ -1133,7 +1132,7 @@ NoneResult Window::load(const std::string& filepath) {
     std::ifstream in(filepath);
     if (!in) {
         return NoneResult::err(
-            std::format("yaml_loader: cannot open file '{}'", filepath));
+            "yaml_loader: cannot open file '" + filepath + "'");
     }
     std::stringstream buf;
     buf << in.rdbuf();

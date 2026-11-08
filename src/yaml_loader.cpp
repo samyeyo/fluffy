@@ -9,7 +9,6 @@
 #include <fluffy/layout.hpp>
 #include <fluffy/yaml_fwd.hpp>
 #include <cstdlib>
-#include <format>
 
 namespace fluffy {
 namespace {
@@ -55,8 +54,8 @@ Result<Inline> parseInlineYaml(const YamlNode& node) {
     for (const auto& run : node) {
         const std::string key = run.key();
         if (!run.IsScalar()) {
-            return Result<Inline>::err(std::format(
-                "yaml_loader: inline '{}' must be a scalar", key));
+            return Result<Inline>::err(
+                "yaml_loader: inline '" + key + "' must be a scalar");
         }
 
         if (key == "text") {
@@ -69,8 +68,8 @@ Result<Inline> parseInlineYaml(const YamlNode& node) {
             const std::string name = run.asString();
             const SvgIconRef* icon = Icons::find(name);
             if (!icon || !icon->svg_data) {
-                return Result<Inline>::err(std::format(
-                    "yaml_loader: unknown icon '{}'", name));
+                return Result<Inline>::err(
+                    "yaml_loader: unknown icon '" + name + "'");
             }
             content << *icon;
             has_run = true;
@@ -78,8 +77,8 @@ Result<Inline> parseInlineYaml(const YamlNode& node) {
             const std::string raw = run.asString();
             auto color = Color::fromString(raw);
             if (!color) {
-                return Result<Inline>::err(std::format(
-                    "yaml_loader: invalid inline color '{}'", raw));
+                return Result<Inline>::err(
+                    "yaml_loader: invalid inline color '" + raw + "'");
             }
             fg = *color;
             apply_style();
@@ -88,8 +87,8 @@ Result<Inline> parseInlineYaml(const YamlNode& node) {
             char* end = nullptr;
             const float value = std::strtof(raw.c_str(), &end);
             if (raw.empty() || *end != '\0' || !(value >= 0.0f)) {
-                return Result<Inline>::err(std::format(
-                    "yaml_loader: invalid inline size '{}'", raw));
+                return Result<Inline>::err(
+                    "yaml_loader: invalid inline size '" + raw + "'");
             }
             size = value;
             apply_style();
@@ -97,8 +96,8 @@ Result<Inline> parseInlineYaml(const YamlNode& node) {
             const std::string raw = run.asString();
             bool value = false;
             if (!parseBool(raw, value)) {
-                return Result<Inline>::err(std::format(
-                    "yaml_loader: invalid inline {} '{}'", key, raw));
+                return Result<Inline>::err(
+                    "yaml_loader: invalid inline " + key + " '" + raw + "'");
             }
             if (key == "bold") bold = value;
             else               italic = value;
@@ -107,8 +106,8 @@ Result<Inline> parseInlineYaml(const YamlNode& node) {
             const std::string raw = run.asString();
             bool value = false;
             if (!parseBool(raw, value)) {
-                return Result<Inline>::err(std::format(
-                    "yaml_loader: invalid inline reset '{}'", raw));
+                return Result<Inline>::err(
+                    "yaml_loader: invalid inline reset '" + raw + "'");
             }
             if (value) {
                 fg.reset();
@@ -118,8 +117,8 @@ Result<Inline> parseInlineYaml(const YamlNode& node) {
                 apply_style();
             }
         } else {
-            return Result<Inline>::err(std::format(
-                "yaml_loader: unknown inline run '{}'", key));
+            return Result<Inline>::err(
+                "yaml_loader: unknown inline run '" + key + "'");
         }
     }
 
@@ -147,8 +146,8 @@ parseWidgetEntry(const std::string& type, const YamlNode& body) {
             if (key == "inline" && child.IsMap()) has_inline = true;
         }
         if (has_text && has_inline) {
-            return Result<std::unique_ptr<Widget>>::err(std::format(
-                "yaml_loader: {} cannot use both 'text' and 'inline'", type));
+            return Result<std::unique_ptr<Widget>>::err(
+                "yaml_loader: " + type + " cannot use both 'text' and 'inline'");
         }
     }
 
@@ -191,8 +190,8 @@ parseWidgetEntry(const std::string& type, const YamlNode& body) {
                 auto wprobe = WidgetFactory::create(key);
                 if (!wprobe) {
                     return Result<std::unique_ptr<Widget>>::err(
-                        std::format("yaml_loader: Container's first map child must "
-                                    "be a layout (got '{}')", key));
+                        "yaml_loader: Container's first map child must "
+                        "be a layout (got '" + key + "')");
                 }
                 layout_done = true; // skip layout parsing once; parse as widget below
             }
@@ -213,8 +212,8 @@ parseWidgetEntry(const std::string& type, const YamlNode& body) {
             const std::string key = child.key();
             if (key == "inline" && (type == "Label" || type == "Button")) {
                 if (!child.IsMap()) {
-                    return Result<std::unique_ptr<Widget>>::err(std::format(
-                        "yaml_loader: {} 'inline' must be a list of runs", type));
+                    return Result<std::unique_ptr<Widget>>::err(
+                        "yaml_loader: " + type + " 'inline' must be a list of runs");
                 }
                 auto inline_res = parseInlineYaml(child);
                 if (!inline_res) {

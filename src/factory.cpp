@@ -24,7 +24,6 @@
 #include <fluffy/tooltip.hpp>
 #include <fluffy/webview.hpp>
 #include <cstring>
-#include <format>
 #include <string_view>
 namespace fluffy {
 namespace {
@@ -83,7 +82,7 @@ WidgetFactory::create(std::string_view name) {
     auto creator = find_widget(name);
     if (!creator) {
         return Result<std::unique_ptr<Widget>>::err(
-            std::format("WidgetFactory: unknown type '{}'", name));
+            std::string("WidgetFactory: unknown type '") + std::string(name) + "'");
     }
     return Result<std::unique_ptr<Widget>>(creator());
 }
@@ -99,7 +98,7 @@ LayoutFactory::create(std::string_view name) {
     auto creator = find_layout(name);
     if (!creator) {
         return Result<std::unique_ptr<Layout>>::err(
-            std::format("LayoutFactory: unknown type '{}'", name));
+            std::string("LayoutFactory: unknown type '") + std::string(name) + "'");
     }
     return Result<std::unique_ptr<Layout>>(creator());
 }

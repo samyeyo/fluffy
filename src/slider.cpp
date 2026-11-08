@@ -10,8 +10,53 @@
 #include <nanovg.h>
 #include <algorithm>
 #include <cmath>
-#include <format>
+#include <cstdio>
 namespace fluffy {
+
+namespace {
+std::string formatSliderValue(const std::string& fmt, float value) {
+    const std::size_t open = fmt.find('{');
+    if (open == std::string::npos) return fmt;
+    const std::size_t close = fmt.find('}', open + 1);
+    if (close == std::string::npos) return fmt;
+
+    std::string spec = fmt.substr(open + 1, close - open - 1);
+    if (!spec.empty() && spec.front() == ':') spec.erase(spec.begin());
+
+    char type = 'g';
+    int precision = 6;
+    const std::size_t dot = spec.find('.');
+    if (dot != std::string::npos) {
+        int p = 0;
+        bool digits = false;
+        for (std::size_t i = dot + 1; i < spec.size() && spec[i] >= '0' && spec[i] <= '9'; ++i) {
+            p = p * 10 + (spec[i] - '0');
+            digits = true;
+        }
+        if (digits) precision = p;
+    }
+    if (!spec.empty()) {
+        const char t = spec.back();
+        if (t == 'f' || t == 'F' || t == 'e' || t == 'E' || t == 'g' || t == 'G') type = t;
+    }
+
+    char buf[64];
+    if (type == 'e' || type == 'E') {
+        std::snprintf(buf, sizeof buf, "%.*e", precision, static_cast<double>(value));
+    } else if (type == 'g' || type == 'G') {
+        std::snprintf(buf, sizeof buf, "%.*g", precision, static_cast<double>(value));
+    } else {
+        std::snprintf(buf, sizeof buf, "%.*f", precision, static_cast<double>(value));
+    }
+
+    std::string out;
+    out.reserve(fmt.size() + 16);
+    out.append(fmt, 0, open);
+    out.append(buf);
+    out.append(fmt, close + 1, std::string::npos);
+    return out;
+}
+}
 
 // ––––––––[ Slider ] constructs with bounds and optional initial value.
 Slider::Slider(Rect bounds, float initial)
@@ -144,7 +189,7 @@ void Slider::draw(NVGcontext* vg, const Theme& theme, const Window& w) {
         nvgFontFace(vg, face.c_str());
         nvgTextAlign(vg, NVG_ALIGN_CENTER | NVG_ALIGN_BOTTOM);
         const float display = range > 0.0f ? value_ : 0.0f;
-        const std::string label = std::vformat(value_format_, std::make_format_args(display));
+        const std::string label = formatSliderValue(value_format_, display);
         const float label_y = cy - thumb_anim_r - 4.0f;
         nvgFillColor(vg, nvgRGBA(theme.colors.on_surface.r,
                                   theme.colors.on_surface.g,
