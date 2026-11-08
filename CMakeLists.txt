@@ -282,6 +282,10 @@ target_compile_options(fluffy PRIVATE
     $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Wall -Wextra -Wpedantic>
 )
 
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang")
+    target_compile_options(fluffy PUBLIC -Wno-dollar-in-identifier-extension)
+endif()
+
 # Optional compiler knobs for smaller binaries.
 # These are PRIVATE: they shape how the library itself is compiled but must
 # not force -fno-rtti / -fno-exceptions onto consumer translation units.

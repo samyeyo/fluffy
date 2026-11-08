@@ -55,6 +55,10 @@ find_package(OpenGL REQUIRED)
 
 add_executable(widgetshots main.cpp)
 
+if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang")
+    target_compile_options(widgetshots PRIVATE -Wno-dollar-in-identifier-extension)
+endif()
+
 target_include_directories(widgetshots PRIVATE
     "${FLUFFY_ROOT}/include"
     "${NANOVG_INCLUDE_DIR}"
