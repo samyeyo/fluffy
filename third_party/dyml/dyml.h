@@ -6,6 +6,8 @@
 
 #include <vector>
 #include <string>
+#include <cstring>
+#include <climits>
 
 namespace dyml { using std::vector; using std::string; }
 
