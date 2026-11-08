@@ -22,7 +22,47 @@
 #include <string>
 #include <vector>
 
+#if defined(__linux__)
+#include <cstdlib>
+#include <cstring>
+#include <dlfcn.h>
+#endif
+
 namespace fluffy {
+
+#if defined(__linux__)
+namespace {
+// ––––––––[ libdecor_available ] can GLFW draw client-side Wayland chrome?
+bool libdecor_available() {
+    void* handle = dlopen("libdecor-0.so.0", RTLD_LAZY | RTLD_LOCAL);
+    if (!handle) return false;
+    dlclose(handle);
+    return true;
+}
+
+// ––––––––[ configure_glfw_platform ] picks a backend that can show a title bar.
+void configure_glfw_platform() {
+    if (const char* requested = std::getenv("FLUFFY_PLATFORM")) {
+        if (std::strcmp(requested, "x11") == 0)
+            glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
+        else if (std::strcmp(requested, "wayland") == 0)
+            glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_WAYLAND);
+        return;
+    }
+
+    const char* session = std::getenv("XDG_SESSION_TYPE");
+    const bool wayland_session =
+        std::getenv("WAYLAND_DISPLAY") != nullptr ||
+        (session && std::strcmp(session, "wayland") == 0);
+    // Without libdecor a Wayland toplevel has no title bar or buttons. Fall
+    // back to XWayland, where the window manager provides native chrome.
+    if (!wayland_session || libdecor_available()) return;
+    if (!std::getenv("DISPLAY")) return;
+    if (glfwPlatformSupported(GLFW_PLATFORM_X11))
+        glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
+}
+}  // namespace
+#endif
 
 // ––––––––[ Application::Impl ] window registry + quit flag + GLFW ref
 struct Application::Impl {
@@ -44,6 +84,9 @@ Application::Application()
     : impl_(new Impl()) {
     s_instance = this;
     if (impl_->glfwRefCount_.fetch_add(1) == 0) {
+#if defined(__linux__)
+        configure_glfw_platform();
+#endif
         if (glfwInit() == GLFW_TRUE) {
             impl_->glfwInited_ = true;
         }
@@ -207,13 +250,12 @@ void Application::run() {
         glfwSetCharCallback(gw, &Window::s_char_cb);
         glfwSetScrollCallback(gw, &Window::s_scroll_cb);
         glfwSetWindowCloseCallback(gw, &Window::s_close_cb);
-        int lw, lh, fbw, fbh;
-        glfwGetWindowSize(gw, &lw, &lh);
-        glfwGetFramebufferSize(gw, &fbw, &fbh);
+        w->syncSize();
+        const auto [dw, dh] = w->designSize();
         for (auto& wgt : w->widgets_) {
-            if (wgt->fillsParent()) wgt->setBounds(Rect(0.0f, 0.0f, float(lw), float(lh)));
+            if (wgt->fillsParent()) wgt->fillToWindow(float(dw), float(dh));
         }
-        ResizeEvent init_layout{fbw, fbh};
+        ResizeEvent init_layout{dw, dh};
         for (auto& wgt : w->widgets_) wgt->onResize(init_layout);
     }
 

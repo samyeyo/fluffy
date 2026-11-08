@@ -104,7 +104,7 @@ public:
     void setProperty(std::string_view name, const YamlNode& value) override;
     // ––––––––[ fillsParent ] a container with no explicit size fills the window
     bool fillsParent() const noexcept override {
-        return bounds_.w <= 0.0f && bounds_.h <= 0.0f;
+        return window_sized_ || (bounds_.w <= 0.0f && bounds_.h <= 0.0f);
     }
     bool isContainer() const noexcept override { return true; }
     void forEachChild(const std::function<void(Widget*)>& fn) override {

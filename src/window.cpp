@@ -49,11 +49,19 @@
 #elif defined(__linux__)
 #  include <X11/Xlib.h>
 #  include <X11/Xatom.h>
+#  include <X11/Xutil.h>
+// Xlib defines macros that collide with Fluffy's enum names.
+#  undef None
+#  undef Button4
+#  undef Button5
+#  undef CursorShape
 #endif
 #endif
 #include <algorithm>
 #include <atomic>
+#include <cmath>
 #include <cstddef>
+#include <cstdlib>
 #include <cstring>
 #include <fstream>
 #include <sstream>
@@ -76,6 +84,9 @@ struct Window::Impl {
     int   logical_w = 0,  logical_h = 0;
     int   fb_w      = 0,  fb_h      = 0;
     float scale_x   = 1.0f, scale_y = 1.0f;
+    float coord_scale_x = 1.0f, coord_scale_y = 1.0f;
+    float forced_scale_x = 0.0f, forced_scale_y = 0.0f;
+    bool  decorated = true;
     bool  init_failed_ = false;
     int   design_w        = 0;
     int   design_h        = 0;
@@ -147,13 +158,128 @@ MouseButton mouseButtonFromGlfw(int button) noexcept {
     default:                       return MouseButton::Unknown;
     }
 }
+
+#if defined(__linux__)
+// Motif window-manager hint bits (not provided by the X11 headers).
+constexpr unsigned long kMwmHintsFunctions   = 1UL << 0;
+constexpr unsigned long kMwmHintsDecorations = 1UL << 1;
+constexpr unsigned long kMwmFuncResize       = 1UL << 1;
+constexpr unsigned long kMwmFuncMove         = 1UL << 2;
+constexpr unsigned long kMwmFuncMinimize     = 1UL << 3;
+constexpr unsigned long kMwmFuncMaximize     = 1UL << 4;
+constexpr unsigned long kMwmFuncClose        = 1UL << 5;
+constexpr unsigned long kMwmDecorAll         = 1UL << 0;
+
+// ––––––––[ x11_set_window_type ] tags the window for the window manager.
+void x11_set_window_type(GLFWwindow* win, const char* type_name) {
+    if (!win || glfwGetPlatform() != GLFW_PLATFORM_X11) return;
+    Display* display = glfwGetX11Display();
+    if (!display) return;
+    ::Window x11_win = glfwGetX11Window(win);
+    if (!x11_win) return;
+    Atom wm_type = XInternAtom(display, "_NET_WM_WINDOW_TYPE", False);
+    Atom target  = XInternAtom(display, type_name, False);
+    XChangeProperty(display, x11_win, wm_type, XA_ATOM, 32,
+                    PropModeReplace,
+                    reinterpret_cast<unsigned char*>(&target), 1);
+    XFlush(display);
+}
+
+// ––––––––[ x11_set_decorations ] toggles WM chrome and button availability.
+void x11_set_decorations(GLFWwindow* win, bool decorated,
+                         WindowButtons buttons) {
+    if (!win || glfwGetPlatform() != GLFW_PLATFORM_X11) return;
+    Display* display = glfwGetX11Display();
+    if (!display) return;
+    ::Window x11_win = glfwGetX11Window(win);
+    if (!x11_win) return;
+
+    struct MotifHints {
+        unsigned long flags;
+        unsigned long functions;
+        unsigned long decorations;
+        long          input_mode;
+        unsigned long status;
+    } hints{};
+    hints.flags = kMwmHintsFunctions | kMwmHintsDecorations;
+    if (!decorated) {
+        hints.functions   = 0;
+        hints.decorations = 0;
+    } else {
+        const auto has = [buttons](WindowButtons b) {
+            return (buttons & b) != WindowButtons::None;
+        };
+        hints.functions = kMwmFuncResize | kMwmFuncMove;
+        if (has(WindowButtons::Close))
+            hints.functions |= kMwmFuncClose;
+        if (has(WindowButtons::Minimize))
+            hints.functions |= kMwmFuncMinimize;
+        if (has(WindowButtons::Maximize))
+            hints.functions |= kMwmFuncMaximize;
+        hints.decorations = kMwmDecorAll;
+    }
+
+    Atom motif = XInternAtom(display, "_MOTIF_WM_HINTS", False);
+    XChangeProperty(display, x11_win, motif, motif, 32, PropModeReplace,
+                    reinterpret_cast<unsigned char*>(&hints),
+                    static_cast<int>(sizeof(hints) / sizeof(long)));
+    XFlush(display);
+}
+
+// ––––––––[ x11_scale_override ] reads an explicit user scaling preference.
+float x11_scale_override() {
+    if (glfwGetPlatform() != GLFW_PLATFORM_X11) return 0.0f;
+    if (const char* s = std::getenv("FLUFFY_SCALE")) {
+        char* end = nullptr;
+        const float v = std::strtof(s, &end);
+        if (end != s && v >= 1.0f && v <= 4.0f) return v;
+    }
+    if (const char* gdk = std::getenv("GDK_SCALE")) {
+        if (*gdk) {
+            const int v = std::atoi(gdk);
+            if (v >= 1 && v <= 4) return static_cast<float>(v);
+        }
+    }
+    if (const char* qt = std::getenv("QT_SCALE_FACTOR")) {
+        if (*qt) {
+            char* end = nullptr;
+            const float v = std::strtof(qt, &end);
+            if (end != qt && v >= 1.0f && v <= 4.0f) return v;
+        }
+    }
+    return 0.0f;
+}
+
+// ––––––––[ x11_content_scale_fallback ] infers a scale GLFW may not report.
+float x11_content_scale_fallback() {
+    if (glfwGetPlatform() != GLFW_PLATFORM_X11) return 0.0f;
+    // Last resort: infer a deliberately high DPI from the primary monitor.
+    if (GLFWmonitor* monitor = glfwGetPrimaryMonitor()) {
+        int mm_w = 0, mm_h = 0;
+        glfwGetMonitorPhysicalSize(monitor, &mm_w, &mm_h);
+        if (const GLFWvidmode* mode = glfwGetVideoMode(monitor)) {
+            if (mm_w > 0 && mode->width > 0) {
+                const float dpi = static_cast<float>(mode->width) * 25.4f
+                                / static_cast<float>(mm_w);
+                float scale = dpi / 96.0f;
+                if (scale >= 1.5f) {
+                    scale = std::round(scale * 4.0f) / 4.0f;
+                    return std::min(scale, 4.0f);
+                }
+            }
+        }
+    }
+    return 0.0f;
+}
+#endif
 }  
 
 // ––––––––[ s_cursor_pos_cb ] dispatch MouseMove directly to topmost widget.
 void Window::s_cursor_pos_cb(GLFWwindow* w, double x, double y) {
     if (auto* win = from_glfw(w)) {
-        win->cursor_x_ = static_cast<float>(x);
-        win->cursor_y_ = static_cast<float>(y);
+        if (!win->impl_) return;
+        win->cursor_x_ = static_cast<float>(x) * win->impl_->coord_scale_x;
+        win->cursor_y_ = static_cast<float>(y) * win->impl_->coord_scale_y;
         const Event e = MouseMoveEvent{ win->cursor_x_, win->cursor_y_ };
         if (win->eventHandler_ &&
             win->eventHandler_(e, *win) == EventResult::Consumed)
@@ -221,30 +347,23 @@ void Window::s_mouse_btn_cb(GLFWwindow* w, int button, int action, int /*mods*/)
 }
 
 // ––––––––[ s_framebuffer_size_cb ] resize design space, FBO, root widgets, then dispatch.
-void Window::s_framebuffer_size_cb(GLFWwindow* w, int w2, int h2) {
+void Window::s_framebuffer_size_cb(GLFWwindow* w, int /*w2*/, int /*h2*/) {
     auto* win = from_glfw(w);
     if (!win || !win->impl_) return;
-    int lw, lh;
-    glfwGetWindowSize(w, &lw, &lh);
-    win->impl_->logical_w       = lw;
-    win->impl_->logical_h       = lh;
-    win->impl_->fb_w            = w2;
-    win->impl_->fb_h            = h2;
-    win->impl_->scale_x         = lw > 0 ? float(w2) / float(lw) : 1.0f;
-    win->impl_->scale_y         = lh > 0 ? float(h2) / float(lh) : 1.0f;
-    win->impl_->design_w        = lw;
-    win->impl_->design_h        = lh;
-    win->impl_->design_px_ratio = win->impl_->scale_x;
+    win->syncSize();
     win->resizeFbo();
     // Close popup on window resize (repositioning would be wrong).
     win->closePopup();
     // Resize root Containers to match new logical window size.
     // Non-Container root widgets (absolute-positioned) keep their manual bounds.
+    const int dw = win->impl_->design_w;
+    const int dh = win->impl_->design_h;
     for (auto& wgt : win->widgets_) {
         if (wgt->fillsParent())
-            wgt->setBounds(Rect(0.0f, 0.0f, float(lw), float(lh)));
+            wgt->fillToWindow(float(dw), float(dh));
     }
-    const Event e = ResizeEvent{ w2, h2 };
+    const Event e = ResizeEvent{ dw, dh };
+    for (auto& wgt : win->widgets_) wgt->onResize(ResizeEvent{ dw, dh });
     bool consumed = false;
     if (win->eventHandler_ &&
         win->eventHandler_(e, *win) == EventResult::Consumed)
@@ -257,7 +376,7 @@ void Window::s_framebuffer_size_cb(GLFWwindow* w, int w2, int h2) {
         }
     }
     if (win->onResize_)
-        win->onResize_(w2, h2);
+        win->onResize_(dw, dh);
     win->renderFrame();
 }
 
@@ -437,6 +556,10 @@ Result<Window> Window::create(const Config& cfg) {
     glfwWindowHint(GLFW_RESIZABLE, cfg.resizable ? GLFW_TRUE : GLFW_FALSE);
     glfwWindowHint(GLFW_VISIBLE, cfg.visible ? GLFW_TRUE : GLFW_FALSE);
     glfwWindowHint(GLFW_DECORATED, cfg.decorated ? GLFW_TRUE : GLFW_FALSE);
+#if defined(GLFW_SCALE_TO_MONITOR) && !defined(__APPLE__) && \
+    !defined(FLUFFY_EMSCRIPTEN) && !defined(__EMSCRIPTEN__)
+    glfwWindowHint(GLFW_SCALE_TO_MONITOR, GLFW_TRUE);
+#endif
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
@@ -449,31 +572,50 @@ Result<Window> Window::create(const Config& cfg) {
     }
     glfwMakeContextCurrent(glfw);
     if (cfg.vsync) glfwSwapInterval(1);
-    if (cfg.min_width > 0 || cfg.min_height > 0) {
-        glfwSetWindowSizeLimits(glfw,
-            cfg.min_width  > 0 ? cfg.min_width  : GLFW_DONT_CARE,
-            cfg.min_height > 0 ? cfg.min_height : GLFW_DONT_CARE,
-            GLFW_DONT_CARE, GLFW_DONT_CARE);
-    }
 #if !defined(FLUFFY_EMSCRIPTEN) && !defined(__EMSCRIPTEN__)
     if (gl3wInit2(glfwGetProcAddress) != 0) {
         return Result<Window>::err("gl3wInit2 failed");
     }
 #endif
-    int logical_w = 0, logical_h = 0;
-    int fb_w      = 0, fb_h      = 0;
-    glfwGetWindowSize     (glfw, &logical_w, &logical_h);
-    glfwGetFramebufferSize(glfw, &fb_w,      &fb_h);
-    win.impl_->glfw_window     = glfw;
-    win.impl_->logical_w       = logical_w;
-    win.impl_->logical_h       = logical_h;
-    win.impl_->fb_w            = fb_w;
-    win.impl_->fb_h            = fb_h;
-    win.impl_->scale_x         = logical_w > 0 ? float(fb_w) / float(logical_w) : 1.0f;
-    win.impl_->scale_y         = logical_h > 0 ? float(fb_h) / float(logical_h) : 1.0f;
-    win.impl_->design_w        = cfg.width;
-    win.impl_->design_h        = cfg.height;
-    win.impl_->design_px_ratio = win.impl_->scale_x;
+    win.impl_->glfw_window = glfw;
+    win.impl_->decorated   = cfg.decorated;
+#if defined(__linux__)
+    if (cfg.decorated)
+        x11_set_window_type(glfw, "_NET_WM_WINDOW_TYPE_NORMAL");
+    // GLFW derives the X11 scale from Xft.dpi; cover setups that only expose
+    // scaling through the toolkit environment or monitor DPI.
+    {
+        float gsx = 1.0f, gsy = 1.0f;
+        glfwGetWindowContentScale(glfw, &gsx, &gsy);
+        float target = x11_scale_override();
+        if (target <= 0.0f) {
+            const float fallback = x11_content_scale_fallback();
+            if (fallback > gsx + 0.01f || fallback > gsy + 0.01f)
+                target = fallback;
+        }
+        if (target > 0.0f) {
+            win.impl_->forced_scale_x = target;
+            win.impl_->forced_scale_y = target;
+            glfwSetWindowSize(glfw,
+                static_cast<int>(std::lround(cfg.width  * target)),
+                static_cast<int>(std::lround(cfg.height * target)));
+        }
+    }
+    win.applyWindowButtons();
+#endif
+    win.impl_->design_w    = cfg.width;
+    win.impl_->design_h    = cfg.height;
+    win.syncSize();
+    if (cfg.min_width > 0 || cfg.min_height > 0) {
+        const float invx = win.impl_->coord_scale_x > 0.0f
+            ? 1.0f / win.impl_->coord_scale_x : 1.0f;
+        const float invy = win.impl_->coord_scale_y > 0.0f
+            ? 1.0f / win.impl_->coord_scale_y : 1.0f;
+        glfwSetWindowSizeLimits(glfw,
+            cfg.min_width  > 0 ? int(std::lround(cfg.min_width  * invx)) : GLFW_DONT_CARE,
+            cfg.min_height > 0 ? int(std::lround(cfg.min_height * invy)) : GLFW_DONT_CARE,
+            GLFW_DONT_CARE, GLFW_DONT_CARE);
+    }
     win.impl_->fbo_w = 0;
     win.impl_->fbo_h = 0;
     win.resizeFbo();
@@ -712,8 +854,8 @@ void Window::onClose(std::function<bool()> h) {
 Container& Window::verticalLayout() {
     if (!root_container_) {
         auto d = designSize();
-        root_container_ = &add<Container>(
-            Rect(0.0f, 0.0f, float(d.first), float(d.second)));
+        root_container_ = &add<Container>();
+        root_container_->fillToWindow(float(d.first), float(d.second));
         root_container_->setLayout(std::make_unique<VerticalLayout>());
     }
     return *root_container_;
@@ -722,8 +864,8 @@ Container& Window::verticalLayout() {
 Container& Window::horizontalLayout() {
     if (!root_container_) {
         auto d = designSize();
-        root_container_ = &add<Container>(
-            Rect(0.0f, 0.0f, float(d.first), float(d.second)));
+        root_container_ = &add<Container>();
+        root_container_->fillToWindow(float(d.first), float(d.second));
         root_container_->setLayout(std::make_unique<HorizontalLayout>());
     }
     return *root_container_;
@@ -733,8 +875,8 @@ Container& Window::horizontalLayout() {
 Container& Window::gridLayout(int cols) {
     if (!root_container_) {
         auto d = designSize();
-        root_container_ = &add<Container>(
-            Rect(0.0f, 0.0f, float(d.first), float(d.second)));
+        root_container_ = &add<Container>();
+        root_container_->fillToWindow(float(d.first), float(d.second));
         root_container_->setLayout(std::make_unique<GridLayout>(cols));
     }
     return *root_container_;
@@ -816,7 +958,7 @@ void Window::setTheme(const Theme& t) noexcept {
     // Force re-layout of all root widgets so they pick up new theme metrics
     // (button_padding_x/y, text_size, toggle_size, etc.).
     if (impl_) {
-        ResizeEvent re{ impl_->fb_w, impl_->fb_h };
+        ResizeEvent re{ impl_->design_w, impl_->design_h };
         for (auto& wgt : widgets_) wgt->onResize(re);
     }
 }
@@ -828,12 +970,14 @@ void Window::setEnabledButtons(WindowButtons flags) noexcept {
 
 void Window::applyWindowButtons() {
     if (!impl_ || !impl_->glfw_window) return;
+#if defined(__APPLE__) || defined(_WIN32)
     const bool can_close =
         (enabledButtons_ & WindowButtons::Close) != WindowButtons::None;
     const bool can_minimize =
         (enabledButtons_ & WindowButtons::Minimize) != WindowButtons::None;
     const bool can_maximize =
         (enabledButtons_ & WindowButtons::Maximize) != WindowButtons::None;
+#endif
 #if defined(__APPLE__)
     id ns_window = (id)glfwGetCocoaWindow(impl_->glfw_window);
     if (!ns_window) return;
@@ -859,6 +1003,8 @@ void Window::applyWindowButtons() {
         EnableMenuItem(menu, SC_MAXIMIZE,
                        can_maximize ? MF_ENABLED : (MF_GRAYED | MF_DISABLED));
     }
+#elif defined(__linux__)
+    x11_set_decorations(impl_->glfw_window, impl_->decorated, enabledButtons_);
 #endif
 }
 
@@ -1190,14 +1336,12 @@ void Window::run() {
     // Apply layout once BEFORE the event loop so widget bounds are correct
     // before any GLFW callbacks fire on the first frame.
     {
-        int lw, lh, fbw, fbh;
-        glfwGetWindowSize     (im.glfw_window, &lw,  &lh);
-        glfwGetFramebufferSize(im.glfw_window, &fbw, &fbh);
+        syncSize();
         for (auto& wgt : widgets_) {
-        if (wgt->fillsParent())
-            wgt->setBounds(Rect(0.0f, 0.0f, float(lw), float(lh)));
+            if (wgt->fillsParent())
+                wgt->fillToWindow(float(im.design_w), float(im.design_h));
         }
-        ResizeEvent init_layout{ fbw, fbh };
+        ResizeEvent init_layout{ im.design_w, im.design_h };
         for (auto& wgt : widgets_) wgt->onResize(init_layout);
     }
 #if defined(FLUFFY_EMSCRIPTEN) || defined(__EMSCRIPTEN__)
@@ -1208,13 +1352,7 @@ void Window::run() {
         glfwPollEvents();
         // Update window size
         {
-            int lw = 0, lh = 0, fbw = 0, fbh = 0;
-            glfwGetWindowSize     (im.glfw_window, &lw,  &lh);
-            glfwGetFramebufferSize(im.glfw_window, &fbw, &fbh);
-            im.logical_w = lw; im.logical_h = lh;
-            im.fb_w      = fbw; im.fb_h      = fbh;
-            im.scale_x   = lw > 0 ? float(fbw) / float(lw) : 1.0f;
-            im.scale_y   = lh > 0 ? float(fbh) / float(lh) : 1.0f;
+            syncSize();
         }
         // Update hover states
         {
@@ -1306,18 +1444,6 @@ void set_window_movable(GLFWwindow* win, bool movable) {
     XChangeProperty(display, x11_win, wm_type, XA_ATOM, 32,
                     PropModeReplace, (unsigned char*)&target, 1);
     XFlush(display);
-#elif defined(_WIN32)
-    HWND hwnd = glfwGetWin32Window(win);
-    if (!hwnd) return;
-    LONG_PTR style = GetWindowLongPtr(hwnd, GWL_STYLE);
-    if (movable) {
-        style |= WS_CAPTION;
-    } else {
-        style &= ~WS_CAPTION;
-    }
-    SetWindowLongPtr(hwnd, GWL_STYLE, style);
-    SetWindowPos(hwnd, NULL, 0, 0, 0, 0,
-                 SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_FRAMECHANGED);
 #endif
     (void)win; (void)movable;
 }
@@ -1374,15 +1500,8 @@ void Window::dialogFrame(Window& parent, Window& popup) {
     auto* pg = parent.impl_->glfw_window;
     auto* pp = popup.impl_->glfw_window;
     glfwPollEvents();
-    {
-        int lw, lh, fbw, fbh;
-        glfwGetWindowSize(pg, &lw, &lh); glfwGetFramebufferSize(pg, &fbw, &fbh);
-        parent.impl_->logical_w = lw; parent.impl_->logical_h = lh;
-        parent.impl_->fb_w = fbw; parent.impl_->fb_h = fbh;
-        glfwGetWindowSize(pp, &lw, &lh); glfwGetFramebufferSize(pp, &fbw, &fbh);
-        popup.impl_->logical_w = lw; popup.impl_->logical_h = lh;
-        popup.impl_->fb_w = fbw; popup.impl_->fb_h = fbh;
-    }
+    parent.syncSize();
+    popup.syncSize();
     {
         popup.setCursorShape(CursorShape::Arrow);
         float mx, my;
@@ -1459,12 +1578,13 @@ Window::showDialogImpl(const std::string& title,
     {
         Window popup = std::move(popup_or_err).value();
         {
-            int px = 0, py = 0, pw = 0, ph = 0;
+            int px = 0, py = 0, pw = 0, ph = 0, cw = 0, ch = 0;
             glfwGetWindowPos (impl_->glfw_window, &px, &py);
             glfwGetWindowSize(impl_->glfw_window, &pw, &ph);
+            glfwGetWindowSize(popup.impl_->glfw_window, &cw, &ch);
             glfwSetWindowPos(popup.impl_->glfw_window,
-                             px + (pw - popup_w) / 2,
-                             py + (ph - popup_h) / 2);
+                             px + (pw - cw) / 2,
+                             py + (ph - ch) / 2);
         }
         const int saved_resizable = glfwGetWindowAttrib(impl_->glfw_window, GLFW_RESIZABLE);
         glfwSetWindowAttrib(impl_->glfw_window, GLFW_RESIZABLE, GLFW_FALSE);
@@ -1610,15 +1730,35 @@ bool Window::isAlive() const noexcept {
 // ––––––––[ syncSize ] updates logical/fb size from GLFW
 void Window::syncSize() {
     if (!impl_ || !impl_->glfw_window) return;
+    auto& im = *impl_;
     int lw = 0, lh = 0, fbw = 0, fbh = 0;
-    glfwGetWindowSize(impl_->glfw_window, &lw, &lh);
-    glfwGetFramebufferSize(impl_->glfw_window, &fbw, &fbh);
-    impl_->logical_w = lw;
-    impl_->logical_h = lh;
-    impl_->fb_w = fbw;
-    impl_->fb_h = fbh;
-    impl_->scale_x = lw > 0 ? float(fbw) / float(lw) : 1.0f;
-    impl_->scale_y = lh > 0 ? float(fbh) / float(lh) : 1.0f;
+    glfwGetWindowSize(im.glfw_window, &lw, &lh);
+    glfwGetFramebufferSize(im.glfw_window, &fbw, &fbh);
+    float csx = 1.0f, csy = 1.0f;
+#if !defined(FLUFFY_EMSCRIPTEN) && !defined(__EMSCRIPTEN__)
+    glfwGetWindowContentScale(im.glfw_window, &csx, &csy);
+#endif
+    if (!(csx > 0.0f)) csx = 1.0f;
+    if (!(csy > 0.0f)) csy = 1.0f;
+#if defined(__linux__)
+    if (im.forced_scale_x > 0.0f) csx = im.forced_scale_x;
+    if (im.forced_scale_y > 0.0f) csy = im.forced_scale_y;
+#endif
+    im.logical_w = lw;
+    im.logical_h = lh;
+    im.fb_w = fbw;
+    im.fb_h = fbh;
+    im.scale_x = csx;
+    im.scale_y = csy;
+    int dw = static_cast<int>(std::lround(static_cast<double>(fbw) / static_cast<double>(csx)));
+    int dh = static_cast<int>(std::lround(static_cast<double>(fbh) / static_cast<double>(csy)));
+    if (dw <= 0) dw = fbw > 0 ? fbw : 1;
+    if (dh <= 0) dh = fbh > 0 ? fbh : 1;
+    im.design_w = dw;
+    im.design_h = dh;
+    im.design_px_ratio = static_cast<float>(fbw) / static_cast<float>(dw);
+    im.coord_scale_x = lw > 0 ? static_cast<float>(dw) / static_cast<float>(lw) : 1.0f;
+    im.coord_scale_y = lh > 0 ? static_cast<float>(dh) / static_cast<float>(lh) : 1.0f;
 }
 
 // ––––––––[ doHoverTick ] updates hover, tooltip and tick

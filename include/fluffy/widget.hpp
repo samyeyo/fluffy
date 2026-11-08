@@ -32,7 +32,12 @@ public:
     Widget(const Widget&)             = delete;
     Widget& operator=(const Widget&)  = delete;
     Rect  bounds() const noexcept { return bounds_; }
-    void  setBounds(Rect r) noexcept { bounds_ = r; }
+    void  setBounds(Rect r) noexcept { bounds_ = r; window_sized_ = false; }
+    void  fillToWindow(float w, float h) noexcept {
+        bounds_ = Rect(0.0f, 0.0f, w, h);
+        window_sized_ = true;
+    }
+    bool  windowSized() const noexcept { return window_sized_; }
     float width()  const noexcept { return bounds_.width();  }
     float height() const noexcept { return bounds_.height(); }
     bool  visible() const noexcept { return visible_; }
@@ -92,6 +97,7 @@ public:
 protected:
     bool        enabled_  = true;
     bool        visible_  = true;
+    bool        window_sized_ = false;
     Rect        bounds_{};
     std::string font_;
     float       textSize_ = 0.0f;
