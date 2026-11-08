@@ -1,6 +1,7 @@
 # Build output
 /build/
 /build-*/
+/build*.lucide_svg_backup/
 /cmake-build-*/
 /out/
 /.install/

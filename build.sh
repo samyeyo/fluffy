@@ -9,15 +9,23 @@ DO_WASM=false
 case "${1:-}" in
     clean)
         echo "Cleaning build directories..."
+        # Keep the downloaded Lucide SVG pack across cleans. Stash it next to
+        # the build directory so the move is a same-filesystem rename; moving
+        # to /tmp is a cross-device copy that can appear to hang on Linux/WSL.
+        SVG_BACKUP="${BUILD_DIR}.lucide_svg_backup"
         _had_svg=false
         if [ -d "$BUILD_DIR/third_party/lucide_svg" ]; then
-            mv "$BUILD_DIR/third_party/lucide_svg" /tmp/fluffy_lucide_svg_backup
+            rm -rf "$SVG_BACKUP"
+            mv "$BUILD_DIR/third_party/lucide_svg" "$SVG_BACKUP"
+            _had_svg=true
+        elif [ -d "$SVG_BACKUP" ]; then
+            # A previous clean was interrupted after stashing the pack.
             _had_svg=true
         fi
         rm -rf "$BUILD_DIR" "${ROOT}/build-wasm"
         if [ "$_had_svg" = true ]; then
             mkdir -p "$BUILD_DIR/third_party"
-            mv /tmp/fluffy_lucide_svg_backup "$BUILD_DIR/third_party/lucide_svg"
+            mv "$SVG_BACKUP" "$BUILD_DIR/third_party/lucide_svg"
         fi
         echo "Done."
         exit 0
