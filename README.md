@@ -1,14 +1,17 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/C%2B%2B-20-0FA79C?style=flat-square">
-  <img src="https://img.shields.io/badge/license-MIT-6A46E5?style=flat-square">
-</p>
-
-<p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="www/fluffy-dark.png">
     <source media="(prefers-color-scheme: light)" srcset="www/fluffy-light.png">
     <img src="www/fluffy-light.png" alt="Fluffy" width="520">
   </picture>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black" alt="Linux">
+  <img src="https://img.shields.io/badge/Windows-0078D6?style=flat-square&logo=windows&logoColor=white" alt="Windows">
+  <img src="https://img.shields.io/badge/macOS-000000?style=flat-square&logo=apple&logoColor=white" alt="macOS">
+  <img src="https://img.shields.io/badge/C%2B%2B-20-0FA79C?style=flat-square" alt="C++20">
+  <img src="https://img.shields.io/badge/license-MIT-6A46E5?style=flat-square" alt="MIT license">
 </p>
 
 <p align="center" style="font-size: 1.05em; color: #4C5A78; max-width: 560px; margin: 0 auto;">
@@ -52,45 +55,22 @@ Fluffy is a **tiny, cross-platform GUI toolkit** that wraps NanoVG with a modern
 - **C++20 compiler** — Clang ≥ 15, GCC ≥ 13, MSVC ≥ 19.32 (Fluffy uses `std::format`)
 - Internet on first build (deps auto-fetch)
 
+For the full Linux package list, Wayland/X11 notes, and optional WebView
+dependencies, see [Installing Fluffy](doc/install.md). macOS and Windows need
+no extra system packages.
+
 ### Build it
 
 ```bash
-./build.sh                # build the library
-./build.sh examples       # library and example apps
-./build.sh install        # build + install library and headers (uses sudo when needed)
-./build.sh wasm           # WebAssembly library + documentation demos
-# other commands :
-./build.sh debug          # Debug build
-./build.sh clean          # clean build artifacts
+./build.sh examples   # library + example apps
+./build.sh install    # build and install the library
 ```
 
-`./build.sh wasm` requires the Emscripten SDK (`emcc` on `PATH`). It writes the
-library to `build-wasm/` and the runnable demo files to `www/demo/`.
+On Windows, use `build.bat examples` and `build.bat install`.
 
-Use `PREFIX=/custom/path ./build.sh install` to install somewhere other than `/usr/local`.
-The install produces a single library with GLFW, NanoVG, and gl3w compiled in, so
-`find_package(Fluffy CONFIG REQUIRED)` works from that prefix with no separate dependencies.
-
-On Windows, use `build.bat install`. It installs to `%LOCALAPPDATA%\Fluffy` by default;
-set `PREFIX` first to choose another location:
-
-```bat
-set PREFIX=C:\libs\Fluffy
-build.bat install
-```
-
-Point CMake at the chosen prefix with `-DCMAKE_PREFIX_PATH=...` and link `fluffy::fluffy`
-rather than editing global `INCLUDE` / `LIB` paths.
-
-For the complete walkthrough — requirements, installed file layout, CMake setup,
-and manual `helloworld` compilation — see [`doc/install.md`](doc/install.md).
-
-Or manually:
-
-```bash
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
-cmake --build build --parallel
-```
+See [Installing Fluffy](doc/install.md) for the full walkthrough: requirements,
+all build-script commands, plain CMake usage, installation prefixes, installed
+file layout, and manual compilation.
 
 ### Run it
 
@@ -119,18 +99,10 @@ open ./build/examples/nav/nav.app     # MacOS
 
 ---
 
-## Examples gallery
+## Demonstration
 
-| Command | What you'll see |
-|---|---|
-| `./build/examples/helloworld/helloworld` | Minimal label + button |
-| `./build/examples/nav/nav` | **Full widget showcase** with Nav browser |
-| `./build/examples/showcase/showcase` | All widgets in a grid |
-| `./build/examples/menus/menus` | Menu bar, dropdowns, submenus |
-| `./build/examples/icons/icons` | All 654 Lucide icons |
-| `./build/examples/yamlui/yamlui` | UI described entirely in YAML |
-| `./build/examples/multiwindow/multiwindow` | Multiwindow example |
-| `./build/examples/webview/webview` | Webview usage example |
+A live demo compiled with WebAssembly is available at
+[samyeyo.github.io/fluffy](https://samyeyo.github.io/fluffy).
 
 ---
 

@@ -13,27 +13,47 @@ If you only want to try the examples, see the [Hello Fluffy tutorial](tutorial/0
 | Git | optional | Only needed if you use `git clone`; dependencies are downloaded as source archives |
 | Internet | first configure | Downloads GLFW, NanoVG, webview, and Lucide icons |
 
-Fluffy fetches its dependencies automatically during the first CMake configure. Git is not used for dependency downloads: GLFW, NanoVG, and webview are unpacked from source archives, while Lucide icons are downloaded individually. Later builds work offline as long as the build directory and its downloaded dependencies are kept.
+Fluffy fetches its dependencies automatically during the first CMake configure. Git is not used for dependency downloads: GLFW, NanoVG, webview, and the Lucide icon set are unpacked from pinned source archives. Later builds work offline as long as the build directory and its downloaded dependencies are kept.
 
 ### Platform notes
 
 - **macOS** — install the Xcode Command Line Tools with `xcode-select --install`. Cocoa, IOKit, CoreFoundation, OpenGL, and WebKit are system frameworks.
 - **Windows** — use Visual Studio 2022 with the “Desktop development with C++” workload, or a recent MinGW-w64 toolchain. No external windowing or OpenGL packages are required.
-- **Linux** — install a compiler, CMake, pkg-config, OpenGL/X11 development headers, and the optional image/WebView libraries.
+- **Linux** — install a compiler, CMake, pkg-config, OpenGL and Wayland/X11 development headers, plus the optional libdecor and WebKitGTK libraries.
 
-On Ubuntu or Debian:
+GLFW is built from source with both X11 and Wayland support, and image decoding
+uses GdkPixbuf. On Ubuntu or Debian:
 
 ```bash
 sudo apt update
 sudo apt install build-essential cmake git pkg-config \
-    libgl1-mesa-dev libx11-dev libxrandr-dev libxinerama-dev \
-    libxcursor-dev libxi-dev libgdk-pixbuf-2.0-dev \
-    libwebkit2gtk-4.1-dev
+    libgl-dev \
+    libwayland-dev libxkbcommon-dev wayland-protocols \
+    libx11-dev libxext-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev \
+    libgdk-pixbuf-2.0-dev
 ```
 
-`libwebkit2gtk-4.1-dev` is only needed for the `WebView` widget. If it is missing, CMake disables the WebView overlay with a warning. You can also disable it explicitly with `-DFLUFFY_ENABLE_WEBVIEW=OFF`.
+Optional dependencies:
 
-Distribution package names differ; on Fedora, for example, the equivalents usually end in `-devel` (`gdk-pixbuf2-devel`, `webkit2gtk4.1-devel`, and so on).
+```bash
+# Native title bars under Wayland (otherwise Fluffy uses XWayland)
+sudo apt install libdecor-0-dev
+
+# Native WebView overlay (examples/webview and the WebView widget)
+sudo apt install libwebkit2gtk-4.1-dev
+```
+
+Without `libdecor`, Fluffy falls back to XWayland when available so windows
+still get native window-manager decorations; set `FLUFFY_PLATFORM=wayland` to
+opt out. On distributions that only ship WebKitGTK 4.0, install
+`libwebkit2gtk-4.0-dev` instead. The WebKitGTK dependency is re-detected on
+every CMake configure, so it can be installed after the first build; without it
+the WebView widget shows a placeholder. You can also disable it explicitly with
+`-DFLUFFY_ENABLE_WEBVIEW=OFF`.
+
+Distribution package names differ; on Fedora, for example, the equivalents
+usually end in `-devel` (`wayland-devel`, `gdk-pixbuf2-devel`,
+`webkit2gtk4.1-devel`, and so on).
 
 ## 1. Download Fluffy
 
@@ -83,7 +103,7 @@ The examples are written to `build/examples/`. On macOS they are application bun
 open ./build/examples/helloworld/helloworld.app
 ```
 
-On Windows the executable is under `build\examples\helloworld\Release\` for Visual Studio generators.
+On Windows the executable is under `build\examples\helloworld\` for Visual Studio generators.
 
 ### Build with plain CMake
 
