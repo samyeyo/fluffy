@@ -11,6 +11,7 @@
 #include <windows.h>
 #include <wrl.h>
 #include <cmath>
+#include <cstdio>
 #include <memory>
 #include <unordered_map>
 #if defined(__has_include)
@@ -49,6 +50,7 @@ std::string narrow(const std::wstring& s) {
 struct WinState {
     WebView* self = nullptr;
     HWND host = nullptr;
+    webview::detail::mswebview2::loader loader;
     ComPtr<ICoreWebView2Controller> controller;
     ComPtr<ICoreWebView2> webview;
     EventRegistrationToken message_token{};
@@ -134,6 +136,7 @@ void WebView::createNative(const Window& w) {
                         return result;
                     }
                     st->controller.Attach(controller);
+                    st->controller->AddRef();
                     st->controller->get_CoreWebView2(st->webview.GetAddressOf());
                     if (!st->webview) return E_FAIL;
 
@@ -181,8 +184,8 @@ void WebView::createNative(const Window& w) {
             return env->CreateCoreWebView2Controller(st->host, controllerCompleted.Get());
         });
 
-    webview::detail::mswebview2::loader loader;
-    hr = loader.create_environment_with_options(nullptr, nullptr, nullptr, envCompleted.Get());
+    hr = st->loader.create_environment_with_options(nullptr, nullptr, nullptr,
+                                                    envCompleted.Get());
     if (FAILED(hr)) {
         states().erase(this);
         st->self = nullptr;

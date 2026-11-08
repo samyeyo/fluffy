@@ -20,8 +20,6 @@
 
 namespace fluffy {
 
-struct LinuxState;
-
 // ––––––––[ WebViewBridge ] WebKit script-message glue, friend of WebView.
 struct WebViewBridge {
     static void onScriptMessage(WebKitUserContentManager*, WebKitJavascriptResult*, gpointer);
@@ -44,6 +42,9 @@ std::unordered_map<WebView*, LinuxState*>& states() {
 
 bool initGtk() {
     static const bool ok = [] {
+        // The overlay is embedded in a GLFW X11 window, so GTK must use the
+        // X11 backend even when the session is Wayland (XWayland).
+        gdk_set_allowed_backends("x11");
         int argc = 1;
         char name[] = "fluffy";
         char* argv[] = {name, nullptr};
@@ -126,7 +127,10 @@ void WebView::createNative(const Window& w) {
         manager, "script-message-received::fluffy",
         G_CALLBACK(WebViewBridge::onScriptMessage), st);
 
-    gtk_widget_show_all(st->plug);
+    // Create the plug window but keep it unmapped while reparenting. Mapping a
+    // toplevel first lets the window manager claim it, after which the manual
+    // reparent either fails or leaves the webview hidden.
+    gtk_widget_realize(st->plug);
 
     GdkWindow* plug_window = gtk_widget_get_window(st->plug);
     GdkWindow* parent_window = gdk_x11_window_foreign_new_for_display(
@@ -139,6 +143,7 @@ void WebView::createNative(const Window& w) {
     }
     gdk_window_reparent(plug_window, parent_window, 0, 0);
     g_object_unref(parent_window);
+    gtk_widget_show_all(st->plug);
     gdk_window_show(plug_window);
     gdk_window_raise(plug_window);
 
@@ -265,8 +270,14 @@ bool WebView::evalJSNative(const std::string& js, int id) {
         "(function(){try{var r=String((" + js + "));"
         "window.webkit.messageHandlers.fluffy.postMessage(\"" + tag + ":r:\"+r);}"
         "catch(e){window.webkit.messageHandlers.fluffy.postMessage(\"" + tag + ":e:\"+String(e));}})()";
+#if WEBKIT_CHECK_VERSION(2, 40, 0)
+    webkit_web_view_evaluate_javascript(WEBKIT_WEB_VIEW(impl_->native),
+                                        wrapped.c_str(), -1, nullptr, nullptr,
+                                        nullptr, nullptr, nullptr);
+#else
     webkit_web_view_run_javascript(WEBKIT_WEB_VIEW(impl_->native), wrapped.c_str(),
                                    nullptr, nullptr, nullptr);
+#endif
     return true;
 }
 
