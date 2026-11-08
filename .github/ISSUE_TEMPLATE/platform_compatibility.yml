@@ -1,0 +1,75 @@
+name: ⚠️ Platform Compatibility Issue
+description: Fluffy behaves differently across platforms or windowing backends
+title: "⚠️ "
+labels:
+  - compatibility
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template when the same Fluffy app behaves differently on
+        another platform (Windows, macOS, Linux X11/Wayland) or backend.
+  - type: input
+    id: fluffy_version
+    attributes:
+      label: 🔢 Fluffy version
+      description: Release version (for example 0.2.0) or commit hash
+    validations:
+      required: true
+  - type: dropdown
+    id: affected_platform
+    attributes:
+      label: 🖥️ Affected platform
+      options:
+        - Linux (X11)
+        - Linux (Wayland)
+        - Windows
+        - macOS
+        - WebAssembly
+        - Multiple platforms
+    validations:
+      required: true
+  - type: input
+    id: working_platform
+    attributes:
+      label: ✅ Platform where it works
+      description: Leave empty if the behavior fails everywhere
+  - type: dropdown
+    id: area
+    attributes:
+      label: 📂 Area
+      options:
+        - Rendering
+        - Input handling
+        - Layout
+        - Fonts / text
+        - Theming
+        - WebView
+        - Window management
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: 📃 Minimal C++ reproduction
+      render: cpp
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 📃 Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 📃 Actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes
+      description: Include screenshots or logs from each platform when possible

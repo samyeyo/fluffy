@@ -1,0 +1,87 @@
+name: 🐞 Bug Report
+description: Report a Fluffy bug
+title: "🐞 "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. A minimal C++ reproduction is the fastest
+        way to get it fixed.
+  - type: input
+    id: fluffy_version
+    attributes:
+      label: 🔢 Fluffy version
+      description: Release version (for example 0.2.0) or commit hash
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: 💻 Platform
+      options:
+        - Linux (X11)
+        - Linux (Wayland)
+        - Windows
+        - macOS
+        - WebAssembly
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: architecture
+    attributes:
+      label: 𒁈 CPU architecture
+      options:
+        - x86_64
+        - ARM64
+        - x86
+        - ARM32
+        - WebAssembly
+        - Other
+  - type: dropdown
+    id: cpp_compiler
+    attributes:
+      label: ⚙️ C++ compiler
+      options:
+        - GCC
+        - Clang
+        - MSVC
+        - Emscripten
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: backend
+    attributes:
+      label: 🖥️ Backend
+      description: Value of FLUFFY_PLATFORM if set, plus X11/Wayland/XWayland details when relevant
+  - type: textarea
+    id: description
+    attributes:
+      label: 📃 Bug description
+      description: What happened, what you expected, and how to reproduce it
+      placeholder: |
+        Steps to reproduce:
+        1. ...
+        Expected: ...
+        Actual: ...
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: 🧪 Minimal reproduction
+      description: Paste a minimal C++ program or link to a repository
+      render: cpp
+  - type: textarea
+    id: logs
+    attributes:
+      label: 📜 Logs and screenshots
+      description: Paste build output or terminal logs, and attach screenshots when useful
+      render: shell
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional Notes
