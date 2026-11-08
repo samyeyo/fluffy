@@ -1199,7 +1199,7 @@ animation:
             }
         };
         populate(0);
-        tv->setOnSelect([status_ptr, tv_ptr, populate](int idx, const std::string& id) {
+        tv->setOnSelect([status_ptr, populate](int idx, const std::string& id) {
             if (status_ptr) status_ptr->setText("Selected " + std::to_string(idx) + ": " + id);
             populate(idx);
         });
@@ -1315,7 +1315,6 @@ animation:
     };
 
     // ── Page: Table ──
-    static Table* g_table_ptr = nullptr;
     auto build_table_page = [&](Container* c) {
         auto* ex = page_begin(c, "Table",
             "Table shows rows and columns with editable cells. Click to select, double-click or Enter to edit, arrows to navigate.");
@@ -1362,7 +1361,6 @@ animation:
             {"Tina", "false", "27", "Riga", "Designer", "Latvia"},
         });
         tbl->setSelected(0);
-        g_table_ptr = tbl.get();
         auto status = std::make_unique<Label>(Rect{}, "Selected: Alice — Designer", Label::Align::Left);
         status->setAutoSize(AutoSize::Height);
         Label* status_ptr = status.get();

@@ -45,11 +45,11 @@ static std::string baseName(const std::string& path) {
 // ––––––––[ platformFontDirectories ] returns the directories to search.
 static std::vector<fs::path> platformFontDirectories() {
     std::vector<fs::path> dirs;
-    const char* home = std::getenv("HOME");
 #if defined(__APPLE__)
     dirs.emplace_back("/System/Library/Fonts");
     dirs.emplace_back("/Library/Fonts");
-    if (home) dirs.emplace_back(std::string(home) + "/Library/Fonts");
+    if (const char* home = std::getenv("HOME"))
+        dirs.emplace_back(std::string(home) + "/Library/Fonts");
 #elif defined(_WIN32)
     // Windows Fonts directory
     char winDir[MAX_PATH];

@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
         });
     win.dispatcher().registerHandler("submitForm",
         [](const EventArgument& arg) {
-            Rect b = arg.widget ? arg.widget->bounds() : Rect{};
+            [[maybe_unused]] Rect b = arg.widget ? arg.widget->bounds() : Rect{};
         });
     win.dispatcher().registerHandler("showModal",
         [&win](const EventArgument&) {
