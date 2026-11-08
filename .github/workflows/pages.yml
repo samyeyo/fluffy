@@ -3,6 +3,11 @@ name: Deploy website
 on:
   push:
     branches: [main]
+    paths:
+      - 'doc/**'
+      - 'src/**'
+      - 'www/**'
+      - '.github/workflows/pages.yml'
   workflow_dispatch:
 
 permissions:
@@ -23,6 +28,48 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect source changes
+        id: source
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" != "push" ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          before="${{ github.event.before }}"
+          if [ -z "$before" ] || [[ "$before" =~ ^0+$ ]] || ! git cat-file -e "$before^{commit}" 2>/dev/null; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if git diff --quiet "$before" "${{ github.sha }}" -- src; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install documentation dependencies
+        run: python3 -m pip install --disable-pip-version-check markdown
+
+      - name: Set up Emscripten
+        if: steps.source.outputs.changed == 'true'
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: latest
+
+      - name: Build WebAssembly demos
+        if: steps.source.outputs.changed == 'true'
+        run: ./build.sh wasm
+
+      - name: Generate documentation
+        run: python3 www/gendocs.py
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
