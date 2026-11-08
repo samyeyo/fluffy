@@ -1,14 +1,3 @@
-# cmake/DownloadLucideSvgs.cmake
-# =============================================================================
-# One SHA-pinned lucide-icons/lucide archive -> lucide_svg_data.cpp, holding
-# every icon as its own `extern const char kXxxSvg[]` (dead-stripped per icon).
-#
-# Icon naming convention:
-#   Icon names use underscores (e.g. door_open) -> door-open.svg  (underscore -> hyphen)
-#   Names that vanished upstream fall back to _fluffy_svg_renames below.
-# =============================================================================
-
-# Icons used by the project (underscore-separated names).
 set(_fluffy_svg_icons
     door_open rocket check heart star zap flame
     bell calendar camera clock_4 cog compass
@@ -17,7 +6,6 @@ set(_fluffy_svg_icons
     arrow_down arrow_left arrow_right arrow_up chevron_down
     activity anchor bluetooth bot circle
     warehouse wifi wrench x
-    # -- batch 2: commonly used UI icons --
     airplay alarm_clock alert_triangle at_sign badge_check ban
     battery_charging battery_full bookmark calculator cast
     check_circle chevron_left chevron_right chevron_up
@@ -31,7 +19,6 @@ set(_fluffy_svg_icons
     save scan search send shield shopping_cart smartphone
     smile sun tag target text trash unlock upload
     user users video wallet zoom_in zoom_out
-    # -- batch 3: more UI/media/communication icons --
     accessibility album ambulance apple archive_restore
     atom axe baby backpack balloon barcode
     bike binoculars bird bitcoin bold bone
@@ -48,7 +35,6 @@ set(_fluffy_svg_icons
     eraser euro expand external_link ferris_wheel figma
     file_archive file_audio file_check file_code file_diff
     file_image file_json file_key file_lock file_minus file_plus
-    # -- batch 4: align, editing, media, coding --
     align_center align_justify align_left align_right
     antenna anvil aperture audio_lines audio_waveform
     banana bandage banknote barrel bath
@@ -69,7 +55,6 @@ set(_fluffy_svg_icons
     folder_key folder_lock folder_minus folder_open_2
     folder_output folder_plus folder_search folder_symlink
     folder_tree folder_up folder_x font folder_clock
-    # -- batch 5: all remaining Lucide icons --
     a_arrow_down a_arrow_up a_large_small ad air_vent alarm_clock_check alarm_clock_minus alarm_clock_off alarm_clock_plus alarm_smoke align_center_horizontal align_center_vertical
     align_end_horizontal align_end_vertical align_horizontal_distribute_center align_horizontal_distribute_end align_horizontal_distribute_start align_horizontal_justify_center align_horizontal_justify_end align_horizontal_justify_start align_horizontal_space_around align_horizontal_space_between align_start_horizontal align_start_vertical
     align_vertical_distribute_center align_vertical_distribute_end align_vertical_distribute_start align_vertical_justify_center align_vertical_justify_end align_vertical_justify_start align_vertical_space_around align_vertical_space_between ampersand ampersands amphora angry
@@ -155,7 +140,7 @@ string(APPEND _fluffy_out
     "\n"
 )
 
-# old dashed name -> current upstream dashed name, stored under the old name.
+# "<our-name>:<upstream-name>", for icons renamed upstream.
 set(_fluffy_svg_renames
     "alert-triangle:triangle-alert"
     "check-circle:circle-check-big"
@@ -193,7 +178,6 @@ set(_fluffy_missing_icons)
 set(_fluffy_renamed_count 0)
 
 foreach(_name ${_fluffy_svg_icons})
-    # door_open -> door-open
     string(REGEX REPLACE "_" "-" _svg_name "${_name}")
 
     set(_dest "")
@@ -205,7 +189,6 @@ foreach(_name ${_fluffy_svg_icons})
     endforeach()
 
     if(_dest STREQUAL "")
-        # Try the renamed upstream file before giving up.
         foreach(_pair ${_fluffy_svg_renames})
             string(REPLACE ":" ";" _parts "${_pair}")
             list(GET _parts 0 _old_dash)
@@ -229,16 +212,13 @@ foreach(_name ${_fluffy_svg_icons})
     endif()
 
     file(READ "${_dest}" _svg_content)
-    # Compact: replace newlines with spaces, collapse runs of spaces
     string(REGEX REPLACE "\n" " " _svg_content "${_svg_content}")
     string(REGEX REPLACE "  +" " " _svg_content "${_svg_content}")
     string(STRIP "${_svg_content}" _svg_content)
 
-    # Build symbol name: door_open -> k_door_open_Svg
     set(_sym "k_${_name}_Svg")
 
-    # Escape for raw string literal: use a unique delimiter.
-    # C++11 limits raw string delimiters to 16 characters.
+    # Raw string delimiters are limited to 16 characters.
     string(TOUPPER "${_name}" _delim)
     string(SUBSTRING "${_delim}" 0 16 _delim)
     set(_raw "R\"${_delim}(${_svg_content})${_delim}\"")
