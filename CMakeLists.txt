@@ -60,10 +60,14 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU")
         string(REPLACE "-O3" "-Os" CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE}")
     endif()
 
-    # Thin LTO — AppleClang prefers -flto=thin; GCC uses plain -flto.
+    # Thin LTO — AppleClang prefers -flto=thin; GCC parallelises with
+    # -flto=auto; other Clang builds use plain -flto.
     if(CMAKE_CXX_COMPILER_ID MATCHES "AppleClang")
         string(APPEND CMAKE_CXX_FLAGS_RELEASE " -flto=thin")
         string(APPEND CMAKE_C_FLAGS_RELEASE   " -flto=thin")
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        string(APPEND CMAKE_CXX_FLAGS_RELEASE " -flto=auto")
+        string(APPEND CMAKE_C_FLAGS_RELEASE   " -flto=auto")
     else()
         string(APPEND CMAKE_CXX_FLAGS_RELEASE " -flto")
         string(APPEND CMAKE_C_FLAGS_RELEASE   " -flto")
@@ -157,10 +161,10 @@ endif()
 # WebView overlay sources — always include common stub (LTO DCE when unused),
 # platform impl only when enabled. Disabled on Emscripten (no native overlay).
 if(EMSCRIPTEN)
-    set(FLUFFY_ENABLE_WEBVIEW OFF CACHE BOOL "" FORCE)
+    set(FLUFFY_WEBVIEW_ENABLED OFF)
 endif()
 list(APPEND _fluffy_sources src/webview.cpp)
-if(FLUFFY_ENABLE_WEBVIEW)
+if(FLUFFY_WEBVIEW_ENABLED)
     if(APPLE)
         list(APPEND _fluffy_sources src/webview_mac.cpp)
     elseif(WIN32)
@@ -188,6 +192,16 @@ if(NOT EMSCRIPTEN)
     )
 endif()
 
+if(CMAKE_CONFIGURATION_TYPES)
+    foreach(_config IN LISTS CMAKE_CONFIGURATION_TYPES)
+        string(TOUPPER "${_config}" _config_upper)
+        set_target_properties(fluffy PROPERTIES
+            ARCHIVE_OUTPUT_DIRECTORY_${_config_upper} "${CMAKE_CURRENT_BINARY_DIR}"
+            LIBRARY_OUTPUT_DIRECTORY_${_config_upper} "${CMAKE_CURRENT_BINARY_DIR}"
+            RUNTIME_OUTPUT_DIRECTORY_${_config_upper}  "${CMAKE_CURRENT_BINARY_DIR}")
+    endforeach()
+endif()
+
 # Consumers must compile as C++20 too: public headers use std::optional,
 # std::clamp, std::span-style APIs and concepts.  Propagate the requirement
 # through the target so find_package(Fluffy) users inherit it automatically.
@@ -196,15 +210,19 @@ target_compile_features(fluffy PUBLIC cxx_std_20)
 target_include_directories(fluffy
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<BUILD_INTERFACE:${nanovg_SOURCE_DIR}/src>
         $<INSTALL_INTERFACE:include>
 )
 
-target_include_directories(fluffy
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/third_party/nanosvg
-        ${CMAKE_CURRENT_SOURCE_DIR}/third_party
-        ${CMAKE_CURRENT_SOURCE_DIR}/third_party/gl3w
+# Third-party headers are included as SYSTEM so their warnings don't leak
+# into Fluffy's -Wall -Wextra -Wpedantic build.
+target_include_directories(fluffy SYSTEM PUBLIC
+    $<BUILD_INTERFACE:${nanovg_SOURCE_DIR}/src>
+)
+
+target_include_directories(fluffy SYSTEM PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/nanosvg
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party
+    ${CMAKE_CURRENT_SOURCE_DIR}/third_party/gl3w
 )
 if(NOT EMSCRIPTEN)
     target_include_directories(fluffy PUBLIC
@@ -237,7 +255,7 @@ set_source_files_properties(src/svg_icon.cpp PROPERTIES COMPILE_OPTIONS
     "$<$<CONFIG:Debug,RelWithDebInfo>:-Os>"
 )
 
-if(FLUFFY_ENABLE_WEBVIEW)
+if(FLUFFY_WEBVIEW_ENABLED)
     target_compile_definitions(fluffy PUBLIC FLUFFY_ENABLE_WEBVIEW=1)
     if(TARGET fluffy_webview)
         target_link_libraries(fluffy PUBLIC fluffy_webview)
@@ -247,11 +265,16 @@ if(FLUFFY_ENABLE_WEBVIEW)
     endif()
 endif()
 
-# Linux: find gdk-pixbuf for image decoding.
+# Linux: gdk-pixbuf for image decoding, and core X11 used directly by
+# window.cpp (GLFW's X11 backend dlopen()s its own libraries).
 if(NOT APPLE AND NOT WIN32 AND NOT EMSCRIPTEN)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(gdk_pixbuf REQUIRED IMPORTED_TARGET gdk-pixbuf-2.0)
     target_link_libraries(fluffy PRIVATE PkgConfig::gdk_pixbuf)
+
+    find_package(X11 REQUIRED)
+    target_link_libraries(fluffy PUBLIC X11::X11)
+    target_link_libraries(fluffy PRIVATE ${CMAKE_DL_LIBS})
 endif()
 
 # Sensible warnings-as-warnings (not errors) for our own sources.
