@@ -9,7 +9,7 @@ If you only want to try the examples, see the [Hello Fluffy tutorial](tutorial/0
 | Tool | Minimum | Notes |
 |---|---|---|
 | CMake | 3.20 | 3.24+ recommended |
-| C++ compiler | C++20 | Clang 15+, GCC 13+, Apple Clang 15+, or MSVC 19.32+ |
+| C++ compiler | C++20 | Clang 15+, GCC 13+, Apple Clang 15+, MSVC 19.32+, or clang-cl 15+ |
 | Git | optional | Only needed if you use `git clone`; dependencies are downloaded as source archives |
 | Internet | first configure | Downloads GLFW, NanoVG, webview, and Lucide icons |
 
@@ -18,7 +18,7 @@ Fluffy fetches its dependencies automatically during the first CMake configure. 
 ### Platform notes
 
 - **macOS** — install the Xcode Command Line Tools with `xcode-select --install`. Cocoa, IOKit, CoreFoundation, OpenGL, and WebKit are system frameworks.
-- **Windows** — use Visual Studio 2022 with the “Desktop development with C++” workload, or a recent MinGW-w64 toolchain. No external windowing or OpenGL packages are required.
+- **Windows** — use Visual Studio 2022 with the “Desktop development with C++” workload, or a recent MinGW-w64 toolchain. No external windowing or OpenGL packages are required. To build with clang-cl, also install the “C++ Clang tools for Windows” component and run `build.bat clang-cl`; the ClangCL toolset links with `lld-link`, so whole-program optimisation stays enabled.
 - **Linux** — install a compiler, CMake, pkg-config, OpenGL and Wayland/X11 development headers, plus the optional libdecor and WebKitGTK libraries.
 
 GLFW is built from source with both X11 and Wayland support, and image decoding
@@ -92,9 +92,15 @@ Windows:
 ```bat
 build.bat
 build.bat examples
+build.bat clang-cl
 build.bat debug
 build.bat clean
 ```
+
+`build.bat clang-cl` configures the ClangCL toolset in the same `build/`
+directory. Because CMake caches the compiler, switching between MSVC and
+clang-cl in that directory needs `build.bat clean` first; the script reports
+this instead of failing on a stale cache.
 
 The examples are written to `build/examples/`. On macOS they are application bundles:
 
