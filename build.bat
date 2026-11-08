@@ -25,6 +25,21 @@ if /I "%1"=="clean" (
 if /I "%1"=="examples" (
     echo Configuring with examples...
     cmake -S . -B "%BUILD_DIR%" -DCMAKE_CONFIGURATION_TYPES=Release -DFLUFFY_BUILD_EXAMPLES=ON
+) else if /I "%1"=="clang-cl" (
+    echo Configuring with clang-cl ^(Visual Studio ClangCL toolset^)...
+    rem A build directory cannot switch compilers in place: CMake caches the
+    rem generator and compiler.  Refuse early instead of failing on a stale cache.
+    set "TOOLSET_MISMATCH="
+    if exist "%BUILD_DIR%\CMakeCache.txt" (
+        findstr /I /C:"clang-cl" "%BUILD_DIR%\CMakeCache.txt" >nul 2>&1
+        if errorlevel 1 set "TOOLSET_MISMATCH=1"
+    )
+    if defined TOOLSET_MISMATCH (
+        echo Error: "%BUILD_DIR%" was configured with a different compiler.
+        echo Run "build.bat clean" first, then "build.bat clang-cl".
+        exit /b 1
+    )
+    cmake -S . -B "%BUILD_DIR%" -T ClangCL -DCMAKE_CONFIGURATION_TYPES=Release -DFLUFFY_BUILD_EXAMPLES=ON
 ) else if /I "%1"=="debug" (
     echo Configuring Debug in %DEBUG_DIR%...
     cmake -S . -B "%DEBUG_DIR%" -DCMAKE_CONFIGURATION_TYPES=Debug -DFLUFFY_BUILD_EXAMPLES=ON
