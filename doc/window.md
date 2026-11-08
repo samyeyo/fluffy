@@ -213,6 +213,8 @@ if (!win.load("ui.yaml")) {
 - Setting `visible` to `false` keeps the window initially hidden, which is useful for off-screen `renderFrame`/`saveScreenshot` before showing.
 - `Window::open` leaves an object whose `run()` does nothing on failure, so always check `if (!win)`.
 - In multi-window apps, closing one window hides it and the loop continues while any window is alive.
+- On Linux/X11, Fluffy reads the scale from `Xft.dpi` first, then `GDK_SCALE`/`QT_SCALE_FACTOR`, then the monitor DPI. Set `FLUFFY_SCALE=1.5` (1–4) to override the detected scale.
+- On Linux, if the session is Wayland but `libdecor` is unavailable, Fluffy uses XWayland so the window manager can draw native title bars. Set `FLUFFY_PLATFORM=x11` or `FLUFFY_PLATFORM=wayland` to force a backend.
 
 ## Quick reference
 
