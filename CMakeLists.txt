@@ -5,31 +5,18 @@ project(fluffy
     LANGUAGES   C CXX
 )
 
-# ----------------------------------------------------------------------------
-# Global compile settings (C++20, no non-standard extensions)
-# ----------------------------------------------------------------------------
 set(CMAKE_CXX_STANDARD          20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS        OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-# ----------------------------------------------------------------------------
-# Size-optimisation flags
-#
-# Fluffy targets small binaries.  We: emit one section per function/data
-# item so the linker can discard unused pieces (-fdata-sections), hide
-# internal symbols (-fvisibility=hidden), and strip every unreferenced
-# section at link time (-dead_strip).  These apply to ALL build types so
-# even Debug builds only pay for symbols they actually reference.
-#
-# Release builds additionally override -O3 with -Oz/+LTO for maximal size
-# reduction.
-# ----------------------------------------------------------------------------
-# Structural flags: apply to every build type so unused data (icons, etc.)
-# is always discarded at the section level.  Flag spelling differs per toolchain:
-# MSVC wants /Gy /Gw + /OPT:REF, GNU ld wants --gc-sections, Apple ld wants
-# -dead_strip.  Applying the wrong spelling breaks the build (or, for GNU ld,
-# silently misparses -dead_strip as -d -e ad_strip).
+# clang-cl reports compiler ID "Clang" with an MSVC ABI.
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND CMAKE_CXX_SIMULATE_ID STREQUAL "MSVC")
+    set(FLUFFY_CLANG_CL ON)
+else()
+    set(FLUFFY_CLANG_CL OFF)
+endif()
+
 if(MSVC)
     string(APPEND CMAKE_CXX_FLAGS " /Gy /Gw /Zc:inline")
     string(APPEND CMAKE_C_FLAGS   " /Gy /Gw /Zc:inline")
@@ -40,11 +27,15 @@ if(MSVC)
     string(REPLACE "/O2" "/O1" CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE}")
     string(REPLACE "/Ob2" "/Ob1" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
     string(REPLACE "/Ob2" "/Ob1" CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE}")
-    string(APPEND CMAKE_CXX_FLAGS_RELEASE " /GL")
-    string(APPEND CMAKE_C_FLAGS_RELEASE   " /GL")
-    string(APPEND CMAKE_EXE_LINKER_FLAGS_RELEASE    " /LTCG /OPT:REF /OPT:ICF")
-    string(APPEND CMAKE_SHARED_LINKER_FLAGS_RELEASE " /LTCG /OPT:REF /OPT:ICF")
-    string(APPEND CMAKE_STATIC_LINKER_FLAGS_RELEASE " /LTCG")
+
+    # clang-cl drops /GL, so its LTO is set up with -flto further down.
+    if(NOT FLUFFY_CLANG_CL)
+        string(APPEND CMAKE_CXX_FLAGS_RELEASE " /GL")
+        string(APPEND CMAKE_C_FLAGS_RELEASE   " /GL")
+        string(APPEND CMAKE_EXE_LINKER_FLAGS_RELEASE    " /LTCG /OPT:REF /OPT:ICF")
+        string(APPEND CMAKE_SHARED_LINKER_FLAGS_RELEASE " /LTCG /OPT:REF /OPT:ICF")
+        string(APPEND CMAKE_STATIC_LINKER_FLAGS_RELEASE " /LTCG")
+    endif()
 else()
     string(APPEND CMAKE_CXX_FLAGS " -ffunction-sections -fdata-sections -fvisibility=hidden")
     string(APPEND CMAKE_C_FLAGS   " -ffunction-sections -fdata-sections -fvisibility=hidden")
@@ -59,9 +50,13 @@ else()
     endif()
 endif()
 
-if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU")
-    # -Oz yields smaller code than -Os (Clang/AppleClang).
-    # GCC only supports -Os.
+if(FLUFFY_CLANG_CL)
+    # Only lld-link reads bitcode.
+    if(CMAKE_LINKER MATCHES "lld-link")
+        string(APPEND CMAKE_CXX_FLAGS_RELEASE " -flto=thin")
+        string(APPEND CMAKE_C_FLAGS_RELEASE   " -flto=thin")
+    endif()
+elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU")
     if(CMAKE_CXX_COMPILER_ID MATCHES "AppleClang|Clang")
         string(REPLACE "-O3" "-Oz" CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
         string(REPLACE "-O3" "-Oz" CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE}")
@@ -70,8 +65,6 @@ if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|GNU")
         string(REPLACE "-O3" "-Os" CMAKE_C_FLAGS_RELEASE   "${CMAKE_C_FLAGS_RELEASE}")
     endif()
 
-    # Thin LTO — AppleClang prefers -flto=thin; GCC parallelises with
-    # -flto=auto; other Clang builds use plain -flto.
     if(CMAKE_CXX_COMPILER_ID MATCHES "AppleClang")
         string(APPEND CMAKE_CXX_FLAGS_RELEASE " -flto=thin")
         string(APPEND CMAKE_C_FLAGS_RELEASE   " -flto=thin")
@@ -88,33 +81,15 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
 endif()
 
-# ----------------------------------------------------------------------------
-# User-facing options
-# ----------------------------------------------------------------------------
 option(FLUFFY_BUILD_EXAMPLES "Build Fluffy examples" OFF)
 option(FLUFFY_VERBOSE_DEPS    "Print extra information about dependency configuration" OFF)
 option(FLUFFY_NO_RTTI         "Disable C++ RTTI (-fno-rtti) for smaller binaries" ON)
 option(FLUFFY_NO_EXCEPTIONS  "Disable C++ exceptions (-fno-exceptions) for smaller binaries" ON)
 
-# ----------------------------------------------------------------------------
-# Dependencies (NanoVG + GLFW + gl3w + OpenGL)
-# ----------------------------------------------------------------------------
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/BuildDeps.cmake)
-
-# ----------------------------------------------------------------------------
-# Lucide SVG icons — download individual icon SVGs and generate C++ data file
-# ----------------------------------------------------------------------------
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/DownloadLucideSvgs.cmake)
-
-# ----------------------------------------------------------------------------
-# WebView overlay — webview/webview with built-in WebView2 loader (auto NuGet on Win)
-# FLUFFY_ENABLE_WEBVIEW ON by default, LTO DCE ensures zero cost when unused.
-# ----------------------------------------------------------------------------
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/FetchWebview.cmake)
 
-# ----------------------------------------------------------------------------
-# Fluffy library
-# ----------------------------------------------------------------------------
 set(_fluffy_sources
     src/theme.cpp
     src/widget.cpp
@@ -151,25 +126,19 @@ set(_fluffy_sources
     third_party/dyml/dyml_impl.cpp
 )
 
-# Platform-specific image decoder.
-if(EMSCRIPTEN)
-    # Emscripten: use stub (no file decoding, only RGBA pixels)
-elseif(APPLE)
+if(APPLE)
     list(APPEND _fluffy_sources src/image_mac.cpp)
 elseif(WIN32)
     list(APPEND _fluffy_sources src/image_win.cpp)
-else()
+elseif(NOT EMSCRIPTEN)
     list(APPEND _fluffy_sources src/image_linux.cpp)
 endif()
 
-# If the SVG data was generated, add it to the library sources.
 if(FLUFFY_LUCIDE_SVG_DATA)
     list(APPEND _fluffy_sources "${FLUFFY_LUCIDE_SVG_DATA}")
     message(STATUS "Fluffy: Lucide SVG icon data added to library")
 endif()
 
-# WebView overlay sources — always include common stub (LTO DCE when unused),
-# platform impl only when enabled. Disabled on Emscripten (no native overlay).
 if(EMSCRIPTEN)
     set(FLUFFY_WEBVIEW_ENABLED OFF)
 endif()
@@ -184,12 +153,9 @@ if(FLUFFY_WEBVIEW_ENABLED)
     endif()
 endif()
 
-# Emscripten: WebGL2 + GLFW from Emscripten ports
 if(EMSCRIPTEN)
-    add_compile_definitions(FLUFFY_EMSCRIPTEN=1)
+    add_compile_definitions(FLUFFY_EMSCRIPTEN=1 NANOVG_GLES2)
     set(CMAKE_EXECUTABLE_SUFFIX ".js")
-    # Use GLES2 backend for NanoVG on WebGL
-    add_compile_definitions(NANOVG_GLES2)
 endif()
 
 add_library(fluffy ${_fluffy_sources}
@@ -212,9 +178,6 @@ if(CMAKE_CONFIGURATION_TYPES)
     endforeach()
 endif()
 
-# Consumers must compile as C++20 too: public headers use std::optional,
-# std::clamp, std::span-style APIs and concepts.  Propagate the requirement
-# through the target so find_package(Fluffy) users inherit it automatically.
 target_compile_features(fluffy PUBLIC cxx_std_20)
 
 target_include_directories(fluffy
@@ -223,8 +186,6 @@ target_include_directories(fluffy
         $<INSTALL_INTERFACE:include>
 )
 
-# Third-party headers are included as SYSTEM so their warnings don't leak
-# into Fluffy's -Wall -Wextra -Wpedantic build.
 target_include_directories(fluffy SYSTEM PUBLIC
     $<BUILD_INTERFACE:${nanovg_SOURCE_DIR}/src>
 )
@@ -251,18 +212,20 @@ target_link_libraries(fluffy
         ${FLUFFY_GLFW_LINK_LIBRARIES}
 )
 
-# Emscripten WebGL flags for the object files and final application.
 if(EMSCRIPTEN)
     target_compile_options(fluffy PRIVATE "SHELL:-s USE_GLFW=3" "SHELL:-s USE_WEBGL2=1")
     target_compile_options(fluffy_nanovg_obj PRIVATE "SHELL:-s USE_GLFW=3" "SHELL:-s USE_WEBGL2=1")
     target_link_options(fluffy INTERFACE "SHELL:-s USE_GLFW=3" "SHELL:-s USE_WEBGL2=1" "SHELL:-s WASM=1" "SHELL:-s ALLOW_MEMORY_GROWTH=1" "SHELL:-s EXPORTED_RUNTIME_METHODS=['ccall','cwrap']" "SHELL:--preload-file ${CMAKE_SOURCE_DIR}/assets/Roboto-Regular.ttf@/assets/Roboto-Regular.ttf" "SHELL:--preload-file ${CMAKE_SOURCE_DIR}/assets/Roboto-Bold.ttf@/assets/Roboto-Bold.ttf" "SHELL:--preload-file ${CMAKE_SOURCE_DIR}/assets/LICENSE-Roboto.txt@/assets/LICENSE-Roboto.txt")
 endif()
 
-# svg_icon.cpp includes the ~3000-line nanosvg.h implementation.
-# Always compile it with size optimization to keep the binary lean,
-# even in Debug builds where the default -O0 would bloat the parser.
+# nanosvg is large; optimise svg_icon.cpp for size even in Debug.
+if(MSVC)
+    set(_fluffy_size_opt_flag "/O1")
+else()
+    set(_fluffy_size_opt_flag "-Os")
+endif()
 set_source_files_properties(src/svg_icon.cpp PROPERTIES COMPILE_OPTIONS
-    "$<$<CONFIG:Debug,RelWithDebInfo>:-Os>"
+    "$<$<CONFIG:Debug,RelWithDebInfo>:${_fluffy_size_opt_flag}>"
 )
 
 if(FLUFFY_WEBVIEW_ENABLED)
@@ -275,8 +238,6 @@ if(FLUFFY_WEBVIEW_ENABLED)
     endif()
 endif()
 
-# Linux: gdk-pixbuf for image decoding, and core X11 used directly by
-# window.cpp (GLFW's X11 backend dlopen()s its own libraries).
 if(NOT APPLE AND NOT WIN32 AND NOT EMSCRIPTEN)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(gdk_pixbuf REQUIRED IMPORTED_TARGET gdk-pixbuf-2.0)
@@ -287,63 +248,69 @@ if(NOT APPLE AND NOT WIN32 AND NOT EMSCRIPTEN)
     target_link_libraries(fluffy PRIVATE ${CMAKE_DL_LIBS})
 endif()
 
-# Sensible warnings-as-warnings (not errors) for our own sources.
-target_compile_options(fluffy PRIVATE
-    $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Wall -Wextra -Wpedantic>
-)
+if(FLUFFY_CLANG_CL)
+    # -Wall becomes /Wall, which clang-cl maps to -Weverything.
+    target_compile_options(fluffy PRIVATE /W4)
+    target_compile_definitions(fluffy PRIVATE _CRT_SECURE_NO_WARNINGS)
+else()
+    target_compile_options(fluffy PRIVATE
+        $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-Wall -Wextra -Wpedantic>
+    )
+endif()
 
 if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang")
     target_compile_options(fluffy PUBLIC -Wno-dollar-in-identifier-extension)
 endif()
 
-# Optional compiler knobs for smaller binaries.
-# These are PRIVATE: they shape how the library itself is compiled but must
-# not force -fno-rtti / -fno-exceptions onto consumer translation units.
 if(FLUFFY_NO_RTTI)
-    # The TUs that own the vtable/typeinfo of public polymorphic bases
-    # (Widget, Layout, SimpleWidget) must keep RTTI: consumers derive from
-    # those bases with RTTI enabled, and their typeinfo references the base
-    # typeinfo emitted in the key-function TU.  Everything else is compiled
-    # -fno-rtti.
+    # These key-function TUs keep RTTI; consumer typeinfo refers to theirs.
     set(_fluffy_no_rtti_sources ${_fluffy_sources})
     list(REMOVE_ITEM _fluffy_no_rtti_sources
         src/widget.cpp src/layout.cpp src/simple_widget.cpp)
-    set_source_files_properties(${_fluffy_no_rtti_sources} PROPERTIES
-        COMPILE_OPTIONS "$<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-fno-rtti>$<$<CXX_COMPILER_ID:MSVC>:/GR->")
-    message(STATUS "Fluffy: RTTI disabled (-fno-rtti), Widget/Layout TUs keep RTTI")
+    if(MSVC)
+        set(_fluffy_no_rtti_flag "/GR-")
+    else()
+        set(_fluffy_no_rtti_flag "$<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-fno-rtti>")
+    endif()
+    # APPEND, so svg_icon.cpp keeps its /O1.
+    set_property(SOURCE ${_fluffy_no_rtti_sources} APPEND PROPERTY
+        COMPILE_OPTIONS "${_fluffy_no_rtti_flag}")
+    message(STATUS "Fluffy: RTTI disabled (${_fluffy_no_rtti_flag}), Widget/Layout TUs keep RTTI")
 endif()
 
-# Disable errno math and unwind tables when exceptions are off.
-# These shave a few extra KB off the binary.
 if(FLUFFY_NO_EXCEPTIONS)
-    target_compile_options(fluffy PRIVATE
-        $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables>
-    )
-    message(STATUS "Fluffy: exceptions disabled (-fno-exceptions)")
+    if(FLUFFY_CLANG_CL)
+        # clang-cl spells it /EHs-c-. Per-source, because webview/webview's
+        # header uses try/throw and target-wide flags would reach it too.
+        set(_fluffy_exception_sources ${_fluffy_sources})
+        if(WIN32 AND FLUFFY_WEBVIEW_ENABLED)
+            list(REMOVE_ITEM _fluffy_exception_sources src/webview_win.cpp)
+        endif()
+        set_property(SOURCE ${_fluffy_exception_sources} APPEND PROPERTY
+            COMPILE_OPTIONS "/EHs-c-")
+        message(STATUS "Fluffy: exceptions disabled (/EHs-c-)")
+    else()
+        target_compile_options(fluffy PRIVATE
+            $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables>
+        )
+        message(STATUS "Fluffy: exceptions disabled (-fno-exceptions)")
+    endif()
 endif()
 
-# NOTE: -fno-threadsafe-statics is intentionally NOT used — Application::get()
-# is a Meyer's singleton whose guard variable must stay thread-safe.
-target_compile_options(fluffy PRIVATE
-    $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-fno-math-errno>
-)
+if(NOT FLUFFY_CLANG_CL)
+    # MSVC-ABI math never sets errno.
+    target_compile_options(fluffy PRIVATE
+        $<$<CXX_COMPILER_ID:GNU,Clang,AppleClang>:-fno-math-errno>
+    )
+endif()
 
-# ----------------------------------------------------------------------------
-# Examples
-# ----------------------------------------------------------------------------
 if(FLUFFY_BUILD_EXAMPLES)
     add_subdirectory(examples)
 endif()
 
-
-# ----------------------------------------------------------------------------
-# Install + CMake package export (find_package(Fluffy))
-# ----------------------------------------------------------------------------
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
-# Canonical name inside the exported FluffyTargets.cmake: fluffy::fluffy.
-# GLFW, NanoVG and gl3w are internal object files in libfluffy.a, not public libs.
 set(_fluffy_export_targets fluffy)
 if(TARGET fluffy_webview)
     list(APPEND _fluffy_export_targets fluffy_webview)
@@ -377,12 +344,8 @@ install(FILES
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/Fluffy
 )
 install(DIRECTORY include/fluffy DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-# Public Fluffy headers (svg_icon.hpp, simple_widget.hpp, icons.hpp) include
-# <nanovg.h>, so the installed package must ship the matching header too.
 install(FILES "${nanovg_SOURCE_DIR}/src/nanovg.h"
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-# GLFW is linked into libfluffy.a, but its public header is still needed by
-# applications that interact with GLFWwindow (Window::glfwWindow()).
 if(NOT EMSCRIPTEN)
     install(DIRECTORY "${glfw_SOURCE_DIR}/include/GLFW"
         DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
@@ -390,29 +353,10 @@ if(NOT EMSCRIPTEN)
         DESTINATION ${CMAKE_INSTALL_DATADIR}/fluffy/third_party/glfw)
 endif()
 
-# ----------------------------------------------------------------------------
-# Bundled Lucide font attribution — required by Lucide's ISC license.
-# cmake/FetchLucide.cmake downloads lucide.ttf from
-# https://cdn.jsdelivr.net/npm/lucide-static (ISC, permissive) into
-# ${CMAKE_BINARY_DIR}/third_party/fluffy_lucide/, and the bundled-font
-# examples register those bytes via Window::register_font_memory.
-# Shipping compiled binaries that embed upstream TTF bytes requires the
-# upstream licence + attribution to be visible somewhere — we ship a
-# copy under the source tree so it follows the project via Git / tarball
-# / install (third_party/fluffy_lucide/LICENSE.txt).
-# ----------------------------------------------------------------------------
+# Licences of the embedded assets.
 install(DIRECTORY third_party/fluffy_lucide
     DESTINATION ${CMAKE_INSTALL_DATADIR}/fluffy/third_party
     FILES_MATCHING PATTERN "*.txt" PATTERN "*.md")
-
-# ----------------------------------------------------------------------------
-# Bundled Roboto font attribution — required by Apache-2.0.  The TTFs under
-# assets/ are embedded verbatim into WebAssembly builds (see the Emscripten
-# --preload-file options above), so binaries built from those builds carry
-# upstream font data and must ship the licence text with them.  The same copy
-# is preloaded into the WASM virtual filesystem at /assets/ and installed here
-# so it follows the project via Git / tarball / install.
-# ----------------------------------------------------------------------------
 install(FILES assets/LICENSE-Roboto.txt
     DESTINATION ${CMAKE_INSTALL_DATADIR}/fluffy)
 
