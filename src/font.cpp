@@ -65,7 +65,7 @@ static std::vector<fs::path> platformFontDirectories() {
     // Linux / BSD — common font directories
     dirs.emplace_back("/usr/share/fonts");
     dirs.emplace_back("/usr/local/share/fonts");
-    if (home) {
+    if (const char* home = std::getenv("HOME")) {
         dirs.emplace_back(std::string(home) + "/.fonts");
         dirs.emplace_back(std::string(home) + "/.local/share/fonts");
     }
