@@ -30,6 +30,7 @@ import snippets  # noqa: E402
 
 ROOT = snippets.ROOT
 BUILD = ROOT / "build-wasm"
+BUILD_REL = BUILD.relative_to(ROOT)
 SNIPPET_SRC = BUILD / "snippets"
 DEMO_DIR = ROOT / "www" / "demo"
 
@@ -45,7 +46,7 @@ COMMON_FLAGS = [
     "-Iinclude",
     "-Ithird_party",
     "-Ithird_party/nanosvg",
-    "-Ibuild/_deps/nanovg-src/src",
+    "-I{}".format((BUILD_REL / "_deps" / "nanovg-src" / "src").as_posix()),
 ]
 
 LINK_FLAGS = [
@@ -61,7 +62,7 @@ LINK_FLAGS = [
     "--embed-file", "assets/LICENSE-Roboto.txt@/assets/LICENSE-Roboto.txt",
 ]
 
-ARCHIVES = ["build-wasm/libfluffy.a"]
+ARCHIVES = [(BUILD_REL / "libfluffy.a").as_posix()]
 
 
 # ––––––––[ _yaml_prelude ] preload a matching ui.yaml for YAML programs
