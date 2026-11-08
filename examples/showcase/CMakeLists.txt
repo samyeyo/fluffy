@@ -1,7 +1,3 @@
-# examples/showcase/CMakeLists.txt
-# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-# Showcase example: all widgets in their natural size via autoSize + layout.
-# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 add_executable(showcase main.cpp)
 
 target_link_libraries(showcase

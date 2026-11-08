@@ -1,7 +1,3 @@
-# examples/nav/CMakeLists.txt
-# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-# Nav example: hierarchical navigation widget demonstration.
-# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 add_executable(nav main.cpp)
 
 target_link_libraries(nav

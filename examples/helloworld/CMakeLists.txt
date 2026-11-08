@@ -1,7 +1,3 @@
-# examples/helloworld/CMakeLists.txt
-# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-# Hello World example: minimal demonstration of Fluffy.
-# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 add_executable(helloworld main.cpp)
 
 target_link_libraries(helloworld
@@ -13,9 +9,7 @@ if(APPLE)
         MACOSX_BUNDLE TRUE
         MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/cmake/embedded_Info.plist"
     )
-    # Strip local symbols from the final executable — with LTO + dead_strip
-    # already removing unused code, this discards the remaining symbol
-    # table entries that are not needed for execution.
+    # strip -x drops the symbols dead_strip leaves in place.
     add_custom_command(TARGET helloworld POST_BUILD
         COMMAND strip -x $<TARGET_FILE:helloworld>
         COMMENT "Stripping helloworld binary (removing local symbols)"

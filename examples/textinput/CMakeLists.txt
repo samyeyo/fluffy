@@ -1,7 +1,3 @@
-# examples/textinput/CMakeLists.txt
-# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-# textinput example: demonstration of the multiline TextInput widget.
-# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 add_executable(textinput main.cpp)
 
 target_link_libraries(textinput

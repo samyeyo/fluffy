@@ -1,5 +1,4 @@
-# Documentation image generators are intentionally not CMake targets.
-# www/gendocs.py owns the checked-in website assets and syncs them into www/.
+# The website asset generators live in www/gendocs.py, not in CMake.
 set(_fluffy_examples
     helloworld
     multiwindow

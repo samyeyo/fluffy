@@ -1,7 +1,3 @@
-# examples/menus/CMakeLists.txt
-# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-# Menus example: horizontal and vertical Menu widget demonstration.
-# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 add_executable(menus main.cpp)
 
 target_link_libraries(menus

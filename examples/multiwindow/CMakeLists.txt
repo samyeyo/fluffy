@@ -1,7 +1,3 @@
-# examples/multiwindow/CMakeLists.txt
-# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-# multiwindow — Application multi-window demonstration.
-# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 add_executable(multiwindow main.cpp)
 
 target_link_libraries(multiwindow

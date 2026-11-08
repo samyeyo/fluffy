@@ -1,7 +1,3 @@
-# examples/webview/CMakeLists.txt
-# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-# WebView overlay example — WKWebView, WebKitGTK, and WebView2 backends.
-# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 add_executable(webview main.cpp)
 
 target_link_libraries(webview
@@ -20,5 +16,4 @@ if(APPLE)
 elseif(WIN32)
     set_target_properties(webview PROPERTIES WIN32_EXECUTABLE TRUE)
     target_link_options(webview PRIVATE "/ENTRY:mainCRTStartup")
-    fluffy_copy_webview2_loader(webview)
 endif()

@@ -1,7 +1,3 @@
-# examples/icons/CMakeLists.txt
-# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-# Icons example — visual catalogue of Lucide SVG icons.
-# ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 add_executable(icons main.cpp)
 
 target_link_libraries(icons PRIVATE fluffy)
@@ -11,9 +7,7 @@ if(APPLE)
         MACOSX_BUNDLE TRUE
         MACOSX_BUNDLE_INFO_PLIST "${CMAKE_SOURCE_DIR}/cmake/embedded_Info.plist"
     )
-    # Strip local symbols — with LTO + dead_strip already removing unused
-    # code, this discards the remaining symbol table entries not needed
-    # for execution, dramatically reducing binary size.
+    # strip -x drops the symbols dead_strip leaves in place.
     add_custom_command(TARGET icons POST_BUILD
         COMMAND strip -x $<TARGET_FILE:icons>
         COMMENT "Stripping icons binary (removing local symbols)"
