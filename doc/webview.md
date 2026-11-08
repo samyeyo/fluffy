@@ -194,8 +194,10 @@ theme. A theme is the set of colors, fonts, and sizes your app uses.
 - WebView support is enabled by default. Pass
   `-DFLUFFY_ENABLE_WEBVIEW=OFF` to compile it out and use the placeholder only.
   On Windows, CMake fetches the WebView2 package automatically; the WebView2
-  Runtime must be installed. On Linux, install `libwebkit2gtk-4.1-dev` and run
-  on X11. On WebAssembly only a placeholder is shown.
+  Runtime must be installed. On Linux, install `libwebkit2gtk-4.1-dev` (or
+  `libwebkit2gtk-4.0-dev`) and run on X11. The dependency is re-detected on
+  every configure, so installing it later does not require clearing the cache.
+  On WebAssembly only a placeholder is shown.
 
 ---
 
