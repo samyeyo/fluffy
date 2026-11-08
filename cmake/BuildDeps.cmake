@@ -101,8 +101,11 @@ if(NOT TARGET fluffy_nanovg_obj)
             NANOVG_GL3_IMPLEMENTATION NVG_NO_STB)
         # Force-include gl3w.h so NanoVG routes every GL call through our
         # function-pointer table instead of requiring link-time GL symbols.
-        target_compile_options(fluffy_nanovg_obj PRIVATE
-            "SHELL:-include gl3w.h")
+        if(MSVC)
+            target_compile_options(fluffy_nanovg_obj PRIVATE "/FIgl3w.h")
+        else()
+            target_compile_options(fluffy_nanovg_obj PRIVATE "SHELL:-include gl3w.h")
+        endif()
     endif()
 endif()
 
