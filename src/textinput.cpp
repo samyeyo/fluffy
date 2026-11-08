@@ -930,7 +930,7 @@ EventResult TextInput::handleEvent(const Event& e, const Window& w) {
         if (ctrl && key == GLFW_KEY_Y) { redo(); ensureCursorVisible(w.theme(), w); return EventResult::Consumed; }
 
         switch (key) {
-        case GLFW_KEY_TAB:
+        case GLFW_KEY_TAB: {
             if (!multiline_) {
                 // Unconsumed Tab lets the window run global focus traversal.
                 return EventResult::Ignored;
@@ -948,6 +948,7 @@ EventResult TextInput::handleEvent(const Event& e, const Window& w) {
             if (on_change_) on_change_(text_);
             ensureCursorVisible(w.theme(), w);
             return EventResult::Consumed;
+        }
         case GLFW_KEY_BACKSPACE: backspace();      ensureCursorVisible(w.theme(), w); return EventResult::Consumed;
         case GLFW_KEY_DELETE:    deleteForward();   ensureCursorVisible(w.theme(), w); return EventResult::Consumed;
         case GLFW_KEY_LEFT:

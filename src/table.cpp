@@ -1037,10 +1037,22 @@ void Table::setProperty(std::string_view name, const YamlNode& value) {
             // Simple split by comma
             std::string cur;
             for (char ch : s) {
-                if (ch == ',') { if (!cur.empty()) { cols.push_back({cur}); cur.clear(); } }
-                else cur.push_back(ch);
+                if (ch == ',') {
+                    if (!cur.empty()) {
+                        Column c;
+                        c.label = cur;
+                        cols.push_back(std::move(c));
+                        cur.clear();
+                    }
+                } else {
+                    cur.push_back(ch);
+                }
             }
-            if (!cur.empty()) cols.push_back({cur});
+            if (!cur.empty()) {
+                Column c;
+                c.label = cur;
+                cols.push_back(std::move(c));
+            }
         }
         setColumns(std::move(cols));
         return;

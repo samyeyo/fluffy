@@ -12,6 +12,7 @@
 #include <fluffy/svg_icon.hpp>
 #include <fluffy/widget.hpp>
 #include <functional>
+#include <memory>
 #include <string>
 #include <vector>
 namespace fluffy {

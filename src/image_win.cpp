@@ -11,6 +11,7 @@
 #include <wincodec.h>
 #include <wrl/client.h>
 #include <cstdlib>
+#include <memory>
 #include <new>
 
 using Microsoft::WRL::ComPtr;
