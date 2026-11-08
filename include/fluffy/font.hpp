@@ -20,4 +20,9 @@ std::vector<std::string> listSystemFonts();
 // Fonts without Latin glyphs (e.g. Noto Sans for non-Latin scripts) are excluded.
 std::vector<std::string> listLatinFonts();
 
+// ––––––––[ fontDisplayName ] returns the human-readable name of a font file,
+// read from its OpenType `name` table (e.g. "Verdana Italic" for verdanai.ttf).
+// Falls back to the file stem when the table cannot be read.
+std::string fontDisplayName(const std::string& path);
+
 }  // namespace fluffy

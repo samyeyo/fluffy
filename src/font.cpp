@@ -119,6 +119,74 @@ std::string findSystemFont(const std::string& family_name) {
     return {};
 }
 
+// ––––––––[ decodeUtf16BE ] converts a UTF-16BE buffer to UTF-8.
+static std::string decodeUtf16BE(const char* data, int len) {
+    std::string out;
+    for (int i = 0; i + 1 < len; i += 2) {
+        const unsigned int cp =
+            (static_cast<unsigned char>(data[i]) << 8) |
+             static_cast<unsigned char>(data[i + 1]);
+        if (cp == 0) break;
+        if (cp < 0x80) {
+            out.push_back(static_cast<char>(cp));
+        } else if (cp < 0x800) {
+            out.push_back(static_cast<char>(0xC0 | (cp >> 6)));
+            out.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
+        } else {
+            out.push_back(static_cast<char>(0xE0 | (cp >> 12)));
+            out.push_back(static_cast<char>(0x80 | ((cp >> 6) & 0x3F)));
+            out.push_back(static_cast<char>(0x80 | (cp & 0x3F)));
+        }
+    }
+    return out;
+}
+
+// ––––––––[ fontDisplayName ] returns the human-readable name of a font file,
+// read from its OpenType `name` table, falling back to the file stem.
+std::string fontDisplayName(const std::string& path) {
+    const std::string fallback = fs::path(path).stem().string();
+
+    FILE* f = std::fopen(path.c_str(), "rb");
+    if (!f) return fallback;
+    std::fseek(f, 0, SEEK_END);
+    const long sz = std::ftell(f);
+    std::fseek(f, 0, SEEK_SET);
+    if (sz <= 0) { std::fclose(f); return fallback; }
+    auto* buf = static_cast<unsigned char*>(std::malloc(static_cast<size_t>(sz)));
+    if (!buf) { std::fclose(f); return fallback; }
+    const bool ok = std::fread(buf, 1, static_cast<size_t>(sz), f) == static_cast<size_t>(sz);
+    std::fclose(f);
+    if (!ok) { std::free(buf); return fallback; }
+
+    stbtt_fontinfo font;
+    if (!stbtt_InitFont(&font, buf, stbtt_GetFontOffsetForIndex(buf, 0))) {
+        std::free(buf);
+        return fallback;
+    }
+
+    // Prefer the full name (4), then family (1), then typographic family (16).
+    const int ids[] = {4, 1, 16};
+    std::string name;
+    for (int id : ids) {
+        int len = 0;
+        const char* s = stbtt_GetFontNameString(&font, &len, 3, 1, 0x0409, id);
+        if (s && len > 0) {
+            name = decodeUtf16BE(s, len);
+        } else {
+            s = stbtt_GetFontNameString(&font, &len, 3, 1, 0x0000, id);
+            if (s && len > 0) {
+                name = decodeUtf16BE(s, len);
+            } else {
+                s = stbtt_GetFontNameString(&font, &len, 1, 0, 0, id);
+                if (s && len > 0) name.assign(s, s + len);
+            }
+        }
+        if (!name.empty()) break;
+    }
+    std::free(buf);
+    return name.empty() ? fallback : name;
+}
+
 // ––––––––[ listSystemFonts ] returns all discoverable system font file paths.
 std::vector<std::string> listSystemFonts() {
     const auto dirs = platformFontDirectories();
@@ -140,10 +208,15 @@ static bool hasLatinGlyphs(const fs::path& path) {
     std::fseek(f, 0, SEEK_END);
     const long sz = std::ftell(f);
     std::fseek(f, 0, SEEK_SET);
+    if (sz <= 0) { std::fclose(f); return false; }
     auto* buf = static_cast<unsigned char*>(std::malloc(static_cast<size_t>(sz)));
     if (!buf) { std::fclose(f); return false; }
-    std::fread(buf, 1, static_cast<size_t>(sz), f);
+    const size_t read_bytes = std::fread(buf, 1, static_cast<size_t>(sz), f);
     std::fclose(f);
+    if (read_bytes != static_cast<size_t>(sz)) {
+        std::free(buf);
+        return false;
+    }
 
     // Reject CFF/OTTO fonts — check the sfVersion at the first sub-font offset.
     // Standalone OTTO: bytes 0-3 == "OTTO".

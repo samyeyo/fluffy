@@ -15,6 +15,7 @@
 #include <atomic>
 #include <mutex>
 #include <thread>
+#include <utility>
 #if defined(FLUFFY_EMSCRIPTEN) || defined(__EMSCRIPTEN__)
 #include <emscripten.h>
 #endif
@@ -277,13 +278,16 @@ animation:
     // ── Background font scanning ──
     std::mutex font_mutex;
     std::atomic<bool> fonts_ready{false};
-    std::vector<std::string> latin_fonts;
+    std::vector<std::pair<std::string, std::string>> latin_fonts;
 #if defined(FLUFFY_EMSCRIPTEN) || defined(__EMSCRIPTEN__)
-    // Emscripten: no pthreads — run synchronously
+    // Emscripten: no pthreads �?" run synchronously
     {
-        auto result = listLatinFonts();
-        std::sort(result.begin(), result.end(), [](const std::string& a, const std::string& b) {
-            return fs::path(a).stem().string() < fs::path(b).stem().string();
+        auto paths = listLatinFonts();
+        std::vector<std::pair<std::string, std::string>> result;
+        result.reserve(paths.size());
+        for (const auto& p : paths) result.emplace_back(p, fontDisplayName(p));
+        std::sort(result.begin(), result.end(), [](const auto& a, const auto& b) {
+            return a.second < b.second;
         });
         std::lock_guard<std::mutex> lock(font_mutex);
         latin_fonts = std::move(result);
@@ -291,13 +295,16 @@ animation:
     }
 #else
     std::thread font_thread([&]() {
-        auto result = listLatinFonts();
-        std::sort(result.begin(), result.end(), [](const std::string& a, const std::string& b) {
-            return fs::path(a).stem().string() < fs::path(b).stem().string();
+        auto paths = listLatinFonts();
+        std::vector<std::pair<std::string, std::string>> result;
+        result.reserve(paths.size());
+        for (const auto& p : paths) result.emplace_back(p, fontDisplayName(p));
+        std::sort(result.begin(), result.end(), [](const auto& a, const auto& b) {
+            return a.second < b.second;
         });
         fprintf(stderr, "[font scan] %zu Latin fonts found:\n", result.size());
         for (size_t i = 0; i < result.size(); ++i) {
-            fprintf(stderr, "  [%zu] %s\n", i, fs::path(result[i]).stem().string().c_str());
+            fprintf(stderr, "  [%zu] %s\n", i, result[i].second.c_str());
         }
         {
             std::lock_guard<std::mutex> lock(font_mutex);
@@ -1425,13 +1432,12 @@ animation:
             if (fonts_ready) {
                 std::lock_guard<std::mutex> lock(font_mutex);
                 std::set<std::string> seen;
-                for (const auto& path : latin_fonts) {
-                    auto name = fs::path(path).stem().string();
+                for (const auto& [path, name] : latin_fonts) {
                     if (!seen.insert(name).second) continue;
                     Menu::Item item;
                     item.label = name;
-                    item.on_click = [&win, preview1, preview2, preview3, path, name]() {
-                        if (win.loadSystemFont(name)) {
+                    item.on_click = [&win, preview1, preview2, preview3, path]() {
+                        if (win.loadSystemFont(path)) {
                             const std::string spec = "file:" + path;
                             preview1->setFont(spec);
                             preview2->setFont(spec);
